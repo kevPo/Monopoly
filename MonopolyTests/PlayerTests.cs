@@ -11,7 +11,7 @@ namespace MonopolyTests
         [SetUp]
         public void SetUp()
         {
-            player = new Player();
+            player = new Player("Horse");
         }
 
         [Test]
