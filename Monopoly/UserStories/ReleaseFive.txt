@@ -1,0 +1,14 @@
+Release 5: Community Chest and Chance
+
+Community chest and chance each have a single stack of cards. There is one stack of cards shared by all community chest locations
+and one stack of cards shared by all chance locations. The order of the cards is initially determined randomly. Once determined,
+the order remains the same (this iteration skips the get out of jail free card).
+
+When a player lands on either of these locations, the next card (from the top of the deck) is removed,
+the player must follow the instructions on the card. The card is the placed back onto the deck at the bottom.
+
+* Player passes over Community Chest, nothing happens.
+* Player lands on Community Chest not rolling doubles. Player plays card. Card's effect happens. Card at bottom of stack of cards.
+* Player lands on Community Chest rolling doubles. Player plays card. Cards' effect happens. Card at bottom of stack of cards:
+	* Player continues rolling if it was roll 1/2 and they did not get the Go To Jail card.
+	* Player does not continue rolling if it was roll 1/2 and they did get the Go To Jail card.

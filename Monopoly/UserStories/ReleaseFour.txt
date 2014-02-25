@@ -1,0 +1,38 @@
+Release 4: Jail
+
+A player can land in jail when:
+	S/he lands on "go To Jail"
+	S/he draws a "Go To Jail" card
+	Throws doubles three times in a row
+
+When a player goes to jail, s/he does not collect $200 for passing go since s/he moves directly to jail.
+
+A player can get out of jail in any of the following ways:
+	By throwing Doubles on any of the next three turns after landing in Jail. If the player rolls doubles but does not pay
+		 (or use a get out of jail free card), then the player moves forward the number of locations indicated by the dice 
+		 but does not continue rolling the dice.
+	By using a "Get out of Jail Free" card from another player. (A player can purchase a "Get out of Jail Free" card from another player.
+	By paying a $50 fine before throwing the dice, in which case the player is no "Just Visiting"
+
+If a player is still in jail after rolling dice (and not paying a fine) on the third turn,
+	they must pay $50 and moves ahead the number of locations shown on the dice.
+
+* Roll non-doubles, land on Go To Jail, player is in Jail, turn is over, balance is unchanged.
+* Roll doubles, land on Go To Jail, player is in Jail, turn is over, balance is unchanged.
+* Pass over Go To Jail, nothing happens.
+
+* Roll doubles 3 times in a row, never pass or land on go. Balance is unchanged. Player is in Jail.
+* Roll doubles 3 times in a row, pass or land on go during first two rolls. Balance increases by $200. Player is in Jail.
+* Roll doubles 2 times in a row. Player is not in Jail.
+
+* In Jail, Player pays $50. Rolls doubles, moves and rolls again, balance decreased by $50.
+* In Jail, Player pays $50. Rolls doubles, moves, does not roll a second time, balance decreased by $50.
+
+* In Jail turns 1/2, roll doubles. Move once, no more rolling/moving.
+* In Jail, turn 1/2, do not roll doubles. Still in Jail.
+* In Jail, turn 3, roll doubles. Move and don't roll again.
+* In Jail, turn 3, do not roll doubles. Move, balance decreased by $50.
+
+* Player is in Jail at beginning of turn. Game offers player option to pay to get out of jail:
+	* Player pays. Player moved to Just Visiting and takes normal turn.
+	* Player does not pay, Player takes turn.
