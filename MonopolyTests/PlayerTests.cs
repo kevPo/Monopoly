@@ -14,6 +14,12 @@ namespace MonopolyTests
             player = new Player("Horse");
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            player = new Player("Horse");
+        }
+
         [Test]
         public void TestPlayerOnZeroRollsSevenAndMovesToSeven()
         {
@@ -27,6 +33,13 @@ namespace MonopolyTests
             player.Location = 39;
             player.Rolled(6);
             Assert.That(player.Location, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void TestTakeTurnIncrementsTurnCountAndMovesPlayer()
+        {
+            player.TakeTurn();
+            Assert.That(player.Location != 0, Is.True);
         }
     }
 }

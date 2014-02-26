@@ -2,14 +2,13 @@
 
 namespace Monopoly
 {
-    public class Player
+    public class Player : IPlayer
     {
         public Int32 Location { get; set; }
         public String Name { get; private set; }
 
         public Player(String name)
         {
-            Location = 0;
             this.Name = name;
         }
 
@@ -19,6 +18,12 @@ namespace Monopoly
 
             if (Location > 40)
                 Location -= 40;
+        }
+
+        public void TakeTurn()
+        {
+            var randomDice = new Random();
+            Rolled(randomDice.Next(2, 13));
         }
     }
 }
