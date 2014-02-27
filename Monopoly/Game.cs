@@ -31,12 +31,17 @@ namespace Monopoly
 
         private void PlayRound()
         {
-            var randomDice = new Random();
+            var randomDiceGenerator = new Random();
             
             foreach (var player in Players)
-                player.TakeTurn(randomDice.Next(2, 13));
+                player.TakeTurn(RollDice(randomDiceGenerator));
 
             Rounds++;
+        }
+
+        private Int32 RollDice(Random randomDice)
+        {
+            return randomDice.Next(2, 13);
         }
     }
 }

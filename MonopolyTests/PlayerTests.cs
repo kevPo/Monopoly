@@ -7,24 +7,26 @@ namespace MonopolyTests
     public class PlayerTests
     {
         private Player player;
+        private LocationAssistant locationAssistant;
 
         [SetUp]
         public void SetUp()
         {
-            player = new Player("Horse");
+            locationAssistant = new LocationAssistant();
+            player = new Player("Horse", locationAssistant);
         }
 
         [TearDown]
         public void TearDown()
         {
-            player = new Player("Horse");
+            player = new Player("Horse", locationAssistant);
         }
 
         [Test]
         public void TestPlayerOn0Rolls7AndMovesTo7()
         {
             player.TakeTurn(7);
-            Assert.That(player.Location, Is.EqualTo(7));
+            Assert.That(player.Location.Name, Is.EqualTo("Chance"));
         }
 
         [Test]
@@ -32,7 +34,7 @@ namespace MonopolyTests
         {
             player.TakeTurn(39);
             player.TakeTurn(6);
-            Assert.That(player.Location, Is.EqualTo(5));
+            Assert.That(player.Location.Name, Is.EqualTo("Reading Railroad"));
         }
     }
 }
