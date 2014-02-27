@@ -36,5 +36,19 @@ namespace MonopolyTests
             player.TakeTurn(6);
             Assert.That(player.Location.Name, Is.EqualTo("Reading Railroad"));
         }
+
+        [Test]
+        public void TestPlayerIncreasesBalanceBy200WhenLandingOnGo()
+        {
+            player.TakeTurn(40);
+            Assert.That(player.Balance, Is.EqualTo(200));
+        }
+
+        [Test]
+        public void TestPlayerBalanceDoesNotIncreaseForNormalLocations()
+        {
+            player.TakeTurn(5);
+            Assert.That(player.Balance, Is.EqualTo(0));
+        }
     }
 }

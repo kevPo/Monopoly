@@ -6,6 +6,7 @@ namespace Monopoly
     {
         public Location Location { get; private set; }
         public String Name { get; private set; }
+        public Int32 Balance { get; private set; }
         private LocationAssistant locationAssistant;
 
         public Player(String name, LocationAssistant locationAssistant)
@@ -16,15 +17,25 @@ namespace Monopoly
 
         public void TakeTurn(Int32 rolled)
         {
-            if (Location == null)
-                Location = locationAssistant.GetStartingLocation();
-
+            InitializeIfFirstTurn();
             var id = Location.Id + rolled;
 
-            if (id > 40)
+            if (id > 39)
                 id -= 40;
 
             Location = locationAssistant.GetLocationAt(id);
+            
+            if (Location.Name == "Go")
+                Balance += 200;
+        }
+
+        private void InitializeIfFirstTurn()
+        {
+            if (Location == null)
+            {
+                Location = locationAssistant.GetStartingLocation();
+                Balance = 0;
+            }
         }
     }
 }
