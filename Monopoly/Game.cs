@@ -6,13 +6,18 @@ namespace Monopoly
 {
     public class Game
     {
-        public List<IPlayer> Players { get; private set; }
+        public IEnumerable<IPlayer> Players { get; private set; }
         public Int32 Rounds { get; private set; }
 
         public Game(IEnumerable<IPlayer> players)
         {
             this.Players = players.ToList();
             ShufflePlayers();
+        }
+
+        private void ShufflePlayers()
+        {
+            Players = Players.OrderBy(a => Guid.NewGuid()).ToList();
         }
 
         public void Play()
@@ -24,15 +29,12 @@ namespace Monopoly
                 PlayRound();
         }
 
-        private void ShufflePlayers()
-        {
-            Players = Players.OrderBy(a => Guid.NewGuid()).ToList();
-        }
-
         private void PlayRound()
         {
+            var randomDice = new Random();
+            
             foreach (var player in Players)
-                player.TakeTurn();
+                player.TakeTurn(randomDice.Next(2, 13));
 
             Rounds++;
         }

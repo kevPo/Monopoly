@@ -3,9 +3,8 @@ namespace Monopoly
 {
     public interface IPlayer
     {
-        Int32 Location { get; set; }
+        Int32 Location { get; }
         String Name { get; }
-        void Rolled(Int32 rolled);
-        void TakeTurn();
+        void TakeTurn(Int32 rolled);
     }
 }

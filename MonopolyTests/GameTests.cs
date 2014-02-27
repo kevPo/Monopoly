@@ -15,7 +15,7 @@ namespace MonopolyTests
         public void TestCreateGameWithTwoPlayersHorseAndCar()
         {
             var game = new Game(new [] { new Player("Horse"), new Player("Car") });
-            Assert.That(game.Players.Count, Is.EqualTo(2));
+            Assert.That(game.Players.Count(), Is.EqualTo(2));
             Assert.That(game.Players.Any(p => p.Name == "Horse"), Is.True);
             Assert.That(game.Players.Any(p => p.Name == "Car"), Is.True);
         }
@@ -52,8 +52,8 @@ namespace MonopolyTests
             for (var i = 0; i < 50; i++)
                 games.Add(new Game(new[] { new Player("Horse"), new Player("Car") }));
 
-            var playersStartWithHorse = games.Any(g => g.Players[0].Name == "Horse");
-            var playersStartWithCar = games.Any(g => g.Players[0].Name == "Car");
+            var playersStartWithHorse = games.Any(g => g.Players.First().Name == "Horse");
+            var playersStartWithCar = games.Any(g => g.Players.First().Name == "Car");
 
             Assert.That(playersStartWithHorse && playersStartWithCar, Is.True);
         }
@@ -66,8 +66,8 @@ namespace MonopolyTests
             var game = new Game(new List<IPlayer> { mockHorse.Object, mockCar.Object });
 
             game.Play();
-            mockHorse.Verify(h => h.TakeTurn(), Times.Exactly(20));
-            mockCar.Verify(c => c.TakeTurn(), Times.Exactly(20));
+            mockHorse.Verify(h => h.TakeTurn(It.IsAny<Int32>()), Times.Exactly(20));
+            mockCar.Verify(c => c.TakeTurn(It.IsAny<Int32>()), Times.Exactly(20));
             Assert.That(game.Rounds, Is.EqualTo(20));
         }
 
@@ -83,13 +83,12 @@ namespace MonopolyTests
             mockDog.Setup(d => d.Name).Returns("Dog");
 
             var game = new Game(new List<IPlayer> { mockHorse.Object, mockCar.Object, mockDog.Object });
-            var playersOrder = String.Format("{0}{1}{2}", game.Players[0].Name, game.Players[1].Name, game.Players[2].Name);
-            
+            var playersOrder = String.Format("{0}{1}{2}", game.Players.First().Name, game.Players.ElementAt(1).Name, game.Players.ElementAt(2).Name);
             var turns = String.Empty;
 
-            mockHorse.Setup(h => h.TakeTurn()).Callback(() => turns += "Horse");
-            mockCar.Setup(c => c.TakeTurn()).Callback(() => turns += "Car");
-            mockDog.Setup(d => d.TakeTurn()).Callback(() => turns += "Dog");
+            mockHorse.Setup(h => h.TakeTurn(It.IsAny<Int32>())).Callback(() => turns += "Horse");
+            mockCar.Setup(c => c.TakeTurn(It.IsAny<Int32>())).Callback(() => turns += "Car");
+            mockDog.Setup(d => d.TakeTurn(It.IsAny<Int32>())).Callback(() => turns += "Dog");
 
             game.Play();
 

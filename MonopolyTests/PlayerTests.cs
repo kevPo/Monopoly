@@ -21,25 +21,18 @@ namespace MonopolyTests
         }
 
         [Test]
-        public void TestPlayerOnZeroRollsSevenAndMovesToSeven()
+        public void TestPlayerOn0Rolls7AndMovesTo7()
         {
-            player.Rolled(7);
+            player.TakeTurn(7);
             Assert.That(player.Location, Is.EqualTo(7));
         }
 
         [Test]
         public void TestPlayerOn39Rolls6AndEndsUpOn5()
         {
-            player.Location = 39;
-            player.Rolled(6);
+            player.TakeTurn(39);
+            player.TakeTurn(6);
             Assert.That(player.Location, Is.EqualTo(5));
-        }
-
-        [Test]
-        public void TestTakeTurnIncrementsTurnCountAndMovesPlayer()
-        {
-            player.TakeTurn();
-            Assert.That(player.Location != 0, Is.True);
         }
     }
 }
