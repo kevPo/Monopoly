@@ -38,34 +38,6 @@ namespace MonopolyTests
         }
 
         [Test]
-        public void TestPlayerIncreasesBalanceBy200WhenLandingOnGo()
-        {
-            player.TakeTurn(40);
-            Assert.That(player.Balance, Is.EqualTo(200));
-        }
-
-        [Test]
-        public void TestPlayerBalanceDoesNotIncreaseForNormalLocations()
-        {
-            player.TakeTurn(5);
-            Assert.That(player.Balance, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void TestPlayerBalanceIncreasesAfterPassingGo()
-        {
-            player.TakeTurn(44);
-            Assert.That(player.Balance, Is.EqualTo(200));
-        }
-
-        [Test]
-        public void TestPlayerOnGoTakesTurnWithoutMovingAndBalanceDoesNotChange()
-        {
-            player.TakeTurn(0);
-            Assert.That(player.Balance, Is.EqualTo(0));
-        }
-
-        [Test]
         public void TestPlayerPassesGoTwiceWithOneTurnAndBalanceIncreases400()
         {
             player.TakeTurn(85);

@@ -50,7 +50,6 @@ namespace Monopoly
             locations.AddLast("Park Place");
             locations.AddLast("Luxury Tax");
             locations.AddLast("Boardwalk");
-            
         }
 
         public String GetStartingLocation()
@@ -72,9 +71,12 @@ namespace Monopoly
                 }
                 else
                 {
-                    current = current.Next;
+                    current = current.Next;                    
                 }
             }
+
+            if (current.Value == "Go To Jail")
+                current = locations.Find("Jail/ Just Visiting");
 
             return new MovementResult(current.Value, currencyGained);             
         }
