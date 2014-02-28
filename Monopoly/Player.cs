@@ -23,9 +23,10 @@ namespace Monopoly
             if (id > 39)
                 id -= 40;
 
+            var previousLocationId = Location.Id;
             Location = locationAssistant.GetLocationAt(id);
             
-            if (Location.Name == "Go")
+            if (previousLocationId > Location.Id)
                 Balance += 200;
         }
 
