@@ -7,26 +7,26 @@ namespace MonopolyTests
     public class PlayerTests
     {
         private Player player;
-        private LocationAssistant locationAssistant;
+        private Board board;
 
         [SetUp]
         public void SetUp()
         {
-            locationAssistant = new LocationAssistant();
-            player = new Player("Horse", locationAssistant);
+            board = new Board();
+            player = new Player("Horse", board);
         }
 
         [TearDown]
         public void TearDown()
         {
-            player = new Player("Horse", locationAssistant);
+            player = new Player("Horse", board);
         }
 
         [Test]
         public void TestPlayerOn0Rolls7AndMovesTo7()
         {
             player.TakeTurn(7);
-            Assert.That(player.Location.Name, Is.EqualTo("Chance"));
+            Assert.That(player.Location, Is.EqualTo("Chance"));
         }
 
         [Test]
@@ -34,14 +34,13 @@ namespace MonopolyTests
         {
             player.TakeTurn(39);
             player.TakeTurn(6);
-            Assert.That(player.Location.Name, Is.EqualTo("Reading Railroad"));
+            Assert.That(player.Location, Is.EqualTo("Reading Railroad"));
         }
 
         [Test]
         public void TestPlayerIncreasesBalanceBy200WhenLandingOnGo()
         {
-            player.TakeTurn(39);
-            player.TakeTurn(1);
+            player.TakeTurn(40);
             Assert.That(player.Balance, Is.EqualTo(200));
         }
 
@@ -55,8 +54,7 @@ namespace MonopolyTests
         [Test]
         public void TestPlayerBalanceIncreasesAfterPassingGo()
         {
-            player.TakeTurn(39);
-            player.TakeTurn(5);
+            player.TakeTurn(44);
             Assert.That(player.Balance, Is.EqualTo(200));
         }
 
@@ -65,6 +63,13 @@ namespace MonopolyTests
         {
             player.TakeTurn(0);
             Assert.That(player.Balance, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestPlayerPassesGoTwiceWithOneTurnAndBalanceIncreases400()
+        {
+            player.TakeTurn(85);
+            Assert.That(player.Balance, Is.EqualTo(400));
         }
     }
 }

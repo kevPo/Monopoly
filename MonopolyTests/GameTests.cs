@@ -11,19 +11,19 @@ namespace MonopolyTests
     [TestFixture]
     public class GameTests
     {
-        private LocationAssistant locationAssistant;
+        private Board board;
 
         [SetUp]
         public void SetUp()
         {
-            locationAssistant = new LocationAssistant();
+            board = new Board();
         }
 
         [Test]
         public void TestCreateGameWithTwoPlayersHorseAndCar()
         {
-            var players = new [] { new Player("Horse", locationAssistant), 
-                new Player("Car", locationAssistant) };
+            var players = new [] { new Player("Horse", board), 
+                new Player("Car", board) };
             var game = new Game(players);
             Assert.That(game.Players.Count(), Is.EqualTo(2));
             Assert.That(game.Players.Any(p => p.Name == "Horse"), Is.True);
@@ -33,7 +33,7 @@ namespace MonopolyTests
         [Test]
         public void TestCreateGameWithOnePlayerFails()
         {
-            var game = new Game( new [] { new Player("Horse", locationAssistant) });
+            var game = new Game( new [] { new Player("Horse", board) });
             Assert.Throws<InvalidOperationException>(() => game.Play());
         }
 
@@ -41,15 +41,15 @@ namespace MonopolyTests
         public void TestCreateGameWithNinePlayersFails()
         {
             var game = new Game(new[] { 
-                new Player("Horse", locationAssistant),
-                new Player("Cat", locationAssistant),
-                new Player("Wheelbarrow", locationAssistant),
-                new Player("Battleship", locationAssistant),
-                new Player("Thimble", locationAssistant),
-                new Player("Top Hat", locationAssistant),
-                new Player("Boot", locationAssistant),
-                new Player("Scottie dog", locationAssistant),
-                new Player("Racecar", locationAssistant)
+                new Player("Horse", board),
+                new Player("Cat", board),
+                new Player("Wheelbarrow", board),
+                new Player("Battleship", board),
+                new Player("Thimble", board),
+                new Player("Top Hat", board),
+                new Player("Boot", board),
+                new Player("Scottie dog", board),
+                new Player("Racecar", board)
             });
             Assert.Throws<InvalidOperationException>(() => game.Play());
         }
@@ -58,8 +58,8 @@ namespace MonopolyTests
         public void TestOrderIsRandom()
         {
             var games = new List<Game>();
-            var players = new[] { new Player("Horse", locationAssistant),
-                new Player("Car", locationAssistant) };
+            var players = new[] { new Player("Horse", board),
+                new Player("Car", board) };
 
             for (var i = 0; i < 50; i++)
                 games.Add(new Game(players));

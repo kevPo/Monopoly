@@ -4,37 +4,31 @@ namespace Monopoly
 {
     public class Player : IPlayer
     {
-        public Location Location { get; private set; }
+        public String Location { get; private set; }
         public String Name { get; private set; }
         public Int32 Balance { get; private set; }
-        private LocationAssistant locationAssistant;
+        private Board board;
 
-        public Player(String name, LocationAssistant locationAssistant)
+        public Player(String name, Board board)
         {
             this.Name = name;
-            this.locationAssistant = locationAssistant;
+            this.board = board;
         }
 
         public void TakeTurn(Int32 rolled)
         {
             InitializeIfFirstTurn();
-            var id = Location.Id + rolled;
 
-            if (id > 39)
-                id -= 40;
-
-            var previousLocationId = Location.Id;
-            Location = locationAssistant.GetLocationAt(id);
-            
-            if (previousLocationId > Location.Id)
-                Balance += 200;
+            var result = board.UpdateLocation(Location, rolled);
+            Location = result.Location;
+            Balance += result.CurrencyGained;
         }
 
         private void InitializeIfFirstTurn()
         {
-            if (Location == null)
+            if (String.IsNullOrEmpty(Location))
             {
-                Location = locationAssistant.GetStartingLocation();
+                Location = board.GetStartingLocation();
                 Balance = 0;
             }
         }

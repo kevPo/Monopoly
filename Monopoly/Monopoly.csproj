@@ -41,8 +41,8 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="IPlayer.cs" />
-    <Compile Include="Location.cs" />
-    <Compile Include="LocationAssistant.cs" />
+    <Compile Include="Board.cs" />
+    <Compile Include="MovementResult.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
