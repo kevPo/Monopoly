@@ -51,5 +51,21 @@ namespace MonopolyTests
             horse.TakeTurn(4);
             Assert.That(horse.Balance, Is.EqualTo(1620));
         }
+
+        [Test]
+        public void TestPlayerLandsOnIncomeTaxAndBalanceDecreases200()
+        {
+            var horse = new Player("Horse", 2200, gameMediator);
+            horse.TakeTurn(4);
+            Assert.That(horse.Balance, Is.EqualTo(2000));
+        }
+
+        [Test]
+        public void TestPlayerPassesOverIncomeTaxAndNothingHappens()
+        {
+            var horse = new Player("Horse", 1800, gameMediator);
+            horse.TakeTurn(5);
+            Assert.That(horse.Balance, Is.EqualTo(1800));
+        }
     }
 }
