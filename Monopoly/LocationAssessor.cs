@@ -4,17 +4,30 @@ namespace Monopoly
 {
     public class LocationAssessor : ILocationAssessor
     {
-        public Int32 GetAssesmentFor(String location, Int32 playerBalance)
+        public MovementResult GetAssesmentFor(String location, Int32 playerBalance)
         {
-            if (location == "Income Tax")
+            var currentLocation = location;
+            var currencyGained = 0;
+            if (location == "Go To Jail")
             {
-                if (playerBalance > 2000)
-                    return -200;
-                else
-                    return Convert.ToInt32(playerBalance * -.1);
+                currentLocation = "Jail/ Just Visiting";
+            }
+            else if (location == "Luxury Tax")
+            {
+                currencyGained = -75;
+            }
+            else
+            {
+                if (location == "Income Tax")
+                {
+                    if (playerBalance > 2000)
+                        currencyGained = -200;
+                    else
+                        currencyGained = Convert.ToInt32(playerBalance * -.1);
+                }
             }
 
-            return 0;
+            return new MovementResult(currentLocation, playerBalance + currencyGained);
         }
     }
 }

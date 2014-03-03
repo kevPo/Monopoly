@@ -45,6 +45,14 @@ namespace MonopolyTests
         }
 
         [Test]
+        public void TestPassGoToJailButNotStart()
+        {
+            player.TakeTurn(33);
+            Assert.That(player.Location, Is.EqualTo("Community Chest"));
+            Assert.That(player.Balance, Is.EqualTo(0));
+        }
+
+        [Test]
         public void TestPlayerLandsOnIncomeTaxAndBalanceDecreases10Percent()
         {
             var horse = new Player("Horse", 1800, gameMediator);
@@ -66,6 +74,13 @@ namespace MonopolyTests
             var horse = new Player("Horse", 1800, gameMediator);
             horse.TakeTurn(5);
             Assert.That(horse.Balance, Is.EqualTo(1800));
+        }
+
+        [Test]
+        public void TestPlayerPassesOverLuxuryTaxAndBalanceStaysTheSame()
+        {
+            player.TakeTurn(39);
+            Assert.That(player.Balance, Is.EqualTo(0));
         }
     }
 }

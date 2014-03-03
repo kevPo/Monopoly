@@ -75,8 +75,7 @@ namespace Monopoly
                 }
             }
 
-            if (current.Value == "Go To Jail")
-                current = locations.Find("Jail/ Just Visiting");
+
 
             return new MovementResult(current.Value, currencyGained);             
         }

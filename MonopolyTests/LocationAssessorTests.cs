@@ -15,28 +15,46 @@ namespace MonopolyTests
         }
 
         [Test]
-        public void TestIncomeTaxReturnsNegative10PercentOfPlayerBalance()
+        public void TestLandOnGoToJailVisitsJailAndBalanceRemainsTheSame()
         {
-            
-            Assert.That(assessor.GetAssesmentFor("Income Tax", 1800), Is.EqualTo(-180));            
+            var result = assessor.GetAssesmentFor("Go To Jail", 1800);
+            Assert.That(result.Location, Is.EqualTo("Jail/ Just Visiting"));
+            Assert.That(result.Balance, Is.EqualTo(1800));
         }
 
         [Test]
-        public void TestIncomeTaxReturnsNegative200WhenBalanceIsOver2000()
+        public void TestIncomeTaxDecreasesBalanceBy10PercentWhenLessThan2000()
         {
-            Assert.That(assessor.GetAssesmentFor("Income Tax", 2200), Is.EqualTo(-200));            
+            var result = assessor.GetAssesmentFor("Income Tax", 1800);
+            Assert.That(result.Balance, Is.EqualTo(1620));            
         }
 
         [Test]
-        public void TestIncomeTaxReturnsZeroForZeroBalance()
+        public void TestIncomeTaxDecreasesBalanceBy200WhenBalanceIsOver2000()
         {
-            Assert.That(assessor.GetAssesmentFor("Income Tax", 0), Is.EqualTo(0));
+            var result = assessor.GetAssesmentFor("Income Tax", 2200);
+            Assert.That(result.Balance, Is.EqualTo(2000));            
+        }
+
+        [Test]
+        public void TestIncomeTaxDoesNotChangeBalanceForZeroBalance()
+        {
+            var result = assessor.GetAssesmentFor("Income Tax", 0);
+            Assert.That(result.Balance, Is.EqualTo(0));
         }
 
         [Test] 
-        public void TestIncomeTaxReturnsNegative200ForBalanceOf2000()
+        public void TestIncomeTaxDecreasesBalanceBy200ForBalanceOf2000()
         {
-            Assert.That(assessor.GetAssesmentFor("Income Tax", 2000), Is.EqualTo(-200));
+            var result = assessor.GetAssesmentFor("Income Tax", 2000);
+            Assert.That(result.Balance, Is.EqualTo(1800));
+        }
+
+        [Test]
+        public void TestLuxuryTaxDecreasesBalanceBy75()
+        {
+            var result = assessor.GetAssesmentFor("Luxury Tax", 175);
+            Assert.That(result.Balance, Is.EqualTo(100));
         }
     }
 }

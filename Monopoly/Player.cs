@@ -22,7 +22,7 @@ namespace Monopoly
 
             var result = gameMediator.MovePlayer(this, rolled);
             Location = result.Location;
-            Balance += result.CurrencyGained;
+            Balance = result.Balance;
         }
 
         private void InitializeIfFirstTurn()

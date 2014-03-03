@@ -16,9 +16,8 @@ namespace Monopoly
         public MovementResult MovePlayer(Player player, Int32 rolled)
         {
             var movementResult = board.UpdateLocation(player.Location, rolled);
-            var balance = player.Balance + movementResult.CurrencyGained;
-            var locationAssesment = locationAssessor.GetAssesmentFor(movementResult.Location, balance);
-            return new MovementResult(movementResult.Location, locationAssesment + movementResult.CurrencyGained);
+            var balance = player.Balance + movementResult.Balance;
+            return locationAssessor.GetAssesmentFor(movementResult.Location, balance);
         }
 
         public String GetStartingPosition()

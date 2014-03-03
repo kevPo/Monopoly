@@ -3,6 +3,6 @@ namespace Monopoly
 {
     public interface ILocationAssessor
     {
-        Int32 GetAssesmentFor(String location, Int32 playerBalance);
+        MovementResult GetAssesmentFor(String location, Int32 playerBalance);
     }
 }
