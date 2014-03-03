@@ -40,8 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game.cs" />
+    <Compile Include="GameMediator.cs" />
+    <Compile Include="IBoard.cs" />
+    <Compile Include="ILocationAssessor.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="Board.cs" />
+    <Compile Include="LocationAssessor.cs" />
     <Compile Include="MovementResult.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

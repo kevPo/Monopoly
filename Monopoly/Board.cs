@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Monopoly
 {
-    public class Board
+    public class Board : IBoard
     {
         private LinkedList<String> locations;
         

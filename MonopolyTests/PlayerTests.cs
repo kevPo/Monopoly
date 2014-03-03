@@ -7,19 +7,19 @@ namespace MonopolyTests
     public class PlayerTests
     {
         private Player player;
-        private Board board;
+        private GameMediator gameMediator;
 
         [SetUp]
         public void SetUp()
         {
-            board = new Board();
-            player = new Player("Horse", board);
+            gameMediator = new GameMediator(new Board(), new LocationAssessor());
+            player = new Player("Horse", 0, gameMediator);
         }
 
         [TearDown]
         public void TearDown()
         {
-            player = new Player("Horse", board);
+            player = new Player("Horse", 0, gameMediator);
         }
 
         [Test]
@@ -42,6 +42,14 @@ namespace MonopolyTests
         {
             player.TakeTurn(85);
             Assert.That(player.Balance, Is.EqualTo(400));
+        }
+
+        [Test]
+        public void TestPlayerLandsOnIncomeTaxAndBalanceDecreases10Percent()
+        {
+            var horse = new Player("Horse", 1800, gameMediator);
+            horse.TakeTurn(4);
+            Assert.That(horse.Balance, Is.EqualTo(1620));
         }
     }
 }

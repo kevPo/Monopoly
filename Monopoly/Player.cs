@@ -7,19 +7,20 @@ namespace Monopoly
         public String Location { get; private set; }
         public String Name { get; private set; }
         public Int32 Balance { get; private set; }
-        private Board board;
+        private GameMediator gameMediator;
 
-        public Player(String name, Board board)
+        public Player(String name, Int32 balance, GameMediator gameMediator)
         {
             this.Name = name;
-            this.board = board;
+            this.Balance = balance;
+            this.gameMediator = gameMediator;
         }
 
         public void TakeTurn(Int32 rolled)
         {
             InitializeIfFirstTurn();
 
-            var result = board.UpdateLocation(Location, rolled);
+            var result = gameMediator.MovePlayer(this, rolled);
             Location = result.Location;
             Balance += result.CurrencyGained;
         }
@@ -27,10 +28,7 @@ namespace Monopoly
         private void InitializeIfFirstTurn()
         {
             if (String.IsNullOrEmpty(Location))
-            {
-                Location = board.GetStartingLocation();
-                Balance = 0;
-            }
+                Location = gameMediator.GetStartingPosition();
         }
     }
 }

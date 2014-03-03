@@ -64,5 +64,13 @@ namespace MonopolyTests
             Assert.That(result.Location, Is.EqualTo("Community Chest"));
             Assert.That(result.CurrencyGained, Is.EqualTo(0));
         }
+
+        //[Test]
+        //public void TestLandingOnIncomeTaxCharges10Percent()
+        //{
+        //    var result = board.UpdateLocation("Go", 5);
+        //    Assert.That(result.Location, Is.EqualTo("Income Tax"));
+        //    Assert.That(result.CurrencyGained, Is.EqualTo(-12))
+        //}
     }
 }
