@@ -82,5 +82,35 @@ namespace MonopolyTests
             player.TakeTurn(39);
             Assert.That(player.Balance, Is.EqualTo(0));
         }
+
+        [Test]
+        public void TestPlayerPayTaxDecrementsBalanceByGivenAmount()
+        {
+            var horse = new Player("horse", 200, board);
+            horse.PayTax(75);
+            Assert.That(horse.Balance, Is.EqualTo(125));
+        }
+
+        [Test]
+        public void TestPlayerReceivesMoneyIncrementsBalanceByGivenAmount()
+        {
+            player.ReceiveMoney(30);
+            Assert.That(player.Balance, Is.EqualTo(30));
+        }
+
+        [Test]
+        public void TestPlayerGoesDirectlyToLocationWithGivenName()
+        {
+            player.TakeTurn(5);
+            player.GoDirectlyTo("Go");
+            Assert.That(player.Location.Name, Is.EqualTo("Go"));
+        }
+
+        [Test]
+        public void TestLandedOnSetsLocation()
+        {
+            player.LandedOn(board.GetLocationFor("Boardwalk"));
+            Assert.That(player.Location.Name, Is.EqualTo("Boardwalk"));
+        }
     }
 }

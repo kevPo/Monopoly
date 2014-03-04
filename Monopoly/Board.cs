@@ -71,7 +71,7 @@ namespace Monopoly
             player.LandedOn(result.Location);
         }
 
-        public MovementResult GetMovementResult(Location currentLocation, Int32 movement)
+        private MovementResult GetMovementResult(Location currentLocation, Int32 movement)
         {
             var index = locations.IndexOf(currentLocation);
             var currencyGained = 0;

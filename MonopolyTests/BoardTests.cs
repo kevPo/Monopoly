@@ -30,6 +30,13 @@ namespace MonopolyTests
         }
 
         [Test]
+        public void TestMovePlayer3SpotsAndPlayerLandsOnBaltic()
+        {
+            board.MovePlayer(player, 3);
+            Assert.That(player.Location.Name, Is.EqualTo("Baltic Avenue"));
+        }
+
+        [Test]
         public void TestBalanceIncreasesBy200WhenLandingOnGo()
           {
             board.MovePlayer(player, 40);
@@ -57,6 +64,13 @@ namespace MonopolyTests
         {
             board.MovePlayer(player, 0);
             Assert.That(player.Balance, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestGetLocationReturnsCorrectLocation()
+        {
+            var location = board.GetLocationFor("Go");
+            Assert.That(location.Name, Is.EqualTo("Go"));
         }
     }
 }
