@@ -72,9 +72,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AssessorsTests\GoToJailAssessorTests.cs" />
+    <Compile Include="AssessorsTests\IncomeTaxAssessorTests.cs" />
+    <Compile Include="AssessorsTests\LuxuryTaxAssessorTests.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="BoardTests.cs" />
-    <Compile Include="LocationAssessorTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

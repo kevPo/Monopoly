@@ -39,13 +39,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assessors\DefaultAssessor.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameMediator.cs" />
+    <Compile Include="Assessors\GoToJailAssessor.cs" />
     <Compile Include="IBoard.cs" />
-    <Compile Include="ILocationAssessor.cs" />
+    <Compile Include="Assessors\IncomeTaxAssessor.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="Board.cs" />
-    <Compile Include="LocationAssessor.cs" />
+    <Compile Include="Location.cs" />
+    <Compile Include="Assessors\LocationAssessor.cs" />
+    <Compile Include="Assessors\LuxuryTaxAssessor.cs" />
     <Compile Include="MovementResult.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

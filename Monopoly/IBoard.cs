@@ -3,7 +3,9 @@ namespace Monopoly
 {
     public interface IBoard
     {
-        String GetStartingLocation();
-        MovementResult UpdateLocation(String currentPosition, Int32 movement);
+        Location GetStartingLocation();
+        MovementResult GetMovementResult(Location currentPosition, Int32 movement);
+        Location GetLocationFor(String name);
+        void MovePlayer(IPlayer player, Int32 rolled);
     }
 }

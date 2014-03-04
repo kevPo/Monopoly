@@ -1,83 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Monopoly.Assessors;
 
 namespace Monopoly
 {
     public class Board : IBoard
     {
-        private LinkedList<String> locations;
+        private List<Location> locations;
         
         public Board()
         {
-            locations = new LinkedList<String>();
-            locations.AddFirst("Go");
-            locations.AddLast("Mediterranean Avenue");
-            locations.AddLast("Community Chest");
-            locations.AddLast("Baltic Avenue");
-            locations.AddLast("Income Tax");
-            locations.AddLast("Reading Railroad");
-            locations.AddLast("Oriental Avenue");
-            locations.AddLast("Chance");
-            locations.AddLast("Vermont Avenue");
-            locations.AddLast("Connecticut Avenue");
-            locations.AddLast("Jail/ Just Visiting");
-            locations.AddLast("St. Charles Place");
-            locations.AddLast("Electric Company");
-            locations.AddLast("States Avenue");
-            locations.AddLast("Virginia Avenue");
-            locations.AddLast("Pennsylvania Railroad");
-            locations.AddLast("St. James Place");
-            locations.AddLast("Community Chest");
-            locations.AddLast("Tennessee Avenue");
-            locations.AddLast("New York Avenue");
-            locations.AddLast("Free Parking");
-            locations.AddLast("Kentucky Avenue");
-            locations.AddLast("Chance");
-            locations.AddLast("Indiana Avenue");
-            locations.AddLast("Illinois Avenue");
-            locations.AddLast("B. & O. Railroad");
-            locations.AddLast("Atlantic Avenue");
-            locations.AddLast("Ventnor Avenue");
-            locations.AddLast("Water Works");
-            locations.AddLast("Marvin Gardens");
-            locations.AddLast("Go To Jail");
-            locations.AddLast("Pacific Avenue");
-            locations.AddLast("North Carolina Avenue");
-            locations.AddLast("Community Chest");
-            locations.AddLast("Pennsylvania Avenue");
-            locations.AddLast("Short Line");
-            locations.AddLast("Chance");
-            locations.AddLast("Park Place");
-            locations.AddLast("Luxury Tax");
-            locations.AddLast("Boardwalk");
+            locations = new List<Location>
+            {
+                new Location("Go", new DefaultAssessor()),
+                new Location("Mediterranean Avenue", new DefaultAssessor()),
+                new Location("Community Chest", new DefaultAssessor()),
+                new Location("Baltic Avenue", new DefaultAssessor()),
+                new Location("Income Tax", new IncomeTaxAssessor()),
+                new Location("Reading Railroad", new DefaultAssessor()),
+                new Location("Oriental Avenue", new DefaultAssessor()),
+                new Location("Chance", new DefaultAssessor()),
+                new Location("Vermont Avenue", new DefaultAssessor()),
+                new Location("Connecticut Avenue", new DefaultAssessor()),
+                new Location("Jail/ Just Visiting", new DefaultAssessor()),
+                new Location("St. Charles Place", new DefaultAssessor()),
+                new Location("Electric Company", new DefaultAssessor()),
+                new Location("States Avenue", new DefaultAssessor()),
+                new Location("Virginia Avenue", new DefaultAssessor()),
+                new Location("Pennsylvania Railroad", new DefaultAssessor()),
+                new Location("St. James Place", new DefaultAssessor()),
+                new Location("Community Chest", new DefaultAssessor()),
+                new Location("Tennessee Avenue", new DefaultAssessor()),
+                new Location("New York Avenue", new DefaultAssessor()),
+                new Location("Free Parking", new DefaultAssessor()),
+                new Location("Kentucky Avenue", new DefaultAssessor()),
+                new Location("Chance", new DefaultAssessor()),
+                new Location("Indiana Avenue", new DefaultAssessor()),
+                new Location("Illinois Avenue", new DefaultAssessor()),
+                new Location("B. & O. Railroad", new DefaultAssessor()),
+                new Location("Atlantic Avenue", new DefaultAssessor()),
+                new Location("Ventnor Avenue", new DefaultAssessor()),
+                new Location("Water Works", new DefaultAssessor()),
+                new Location("Marvin Gardens", new DefaultAssessor()),
+                new Location("Go To Jail", new GoToJailAssessor()),
+                new Location("Pacific Avenue", new DefaultAssessor()),
+                new Location("North Carolina Avenue", new DefaultAssessor()),
+                new Location("Community Chest", new DefaultAssessor()),
+                new Location("Pennsylvania Avenue", new DefaultAssessor()),
+                new Location("Short Line", new DefaultAssessor()),
+                new Location("Chance", new DefaultAssessor()),
+                new Location("Park Place", new DefaultAssessor()),
+                new Location("Luxury Tax", new LuxuryTaxAssessor()),
+                new Location("Boardwalk", new DefaultAssessor())
+            };
         }
 
-        public String GetStartingLocation()
+        public Location GetStartingLocation()
         {
-            return locations.First.Value;
+            return locations.FirstOrDefault();
         }
 
-        public MovementResult UpdateLocation(String currentPosition, Int32 movement)
+        public void MovePlayer(IPlayer player, Int32 rolled)
         {
-            var current = locations.Find(currentPosition);
+            var result = GetMovementResult(player.Location, rolled);
+
+            if (result.Balance > 0)
+                player.ReceiveMoney(result.Balance);
+
+            player.LandedOn(result.Location);
+        }
+
+        public MovementResult GetMovementResult(Location currentLocation, Int32 movement)
+        {
+            var index = locations.IndexOf(currentLocation);
             var currencyGained = 0;
 
-            for (var i = 0; i < movement; i++)
+            for (var i = 1; i <= movement; i++)
             {
-                if (current.Next == null)
+                index += 1;
+                if (index > 39)
                 {
-                    current = locations.First;
+                    index = 0;
                     currencyGained += 200;
-                }
-                else
-                {
-                    current = current.Next;                    
                 }
             }
 
+            return new MovementResult(locations[index], currencyGained);             
+        }
 
-
-            return new MovementResult(current.Value, currencyGained);             
+        public Location GetLocationFor(String name)
+        {
+            return locations.FirstOrDefault(l => l.Name == name);
         }
     }
 }

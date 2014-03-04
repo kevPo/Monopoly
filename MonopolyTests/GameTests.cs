@@ -11,19 +11,19 @@ namespace MonopolyTests
     [TestFixture]
     public class GameTests
     {
-        private GameMediator gameMediator;
+        private Board board;
 
         [SetUp]
         public void SetUp()
         {
-            gameMediator = new GameMediator(new Board(), new LocationAssessor());
+            board = new Board();
         }
 
         [Test]
         public void TestCreateGameWithTwoPlayersHorseAndCar()
         {
-            var players = new [] { new Player("Horse", 0, gameMediator), 
-                new Player("Car", 0, gameMediator) };
+            var players = new [] { new Player("Horse", 0, board), 
+                new Player("Car", 0, board) };
             var game = new Game(players);
             Assert.That(game.Players.Count(), Is.EqualTo(2));
             Assert.That(game.Players.Any(p => p.Name == "Horse"), Is.True);
@@ -33,7 +33,7 @@ namespace MonopolyTests
         [Test]
         public void TestCreateGameWithOnePlayerFails()
         {
-            var game = new Game( new [] { new Player("Horse", 0, gameMediator) });
+            var game = new Game( new [] { new Player("Horse", 0, board) });
             Assert.Throws<InvalidOperationException>(() => game.Play());
         }
 
@@ -41,15 +41,15 @@ namespace MonopolyTests
         public void TestCreateGameWithNinePlayersFails()
         {
             var game = new Game(new[] { 
-                new Player("Horse", 0, gameMediator),
-                new Player("Cat", 0, gameMediator),
-                new Player("Wheelbarrow", 0, gameMediator),
-                new Player("Battleship", 0, gameMediator),
-                new Player("Thimble", 0, gameMediator),
-                new Player("Top Hat", 0, gameMediator),
-                new Player("Boot", 0, gameMediator),
-                new Player("Scottie dog", 0, gameMediator),
-                new Player("Racecar", 0, gameMediator)
+                new Player("Horse", 0, board),
+                new Player("Cat", 0, board),
+                new Player("Wheelbarrow", 0, board),
+                new Player("Battleship", 0, board),
+                new Player("Thimble", 0, board),
+                new Player("Top Hat", 0, board),
+                new Player("Boot", 0, board),
+                new Player("Scottie dog", 0, board),
+                new Player("Racecar", 0, board)
             });
             Assert.Throws<InvalidOperationException>(() => game.Play());
         }
@@ -58,8 +58,8 @@ namespace MonopolyTests
         public void TestOrderIsRandom()
         {
             var games = new List<Game>();
-            var players = new[] { new Player("Horse", 0, gameMediator),
-                new Player("Car", 0, gameMediator) };
+            var players = new[] { new Player("Horse", 0, board),
+                new Player("Car", 0, board) };
 
             for (var i = 0; i < 50; i++)
                 games.Add(new Game(players));
