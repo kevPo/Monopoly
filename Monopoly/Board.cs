@@ -1,59 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Monopoly.Assessors;
+using Monopoly.Locations;
+using Monopoly.Locations.Taxable;
 
 namespace Monopoly
 {
     public class Board : IBoard
     {
+        private IEnumerable<IPlayer> players;
         private List<Location> locations;
         
         public Board()
         {
+            var jail = new Jail();
+
             locations = new List<Location>
             {
-                new Location("Go", new DefaultAssessor()),
-                new Location("Mediterranean Avenue", new DefaultAssessor()),
-                new Location("Community Chest", new DefaultAssessor()),
-                new Location("Baltic Avenue", new DefaultAssessor()),
-                new Location("Income Tax", new IncomeTaxAssessor()),
-                new Location("Reading Railroad", new DefaultAssessor()),
-                new Location("Oriental Avenue", new DefaultAssessor()),
-                new Location("Chance", new DefaultAssessor()),
-                new Location("Vermont Avenue", new DefaultAssessor()),
-                new Location("Connecticut Avenue", new DefaultAssessor()),
-                new Location("Jail/ Just Visiting", new DefaultAssessor()),
-                new Location("St. Charles Place", new DefaultAssessor()),
-                new Location("Electric Company", new DefaultAssessor()),
-                new Location("States Avenue", new DefaultAssessor()),
-                new Location("Virginia Avenue", new DefaultAssessor()),
-                new Location("Pennsylvania Railroad", new DefaultAssessor()),
-                new Location("St. James Place", new DefaultAssessor()),
-                new Location("Community Chest", new DefaultAssessor()),
-                new Location("Tennessee Avenue", new DefaultAssessor()),
-                new Location("New York Avenue", new DefaultAssessor()),
-                new Location("Free Parking", new DefaultAssessor()),
-                new Location("Kentucky Avenue", new DefaultAssessor()),
-                new Location("Chance", new DefaultAssessor()),
-                new Location("Indiana Avenue", new DefaultAssessor()),
-                new Location("Illinois Avenue", new DefaultAssessor()),
-                new Location("B. & O. Railroad", new DefaultAssessor()),
-                new Location("Atlantic Avenue", new DefaultAssessor()),
-                new Location("Ventnor Avenue", new DefaultAssessor()),
-                new Location("Water Works", new DefaultAssessor()),
-                new Location("Marvin Gardens", new DefaultAssessor()),
-                new Location("Go To Jail", new GoToJailAssessor()),
-                new Location("Pacific Avenue", new DefaultAssessor()),
-                new Location("North Carolina Avenue", new DefaultAssessor()),
-                new Location("Community Chest", new DefaultAssessor()),
-                new Location("Pennsylvania Avenue", new DefaultAssessor()),
-                new Location("Short Line", new DefaultAssessor()),
-                new Location("Chance", new DefaultAssessor()),
-                new Location("Park Place", new DefaultAssessor()),
-                new Location("Luxury Tax", new LuxuryTaxAssessor()),
-                new Location("Boardwalk", new DefaultAssessor())
+                new Property("Go", 0),
+                new Property("Mediterranean Avenue", 60),
+                new CardDraw("Community Chest"),
+                new Property("Baltic Avenue", 60),
+                new IncomeTax(),
+                new Property("Reading Railroad", 200),
+                new Property("Oriental Avenue", 100),
+                new CardDraw("Chance"),
+                new Property("Vermont Avenue", 100),
+                new Property("Connecticut Avenue", 120),
+                jail,
+                new Property("St. Charles Place", 140),
+                new Property("Electric Company", 150),
+                new Property("States Avenue", 140),
+                new Property("Virginia Avenue", 160),
+                new Property("Pennsylvania Railroad", 200),
+                new Property("St. James Place", 180),
+                new CardDraw("Community Chest"),
+                new Property("Tennessee Avenue", 180),
+                new Property("New York Avenue", 200),
+                new Property("Free Parking", 0),
+                new Property("Kentucky Avenue", 220),
+                new CardDraw("Chance"),
+                new Property("Indiana Avenue", 220),
+                new Property("Illinois Avenue", 240),
+                new Property("B. & O. Railroad", 200),
+                new Property("Atlantic Avenue", 260),
+                new Property("Ventnor Avenue", 260),
+                new Property("Water Works", 150),
+                new Property("Marvin Gardens", 280),
+                new GoToJail(jail),
+                new Property("Pacific Avenue", 300),
+                new Property("North Carolina Avenue", 300),
+                new CardDraw("Community Chest"),
+                new Property("Pennsylvania Avenue", 320),
+                new Property("Short Line", 200),
+                new CardDraw("Chance"),
+                new Property("Park Place", 350),
+                new LuxuryTax(),
+                new Property("Boardwalk", 400)
             };
+        }
+
+        public void Initialize(IEnumerable<IPlayer> players)
+        {
+            this.players = players;
+
+            foreach (var player in players)
+                player.GoDirectlyTo(GetStartingLocation());
         }
 
         public Location GetStartingLocation()

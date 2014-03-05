@@ -13,13 +13,8 @@ namespace MonopolyTests
         public void SetUp()
         {
             board = new Board();
-            player = new Player("horse", 0, board);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            player = new Player("horse", 0, board);
+            player = new Player("horse", 0);
+            board.Initialize(new[] { player });
         }
 
         [Test]
@@ -30,10 +25,18 @@ namespace MonopolyTests
         }
 
         [Test]
-        public void TestMovePlayer3SpotsAndPlayerLandsOnBaltic()
+        public void TestPlayerOn0Rolls7AndMovesTo7()
         {
-            board.MovePlayer(player, 3);
-            Assert.That(player.Location.Name, Is.EqualTo("Baltic Avenue"));
+            board.MovePlayer(player, 7);
+            Assert.That(player.Location.Name, Is.EqualTo("Chance"));
+        }
+
+        [Test]
+        public void TestPlayerOn39Rolls6AndEndsUpOn5()
+        {
+            board.MovePlayer(player, 39);
+            board.MovePlayer(player, 6);
+            Assert.That(player.Location.Name, Is.EqualTo("Reading Railroad"));
         }
 
         [Test]
@@ -41,6 +44,13 @@ namespace MonopolyTests
           {
             board.MovePlayer(player, 40);
             Assert.That(player.Balance, Is.EqualTo(200));
+        }
+
+        [Test]
+        public void TestPlayerPassesGoTwiceWithOneTurnAndBalanceIncreases400()
+        {
+            board.MovePlayer(player, 80);
+            Assert.That(player.Balance, Is.EqualTo(400));
         }
 
         [Test]
@@ -53,10 +63,16 @@ namespace MonopolyTests
         [Test]
         public void TestBalanceIncreasesAfterPassingGo()
         {
-            var horse = new Player("horse", 0, board);
-            horse.TakeTurn(37);
-            board.MovePlayer(horse, 5);
-            Assert.That(horse.Balance, Is.EqualTo(200));
+            board.MovePlayer(player, 42);
+            Assert.That(player.Balance, Is.EqualTo(200));
+        }
+
+        [Test]
+        public void TestPassGoToJailButNotStart()
+        {
+            board.MovePlayer(player, 33);
+            Assert.That(player.Location.Name, Is.EqualTo("Community Chest"));
+            Assert.That(player.Balance, Is.EqualTo(0));
         }
 
         [Test]
@@ -71,6 +87,40 @@ namespace MonopolyTests
         {
             var location = board.GetLocationFor("Go");
             Assert.That(location.Name, Is.EqualTo("Go"));
+        }
+
+        [Test]
+        public void TestPlayerLandsOnIncomeTaxAndBalanceDecreases10Percent()
+        {
+            var horse = new Player("Horse", 1800);
+            board.Initialize(new[] { horse });
+            board.MovePlayer(horse, 4);
+            Assert.That(horse.Balance, Is.EqualTo(1620));
+        }
+
+        [Test]
+        public void TestPlayerLandsOnIncomeTaxAndBalanceDecreases200()
+        {
+            var horse = new Player("Horse", 2200);
+            board.Initialize(new[] { horse });
+            board.MovePlayer(horse, 4);
+            Assert.That(horse.Balance, Is.EqualTo(2000));
+        }
+
+        [Test]
+        public void TestPlayerPassesOverIncomeTaxAndNothingHappens()
+        {
+            var horse = new Player("Horse", 1800);
+            board.Initialize(new[] { horse });
+            board.MovePlayer(horse, 7);
+            Assert.That(horse.Balance, Is.EqualTo(1800));
+        }
+
+        [Test]
+        public void TestPlayerPassesOverLuxuryTaxAndBalanceStaysTheSame()
+        {
+            board.MovePlayer(player, 39);
+            Assert.That(player.Balance, Is.EqualTo(0));
         }
     }
 }

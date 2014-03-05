@@ -1,4 +1,5 @@
 ﻿using System;
+using Monopoly.Locations;
 
 namespace Monopoly
 {
@@ -7,24 +8,16 @@ namespace Monopoly
         public Location Location { get; private set; }
         public String Name { get; private set; }
         public Int32 Balance { get; private set; }
-        private IBoard board;
 
-        public Player(String name, Int32 balance, IBoard board)
+        public Player(String name, Int32 balance)
         {
             this.Name = name;
             this.Balance = balance;
-            this.board = board;
-            Location = board.GetStartingLocation();
         }
 
-        public void TakeTurn(Int32 rolled)
+        public void TakeAwayMoney(Int32 money)
         {
-            board.MovePlayer(this, rolled);
-        }
-
-        public void PayTax(Int32 tax)
-        {
-            Balance -= tax;
+            Balance -= money;
         }
 
         public void ReceiveMoney(Int32 dollars)
@@ -32,9 +25,9 @@ namespace Monopoly
             Balance += dollars;
         }
 
-        public void GoDirectlyTo(String locationName)
+        public void GoDirectlyTo(Location location)
         {
-            Location = board.GetLocationFor(locationName);
+            Location = location;
         }
 
         public void LandedOn(Location location)

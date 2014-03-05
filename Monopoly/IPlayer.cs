@@ -1,4 +1,5 @@
 ﻿using System;
+using Monopoly.Locations;
 namespace Monopoly
 {
     public interface IPlayer
@@ -6,10 +7,9 @@ namespace Monopoly
         Location Location { get; }
         String Name { get; }
         Int32 Balance { get; }
-        void TakeTurn(Int32 rolled);
-        void PayTax(Int32 tax);
+        void TakeAwayMoney(Int32 money);
         void ReceiveMoney(Int32 dollars);
-        void GoDirectlyTo(String locationName);
+        void GoDirectlyTo(Location location);
         void LandedOn(Location location);
     }
 }

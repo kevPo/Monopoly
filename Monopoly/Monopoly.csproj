@@ -39,19 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assessors\DefaultAssessor.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Assessors\GoToJailAssessor.cs" />
     <Compile Include="IBoard.cs" />
-    <Compile Include="Assessors\IncomeTaxAssessor.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="Board.cs" />
-    <Compile Include="Location.cs" />
-    <Compile Include="Assessors\LocationAssessor.cs" />
-    <Compile Include="Assessors\LuxuryTaxAssessor.cs" />
+    <Compile Include="Locations\CardDraw.cs" />
+    <Compile Include="Locations\GoToJail.cs" />
+    <Compile Include="Locations\Taxable\IncomeTax.cs" />
+    <Compile Include="Locations\Jail.cs" />
+    <Compile Include="Locations\Location.cs" />
+    <Compile Include="Locations\Taxable\LuxuryTax.cs" />
+    <Compile Include="Locations\Taxable\TaxLocation.cs" />
     <Compile Include="MovementResult.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Locations\Property.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UserStories\ChanceCards.jpg" />

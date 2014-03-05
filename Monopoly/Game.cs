@@ -8,11 +8,14 @@ namespace Monopoly
     {
         public IEnumerable<IPlayer> Players { get; private set; }
         public Int32 Rounds { get; private set; }
+        private IBoard board;
 
-        public Game(IEnumerable<IPlayer> players)
+        public Game(IEnumerable<IPlayer> players, IBoard board)
         {
             this.Players = players.ToList();
+            this.board = board;
             ShufflePlayers();
+            board.Initialize(players);
         }
 
         private void ShufflePlayers()
@@ -34,7 +37,7 @@ namespace Monopoly
             var randomDiceGenerator = new Random();
             
             foreach (var player in Players)
-                player.TakeTurn(RollDice(randomDiceGenerator));
+                board.MovePlayer(player, RollDice(randomDiceGenerator));
 
             Rounds++;
         }
