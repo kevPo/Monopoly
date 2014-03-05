@@ -8,7 +8,6 @@ namespace Monopoly
 {
     public class Board : IBoard
     {
-        private IEnumerable<IPlayer> players;
         private List<Location> locations;
         
         public Board()
@@ -17,7 +16,7 @@ namespace Monopoly
 
             locations = new List<Location>
             {
-                new Property("Go", 0),
+                new Starter(),
                 new Property("Mediterranean Avenue", 60),
                 new CardDraw("Community Chest"),
                 new Property("Baltic Avenue", 60),
@@ -60,50 +59,33 @@ namespace Monopoly
             };
         }
 
-        public void Initialize(IEnumerable<IPlayer> players)
+        public Starter GetStartingLocation()
         {
-            this.players = players;
-
-            foreach (var player in players)
-                player.GoDirectlyTo(GetStartingLocation());
-        }
-
-        public Location GetStartingLocation()
-        {
-            return locations.FirstOrDefault();
+            return locations.FirstOrDefault() as Starter;
         }
 
         public void MovePlayer(IPlayer player, Int32 rolled)
         {
-            var result = GetMovementResult(player.Location, rolled);
-
-            if (result.Balance > 0)
-                player.ReceiveMoney(result.Balance);
-
-            player.LandedOn(result.Location);
-        }
-
-        private MovementResult GetMovementResult(Location currentLocation, Int32 movement)
-        {
-            var index = locations.IndexOf(currentLocation);
-            var currencyGained = 0;
-
-            for (var i = 1; i <= movement; i++)
+            if (rolled == 0) return;
+            var index = locations.IndexOf(player.Location);
+            
+            for (var moved = 1; moved <= rolled; moved++)
             {
                 index += 1;
+                
                 if (index > 39)
-                {
                     index = 0;
-                    currencyGained += 200;
+
+                if (moved == rolled)
+                {
+                    player.LandedOn(locations[index]);
+                    locations[index].LandedOnBy(player);
+                }
+                else
+                {
+                    locations[index].PassedOverBy(player);
                 }
             }
-
-            return new MovementResult(locations[index], currencyGained);             
-        }
-
-        public Location GetLocationFor(String name)
-        {
-            return locations.FirstOrDefault(l => l.Name == name);
         }
     }
 }

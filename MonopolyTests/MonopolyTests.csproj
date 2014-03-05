@@ -75,6 +75,7 @@
     <Compile Include="GameTests.cs" />
     <Compile Include="BoardTests.cs" />
     <Compile Include="LocationTests\GoToJailTests.cs" />
+    <Compile Include="LocationTests\StarterTests.cs" />
     <Compile Include="LocationTests\TaxableTests\IncomeTaxTests.cs" />
     <Compile Include="LocationTests\PropertyTests.cs" />
     <Compile Include="LocationTests\TaxableTests\LuxuryTaxTests.cs" />

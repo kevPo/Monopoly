@@ -14,7 +14,7 @@ namespace MonopolyTests
         {
             board = new Board();
             player = new Player("horse", 0);
-            board.Initialize(new[] { player });
+            player.LandedOn(board.GetStartingLocation());
         }
 
         [Test]
@@ -83,17 +83,10 @@ namespace MonopolyTests
         }
 
         [Test]
-        public void TestGetLocationReturnsCorrectLocation()
-        {
-            var location = board.GetLocationFor("Go");
-            Assert.That(location.Name, Is.EqualTo("Go"));
-        }
-
-        [Test]
         public void TestPlayerLandsOnIncomeTaxAndBalanceDecreases10Percent()
         {
             var horse = new Player("Horse", 1800);
-            board.Initialize(new[] { horse });
+            horse.LandedOn(board.GetStartingLocation());
             board.MovePlayer(horse, 4);
             Assert.That(horse.Balance, Is.EqualTo(1620));
         }
@@ -102,7 +95,7 @@ namespace MonopolyTests
         public void TestPlayerLandsOnIncomeTaxAndBalanceDecreases200()
         {
             var horse = new Player("Horse", 2200);
-            board.Initialize(new[] { horse });
+            horse.LandedOn(board.GetStartingLocation());
             board.MovePlayer(horse, 4);
             Assert.That(horse.Balance, Is.EqualTo(2000));
         }
@@ -111,7 +104,7 @@ namespace MonopolyTests
         public void TestPlayerPassesOverIncomeTaxAndNothingHappens()
         {
             var horse = new Player("Horse", 1800);
-            board.Initialize(new[] { horse });
+            horse.LandedOn(board.GetStartingLocation());
             board.MovePlayer(horse, 7);
             Assert.That(horse.Balance, Is.EqualTo(1800));
         }

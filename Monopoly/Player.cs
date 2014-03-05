@@ -33,7 +33,6 @@ namespace Monopoly
         public void LandedOn(Location location)
         {
             Location = location;
-            location.LandedOnBy(this);
         }
     }
 }

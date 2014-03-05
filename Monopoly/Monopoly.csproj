@@ -45,6 +45,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="Locations\CardDraw.cs" />
     <Compile Include="Locations\GoToJail.cs" />
+    <Compile Include="Locations\Starter.cs" />
     <Compile Include="Locations\Taxable\IncomeTax.cs" />
     <Compile Include="Locations\Jail.cs" />
     <Compile Include="Locations\Location.cs" />

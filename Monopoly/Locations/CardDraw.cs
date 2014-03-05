@@ -8,8 +8,6 @@ namespace Monopoly.Locations
         { }
 
         public override void LandedOnBy(IPlayer player)
-        {
-            
-        }
+        { }
     }
 }
