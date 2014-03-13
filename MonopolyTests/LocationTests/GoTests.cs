@@ -5,15 +5,15 @@ using NUnit.Framework;
 namespace MonopolyTests.LocationTests
 {
     [TestFixture]
-    public class StarterTests
+    public class GoTests
     {
-        private Starter starter;
+        private Go starter;
         private IPlayer player;
 
         [SetUp]
         public void SetUp()
         {
-            starter = new Starter();
+            starter = new Go(0, "Go");
             player = new Player("horse", 1800);
         }
 
@@ -25,7 +25,7 @@ namespace MonopolyTests.LocationTests
         }
 
         [Test]
-        public void TestPlayerReceivesSalaryOf400WhenPassedOver()
+        public void TestPlayerReceivesSalaryOf200WhenPassedOver()
         {
             starter.PassedOverBy(player);
             Assert.That(player.Balance, Is.EqualTo(2000));

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Monopoly;
-using Moq;
+using MonopolyTests.Fakes;
 using NUnit.Framework;
 
 namespace MonopolyTests
@@ -11,20 +11,19 @@ namespace MonopolyTests
     [TestFixture]
     public class GameTests
     {
-        private Board board;
+        Game game;
 
         [SetUp]
         public void SetUp()
         {
-            board = new Board();
+            game = new Game();
         }
 
         [Test]
         public void TestCreateGameWithTwoPlayersHorseAndCar()
         {
-            var players = new [] { new Player("Horse", 0), 
-                new Player("Car", 0) };
-            var game = new Game(players, board);
+            var players = new [] { new Player("Horse", 0), new Player("Car", 0) };
+            game.SetPlayers(players);
             Assert.That(game.Players.Count(), Is.EqualTo(2));
             Assert.That(game.Players.Any(p => p.Name == "Horse"), Is.True);
             Assert.That(game.Players.Any(p => p.Name == "Car"), Is.True);
@@ -33,14 +32,15 @@ namespace MonopolyTests
         [Test]
         public void TestCreateGameWithOnePlayerFails()
         {
-            var game = new Game( new [] { new Player("Horse", 0) }, board);
+            game.SetPlayers(new[] { new Player("Horse", 0) });
             Assert.Throws<InvalidOperationException>(() => game.Play());
         }
 
         [Test]
         public void TestCreateGameWithNinePlayersFails()
         {
-            var game = new Game(new[] { 
+            game.SetPlayers(new[] 
+            { 
                 new Player("Horse", 0),
                 new Player("Cat", 0),
                 new Player("Wheelbarrow", 0),
@@ -50,7 +50,7 @@ namespace MonopolyTests
                 new Player("Boot", 0),
                 new Player("Scottie dog", 0),
                 new Player("Racecar", 0)
-            }, board);
+            });
             Assert.Throws<InvalidOperationException>(() => game.Play());
         }
 
@@ -59,9 +59,13 @@ namespace MonopolyTests
         {
             var games = new List<Game>();
             var players = new[] { new Player("Horse", 0), new Player("Car", 0) };
-
+            
             for (var i = 0; i < 50; i++)
-                games.Add(new Game(players, board));
+            {
+                var game = new Game();
+                game.SetPlayers(players);
+                games.Add(game);
+            }
 
             var playersStartWithHorse = games.Any(g => g.Players.First().Name == "Horse");
             var playersStartWithCar = games.Any(g => g.Players.First().Name == "Car");
@@ -72,38 +76,39 @@ namespace MonopolyTests
         [Test]
         public void TestTwentyRoundsPlayedAndEachPlayerPlayedAllTwenty()
         {
-            var mockBoard = new Mock<IBoard>();
+            var fakeBoard = new FakeBoard(new FakeDice());
             var horse = new Player("Horse", 0);
             var car = new Player("Car", 0);
             var players = new[] { horse, car };
-            var game = new Game(players, mockBoard.Object);
+            var game = new Game();
+            game.ConstructBoard(new FakeBoardBuilder(fakeBoard));
+            game.SetPlayers(players);
 
             game.Play();
-            mockBoard.Verify(b => b.MovePlayer(car, It.IsAny<Int32>()), Times.Exactly(20));
-            mockBoard.Verify(b => b.MovePlayer(horse, It.IsAny<Int32>()), Times.Exactly(20));
             Assert.That(game.Rounds, Is.EqualTo(20));
+            Assert.That(fakeBoard.PlayerTurns[horse], Is.EqualTo(20));
+            Assert.That(fakeBoard.PlayerTurns[car], Is.EqualTo(20));
         }
 
         [Test]
         public void TestThatOrderOfPlayersStayedTheSameDuringGame()
         {
-            var mockBoard = new Mock<IBoard>();
+            var fakeBoard = new FakeBoard(new FakeDice());
             var horse = new Player("Horse", 0);
             var car = new Player("Car", 0);
             var dog = new Player("Dog", 0);
             
             var players = new [] { horse, car, dog };
-            var game = new Game(players, mockBoard.Object);
+            var game = new Game();
+            game.SetPlayers(players);
+            game.ConstructBoard(new FakeBoardBuilder(fakeBoard));
+
             var playersOrder = String.Format("{0}{1}{2}", game.Players.First().Name, game.Players.ElementAt(1).Name, game.Players.ElementAt(2).Name);
             var turns = String.Empty;
 
-            mockBoard.Setup(b => b.MovePlayer(horse, It.IsAny<Int32>())).Callback(() => turns += "Horse");
-            mockBoard.Setup(b => b.MovePlayer(car, It.IsAny<Int32>())).Callback(() => turns += "Car");
-            mockBoard.Setup(b => b.MovePlayer(dog, It.IsAny<Int32>())).Callback(() => turns += "Dog");
-
             game.Play();
 
-            var rounds = Regex.Matches(turns, playersOrder);
+            var rounds = Regex.Matches(fakeBoard.Turns, playersOrder);
             Assert.That(rounds.Count, Is.EqualTo(20));
         }
     }

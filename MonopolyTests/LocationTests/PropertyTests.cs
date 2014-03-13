@@ -1,5 +1,6 @@
 ﻿using Monopoly;
 using Monopoly.Locations;
+using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests
@@ -9,12 +10,14 @@ namespace MonopolyTests.LocationTests
     {
         private IPlayer player;
         private Property property;
+        private IBanker banker;
 
         [SetUp]
         public void SetUp()
         {
             player = new Player("horse", 2000);
-            property = new Property("Boardwalk", 400);
+            banker = new TraditionalBanker();
+            property = new Property(39, "Boardwalk", 400, 50, banker);
         }
 
         [Test]
@@ -28,9 +31,9 @@ namespace MonopolyTests.LocationTests
         [Test]
         public void TestLandOnPlayerLandsOnOwnedPropertyAndNothingHappens()
         {
-            property.BoughtBy(player);
             property.LandedOnBy(player);
-            Assert.That(player.Balance, Is.EqualTo(2000));
+            property.LandedOnBy(player);
+            Assert.That(player.Balance, Is.EqualTo(1600));
         }
 
         [Test]

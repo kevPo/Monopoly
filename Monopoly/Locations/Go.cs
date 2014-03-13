@@ -1,9 +1,9 @@
 ﻿using System;
 namespace Monopoly.Locations
 {
-    public class Starter : Location
+    public class Go : Location
     {
-        public Starter() : base("Go")
+        public Go(Int32 index, String name) : base(index, name)
         {
             this.passOverSalary = 200;
         }

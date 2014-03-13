@@ -1,13 +1,12 @@
 ﻿using System;
 namespace Monopoly.Locations
 {
-    public class Jail : Location
+    public class FreeParking : Location
     {
-        public Jail(Int32 index, String name) : base(index, name)
+        public FreeParking(Int32 index, String name) : base(index, name)
         { }
 
         public override void LandedOnBy(IPlayer player)
-        {
-        }
+        { }
     }
 }

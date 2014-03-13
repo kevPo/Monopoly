@@ -11,7 +11,7 @@ namespace MonopolyTests.LocationTests.TaxableTests
         public void TestLuxuryTaxCharges75Dollars()
         {
             var player = new Player("horse", 100);
-            var luxuryTax = new LuxuryTax();
+            var luxuryTax = new LuxuryTax(38, "Luxury Tax");
             luxuryTax.LandedOnBy(player);
             Assert.That(player.Balance, Is.EqualTo(25));
         }

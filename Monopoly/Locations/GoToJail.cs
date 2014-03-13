@@ -6,7 +6,7 @@ namespace Monopoly.Locations
     {
         private Jail jail;
 
-        public GoToJail(Jail jail) : base("Go To Jail")
+        public GoToJail(Int32 index, String name, Jail jail) : base(index, name)
         {
             this.jail = jail;
         }

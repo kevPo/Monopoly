@@ -5,25 +5,31 @@ namespace Monopoly.Locations
     public class Property : Location
     {
         public Int32 Cost { get; private set; }
+        public Int32 Rent { get; private set; }
         public IPlayer Owner { get; private set; }
+        private IBanker banker;
 
-        public Property(String name, Int32 cost) : base(name)
+        public Property(Int32 index, String name, Int32 cost, Int32 rent, IBanker banker) : base(index, name)
         {
-            this.Cost = cost;
+            Cost = cost;
+            Rent = rent;
+            this.banker = banker;
         }
 
         public override void LandedOnBy(IPlayer player)
         {
-            if (Owner == null && player.Balance > Cost)
+            var propertyIsAvailableAndAffordableForPlayer = Owner == null && player.Balance > Cost;
+            var propertyIsOwnedByAnotherPlayer = Owner != null && Owner != player;
+
+            if (propertyIsAvailableAndAffordableForPlayer)
             {
-                player.TakeAwayMoney(Cost);
+                banker.PropertyPurchasedBy(player, this);
                 Owner = player;
             }
-        }
-
-        public void BoughtBy(IPlayer player)
-        {
-            Owner = player;
+            else if (propertyIsOwnedByAnotherPlayer)
+            {
+                banker.PayRentToPropertyOwner(player, this);
+            }
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Monopoly;
-using Monopoly.Locations;
 using Monopoly.Locations.Taxable;
 using NUnit.Framework;
 
@@ -13,7 +12,7 @@ namespace MonopolyTests.LocationTests
         [SetUp]
         public void SetUp()
         {
-            incomeTax = new IncomeTax();
+            incomeTax = new IncomeTax(4, "Income Tax");
         }
 
         [Test]

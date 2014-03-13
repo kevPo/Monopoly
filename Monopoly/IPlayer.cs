@@ -7,7 +7,7 @@ namespace Monopoly
         Location Location { get; }
         String Name { get; }
         Int32 Balance { get; }
-        void TakeAwayMoney(Int32 money);
+        void RemoveMoney(Int32 money);
         void ReceiveMoney(Int32 dollars);
         void GoDirectlyTo(Location location);
         void LandedOn(Location location);

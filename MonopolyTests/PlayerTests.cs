@@ -19,7 +19,7 @@ namespace MonopolyTests
         public void TestPlayerTakeAwayMoneyDecrementsBalanceByGivenAmount()
         {
             var horse = new Player("horse", 200);
-            horse.TakeAwayMoney(75);
+            horse.RemoveMoney(75);
             Assert.That(horse.Balance, Is.EqualTo(125));
         }
 
@@ -33,8 +33,8 @@ namespace MonopolyTests
         [Test]
         public void TestLandedOnSetsLocation()
         {
-            player.LandedOn(new Property("Boardwalk", 400));
-            Assert.That(player.Location.Name, Is.EqualTo("Boardwalk"));
+            player.LandedOn(new Go(0, "Go"));
+            Assert.That(player.Location.Name, Is.EqualTo("Go"));
         }
     }
 }

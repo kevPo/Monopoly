@@ -39,22 +39,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDice.cs" />
+    <Compile Include="PropertyGroups\RentCalculators\RailroadRentCalculator.cs" />
+    <Compile Include="PropertyGroups\RentCalculators\RentCalculator.cs" />
+    <Compile Include="PropertyGroups\RentCalculators\StreetRentCalculator.cs" />
+    <Compile Include="PropertyGroups\RentCalculators\UtilityRentCalculator.cs" />
+    <Compile Include="TraditionalMonopoly\TraditionalBanker.cs" />
+    <Compile Include="Board\BoardBuilder.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="IBoard.cs" />
+    <Compile Include="TraditionalMonopoly\TraditionalDice.cs" />
+    <Compile Include="TraditionalMonopoly\TraditionalGameDriver.cs" />
+    <Compile Include="IBanker.cs" />
+    <Compile Include="Board\IBoard.cs" />
     <Compile Include="IPlayer.cs" />
-    <Compile Include="Board.cs" />
+    <Compile Include="Board\GameBoard.cs" />
     <Compile Include="Locations\CardDraw.cs" />
+    <Compile Include="Locations\FreeParking.cs" />
     <Compile Include="Locations\GoToJail.cs" />
-    <Compile Include="Locations\Starter.cs" />
+    <Compile Include="Locations\Go.cs" />
     <Compile Include="Locations\Taxable\IncomeTax.cs" />
     <Compile Include="Locations\Jail.cs" />
     <Compile Include="Locations\Location.cs" />
     <Compile Include="Locations\Taxable\LuxuryTax.cs" />
     <Compile Include="Locations\Taxable\TaxLocation.cs" />
-    <Compile Include="MovementResult.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Locations\Property.cs" />
+    <Compile Include="PropertyGroups\PropertyGroup.cs" />
+    <Compile Include="TraditionalMonopoly\TraditionalBoardBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UserStories\ChanceCards.jpg" />
@@ -65,6 +77,7 @@
     <Content Include="UserStories\ReleaseThree.txt" />
     <Content Include="UserStories\ReleaseTwo.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

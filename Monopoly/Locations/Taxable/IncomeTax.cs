@@ -4,7 +4,7 @@ namespace Monopoly.Locations.Taxable
 {
     public class IncomeTax : TaxLocation
     {
-        public IncomeTax() : base("Income Tax")
+        public IncomeTax(Int32 index, String name) : base(index, name)
         {
             taxEquation = IncomeTaxEquation;
         }

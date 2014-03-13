@@ -15,7 +15,7 @@ namespace Monopoly
             this.Balance = balance;
         }
 
-        public void TakeAwayMoney(Int32 money)
+        public void RemoveMoney(Int32 money)
         {
             Balance -= money;
         }
@@ -33,6 +33,24 @@ namespace Monopoly
         public void LandedOn(Location location)
         {
             Location = location;
+        }
+
+        public override Boolean Equals(object other)
+        {
+            if (other.GetType() != typeof(Player))
+                return false;
+            else
+                return Equals((Player)other);
+        }
+
+        public Boolean Equals(Player other)
+        {
+            return Name == other.Name;
+        }
+
+        public override Int32 GetHashCode()
+        {
+            return (Name.GetHashCode() ^ 2 + Balance ^ 2) * 17;
         }
     }
 }

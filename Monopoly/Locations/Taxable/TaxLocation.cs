@@ -6,13 +6,13 @@ namespace Monopoly.Locations.Taxable
     {
         protected Func<Int32, Int32> taxEquation { get; set; }
 
-        public TaxLocation(String name) : base(name)
+        public TaxLocation(Int32 index, String name) : base(index, name)
         { }
 
         public override void LandedOnBy(IPlayer player)
         {
             var taxes = taxEquation(player.Balance);
-            player.TakeAwayMoney(taxes);
+            player.RemoveMoney(taxes);
         }
     }
 }
