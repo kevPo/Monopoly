@@ -1,4 +1,5 @@
-﻿using Monopoly;
+﻿using System;
+using Monopoly;
 using Monopoly.Board;
 using Monopoly.TraditionalMonopoly;
 using MonopolyTests.Fakes;
@@ -32,10 +33,15 @@ namespace MonopolyTests.TraditionalMonopolyTests
             Assert.That(go.Index, Is.EqualTo(0));
         }
 
+        private void RollDice(Int32 roll)
+        {
+            dice.NextRoll = roll;
+        }
+
         [Test]
         public void TestPlayerOn0Rolls7AndMovesTo7()
         {
-            dice.NextRoll = 7;
+            RollDice(7);
             board.TakeTurnFor(player);
             Assert.That(player.Location.Index, Is.EqualTo(7));
         }
@@ -43,9 +49,9 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestPlayerOn39Rolls6AndEndsUpOn5()
         {
-            dice.NextRoll = 39;
+            RollDice(39);
             board.TakeTurnFor(player);
-            dice.NextRoll = 6;
+            RollDice(6);
             board.TakeTurnFor(player);
             Assert.That(player.Location.Index, Is.EqualTo(5));
         }
@@ -53,7 +59,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestPlayerPassesGoTwiceWithOneTurnAndBalanceIncreases400()
         {
-            dice.NextRoll = 80;
+            RollDice(80);
             board.TakeTurnFor(player);
             Assert.That(player.Balance, Is.EqualTo(2400));
         }
@@ -62,7 +68,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         public void TestBalanceDoesNotIncreaseForNonGoLocations()
         {
             var previousBalance = player.Balance;
-            dice.NextRoll = 5;
+            RollDice(5);
             board.TakeTurnFor(player);
             Assert.That(player.Balance <= previousBalance, Is.True);
         }
@@ -70,7 +76,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestOnGoUpdateLocationWithoutMovingAndBalanceDoesNotChange()
         {
-            dice.NextRoll = 0;
+            RollDice(0);
             board.TakeTurnFor(player);
             Assert.That(player.Balance, Is.EqualTo(2000));
         }
@@ -78,7 +84,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestPassGoToJailButNotStartDoesNotChangeBalance()
         {
-            dice.NextRoll = 33;
+            RollDice(33);
             board.TakeTurnFor(player);
             Assert.That(player.Location.Index, Is.EqualTo(33));
             Assert.That(player.Balance, Is.EqualTo(2000));
@@ -87,7 +93,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestPlayerPassesOverIncomeTaxAndNothingHappens()
         {
-            dice.NextRoll = 7;
+            RollDice(7);
             board.TakeTurnFor(player);
             Assert.That(player.Balance, Is.EqualTo(2000));
         }
@@ -95,7 +101,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestPlayerPassesOverLuxuryTaxAndBalanceStaysTheSame()
         {
-            dice.NextRoll = 39;
+            RollDice(39);
             board.TakeTurnFor(player);
             //buys boardwalk so balance decreases 400
             Assert.That(player.Balance, Is.EqualTo(1600));
@@ -106,13 +112,62 @@ namespace MonopolyTests.TraditionalMonopolyTests
         {
             var player2 = new Player("car", 2000);
             player2.LandedOn(board.GetStartingLocation());
-            dice.NextRoll = 12;
+            RollDice(12);
             board.TakeTurnFor(player);
-            dice.NextRoll = 12;
+            RollDice(12);
             board.TakeTurnFor(player2);
 
             Assert.That(player2.Balance, Is.EqualTo(1952));
             Assert.That(player.Balance, Is.EqualTo(1898));
+        }
+
+        [Test]
+        public void TestIncomeTaxCharges10PercentIfBalanceLessThan2000()
+        {
+            var player = new Player("horse", 1500);
+            InitializeAndMovePlayerToIncomeTax(player);
+            Assert.That(player.Balance, Is.EqualTo(1350));
+        }
+
+        [Test]
+        public void TestIncomeTaxCharges200IfBalanceGreaterThan2000()
+        {
+            var player = new Player("Horse", 2200);
+            InitializeAndMovePlayerToIncomeTax(player);
+            Assert.That(player.Balance, Is.EqualTo(2000));
+        }
+
+        [Test]
+        public void TestIncomeTaxChargesNothingWhenBalanceIsZero()
+        {
+            var player = new Player("Horse", 0);
+            InitializeAndMovePlayerToIncomeTax(player);
+            Assert.That(player.Balance, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestIncomeTaxCharges200WhenBalanceIs2000()
+        {
+            var player = new Player("Horse", 2000);
+            InitializeAndMovePlayerToIncomeTax(player);
+            Assert.That(player.Balance, Is.EqualTo(1800));
+        }
+
+        private void InitializeAndMovePlayerToIncomeTax(Player player)
+        {
+            player.LandedOn(board.GetStartingLocation());
+            RollDice(4);
+            board.TakeTurnFor(player);
+        }
+
+        [Test]
+        public void TestLuxuryTaxCharges75Dollars()
+        {
+            var player = new Player("horse", 100);
+            player.LandedOn(board.GetStartingLocation());
+            RollDice(38);
+            board.TakeTurnFor(player);
+            Assert.That(player.Balance, Is.EqualTo(25));
         }
     }
 }

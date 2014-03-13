@@ -1,5 +1,6 @@
 ﻿using Monopoly;
 using Monopoly.Locations;
+using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
 namespace MonopolyTests
@@ -16,7 +17,7 @@ namespace MonopolyTests
         }
 
         [Test]
-        public void TestPlayerTakeAwayMoneyDecrementsBalanceByGivenAmount()
+        public void TestPlayerRemoveMoneyDecrementsBalanceByGivenAmount()
         {
             var horse = new Player("horse", 200);
             horse.RemoveMoney(75);
@@ -35,6 +36,19 @@ namespace MonopolyTests
         {
             player.LandedOn(new Go(0, "Go"));
             Assert.That(player.Location.Name, Is.EqualTo("Go"));
+        }
+
+        [Test]
+        public void TestHorsePlayerDoesNotEqualCarPlayer()
+        {
+            var car = new Player("Car", 0);
+            Assert.That(player.Equals(car), Is.False);
+        }
+
+        [Test]
+        public void TestHorsePlayerEqualsItself()
+        {
+            Assert.That(player.Equals(player), Is.True);
         }
     }
 }

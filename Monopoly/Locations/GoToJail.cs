@@ -13,7 +13,7 @@ namespace Monopoly.Locations
 
         public override void LandedOnBy(IPlayer player)
         {
-            player.GoDirectlyTo(jail);
+            player.LandedOn(jail);
         }
     }
 }

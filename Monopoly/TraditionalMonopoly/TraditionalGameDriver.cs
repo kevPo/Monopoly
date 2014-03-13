@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 namespace Monopoly.TraditionalMonopoly
 {
-    public class TraditionalGameDriver
+    public class TraditionalGameDriver : IGameDriver
     {
         private Game game;
 

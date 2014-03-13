@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Monopoly.Board;
 using Monopoly.Locations;
-using Monopoly.Locations.Taxable;
 using Monopoly.PropertyGroups;
 using Monopoly.PropertyGroups.RentCalculators;
 
@@ -9,6 +9,10 @@ namespace Monopoly.TraditionalMonopoly
 {
     public class TraditionalBoardBuilder : BoardBuilder
     {
+        private Int32 incomeTaxBalanceSeperator = 2000;
+        private Int32 baseIncomeTax = 200;
+        private Double incomeTaxPercentage = .1;
+        private Int32 luxuryTax = 75;
         private IBanker banker;
 
         public TraditionalBoardBuilder(IDice dice)
@@ -34,8 +38,18 @@ namespace Monopoly.TraditionalMonopoly
 
         public override void BuildTaxables()
         {
-            Board.AddLocation(new IncomeTax(4, "Income Tax"));
-            Board.AddLocation(new LuxuryTax(38, "Luxury Tax"));
+            Board.AddLocation(new Taxable(4, "Income Tax", IncomeTaxEquation));
+            Board.AddLocation(new Taxable(38, "Luxury Tax", LuxuryTaxEquation));
+        }
+
+        private Int32 IncomeTaxEquation(Int32 balance)
+        {
+            return balance > incomeTaxBalanceSeperator ? baseIncomeTax : Convert.ToInt32(balance * incomeTaxPercentage);
+        }
+
+        private Int32 LuxuryTaxEquation(Int32 balance)
+        {
+            return luxuryTax;
         }
 
         public override void BuildJailRelated()

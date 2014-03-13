@@ -22,9 +22,19 @@ namespace Monopoly.TraditionalMonopoly
 
         public void PayRentToPropertyOwner(IPlayer player, Property property)
         {
-            var propertyGroup = propertyGroups.First(p => p.Indexes.Contains(property.Index));
-            var rent = propertyGroup.RentCalculator.CalculateRentFor(property, propertyGroup.Properties);
+            Int32 rent;
 
+            if (propertyGroups == null)
+            {
+                rent = property.Rent;
+            }
+            else
+            {
+                var propertyGroup = propertyGroups.FirstOrDefault(p => p.Indexes.Contains(property.Index));
+                rent = propertyGroup == null ? rent = property.Rent : 
+                    propertyGroup.RentCalculator.CalculateRentFor(property, propertyGroup.Properties);
+            }
+            
             player.RemoveMoney(rent);
             property.Owner.ReceiveMoney(rent);
         }

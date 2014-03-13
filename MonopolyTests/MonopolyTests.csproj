@@ -76,15 +76,16 @@
     <Compile Include="GameTests.cs" />
     <Compile Include="LocationTests\GoToJailTests.cs" />
     <Compile Include="LocationTests\GoTests.cs" />
-    <Compile Include="LocationTests\TaxableTests\IncomeTaxTests.cs" />
+    <Compile Include="LocationTests\TaxableTests.cs" />
     <Compile Include="LocationTests\PropertyTests.cs" />
-    <Compile Include="LocationTests\TaxableTests\LuxuryTaxTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyGroupsTests\RentCalculatorsTests\RailroadRentCalculatorTests.cs" />
     <Compile Include="PropertyGroupsTests\RentCalculatorsTests\StreetRentCalculatorTests.cs" />
     <Compile Include="PropertyGroupsTests\RentCalculatorsTests\UtilityRentCalculatorTests.cs" />
+    <Compile Include="TraditionalMonopolyTests\TraditionalBankerTests.cs" />
     <Compile Include="TraditionalMonopolyTests\TraditionalBoardTests.cs" />
+    <Compile Include="TraditionalMonopolyTests\TraditionalDiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

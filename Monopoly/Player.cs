@@ -11,8 +11,8 @@ namespace Monopoly
 
         public Player(String name, Int32 balance)
         {
-            this.Name = name;
-            this.Balance = balance;
+            Name = name;
+            Balance = balance;
         }
 
         public void RemoveMoney(Int32 money)
@@ -23,11 +23,6 @@ namespace Monopoly
         public void ReceiveMoney(Int32 dollars)
         {
             Balance += dollars;
-        }
-
-        public void GoDirectlyTo(Location location)
-        {
-            Location = location;
         }
 
         public void LandedOn(Location location)
