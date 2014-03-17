@@ -7,26 +7,26 @@ using Monopoly.PropertyGroups.RentCalculators;
 
 namespace Monopoly.TraditionalMonopoly
 {
-    public class TraditionalBoardBuilder : BoardBuilder
+    public class TraditionalBoardFactory : BoardFactory
     {
         private const Int32 incomeTaxBalanceSeperator = 2000;
         private const Int32 baseIncomeTax = 200;
-        private const Double incomeTaxPercentage = .1;
+        private const Int32 incomeTaxPercentage = 10;
         private const Int32 luxuryTax = 75;
         private IBanker banker;
 
-        public TraditionalBoardBuilder(IDice dice)
+        public TraditionalBoardFactory(IDice dice)
         {
             banker = new TraditionalBanker();
             Board = new GameBoard(dice);
         }
 
-        public override void BuildBank()
+        protected override void CreateBank()
         {
             Board.InitializeBanker(banker);
         }
 
-        public override void BuildCardDraws()
+        protected override void CreateCardDraws()
         {
             Board.AddLocation(new CardDraw(2, "Community Chest"));
             Board.AddLocation(new CardDraw(17, "Community Chest"));
@@ -36,7 +36,7 @@ namespace Monopoly.TraditionalMonopoly
             Board.AddLocation(new CardDraw(36, "Chance"));
         }
 
-        public override void BuildTaxables()
+        protected override void CreateTaxables()
         {
             Board.AddLocation(new Taxable(4, "Income Tax", IncomeTaxEquation));
             Board.AddLocation(new Taxable(38, "Luxury Tax", LuxuryTaxEquation));
@@ -44,7 +44,7 @@ namespace Monopoly.TraditionalMonopoly
 
         private Int32 IncomeTaxEquation(Int32 balance)
         {
-            return balance > incomeTaxBalanceSeperator ? baseIncomeTax : Convert.ToInt32(balance * incomeTaxPercentage);
+            return balance > incomeTaxBalanceSeperator ? baseIncomeTax : Convert.ToInt32(balance / incomeTaxPercentage);
         }
 
         private Int32 LuxuryTaxEquation(Int32 balance)
@@ -52,24 +52,24 @@ namespace Monopoly.TraditionalMonopoly
             return luxuryTax;
         }
 
-        public override void BuildJailRelated()
+        protected override void CreateJailRelated()
         {
             var jail = new Jail(10, "Jail/ Just Visiting");
             Board.AddLocation(jail);
             Board.AddLocation(new GoToJail(30, "Go To Jail", jail));
         }
 
-        public override void BuildGo()
+        protected override void CreateGo()
         {
             Board.AddLocation(new Go(0, "Go"));
         }
 
-        public override void BuildFreeParking()
+        protected override void CreateFreeParking()
         {
             Board.AddLocation(new FreeParking(20, "Free Parking"));
         }
 
-        public override void BuildPropertyGroups()
+        protected override void CreatePropertyGroups()
         {
             BuildRailroads();
             BuildUtilities();

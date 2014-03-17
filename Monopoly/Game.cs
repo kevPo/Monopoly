@@ -14,10 +14,9 @@ namespace Monopoly
         public Int32 Rounds { get; private set; }
         private IBoard board;
 
-        public void ConstructBoard(BoardBuilder boardBuilder)
+        public Game(IBoard board)
         {
-            boardBuilder.Build();
-            board = boardBuilder.Board;
+            this.board = board;
         }
 
         public void SetPlayers(IEnumerable<IPlayer> players)

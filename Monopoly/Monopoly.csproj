@@ -47,7 +47,7 @@
     <Compile Include="PropertyGroups\RentCalculators\UtilityRentCalculator.cs" />
     <Compile Include="IGameDriver.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalBanker.cs" />
-    <Compile Include="Board\BoardBuilder.cs" />
+    <Compile Include="Board\BoardFactory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalDice.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalGameDriver.cs" />
@@ -65,7 +65,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Locations\Property.cs" />
     <Compile Include="PropertyGroups\PropertyGroup.cs" />
-    <Compile Include="TraditionalMonopoly\TraditionalBoardBuilder.cs" />
+    <Compile Include="TraditionalMonopoly\TraditionalBoardFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UserStories\ChanceCards.jpg" />

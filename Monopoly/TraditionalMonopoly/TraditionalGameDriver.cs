@@ -7,9 +7,11 @@ namespace Monopoly.TraditionalMonopoly
 
         public TraditionalGameDriver()
         {
-            game = new Game();
             var dice = new TraditionalDice();
-            game.ConstructBoard(new TraditionalBoardBuilder(dice));
+            var traditionalBoardFactory = new TraditionalBoardFactory(dice);
+            traditionalBoardFactory.Create();
+            var traditionalBoard = traditionalBoardFactory.Board;
+            game = new Game(traditionalBoard);
         }
 
         public void PlayGameWith(IEnumerable<IPlayer> players)

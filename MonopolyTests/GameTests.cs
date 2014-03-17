@@ -11,12 +11,14 @@ namespace MonopolyTests
     [TestFixture]
     public class GameTests
     {
-        Game game;
+        private FakeBoard fakeBoard;
+        private Game game;
 
         [SetUp]
         public void SetUp()
         {
-            game = new Game();
+            fakeBoard = new FakeBoard(new FakeDice());
+            game = new Game(fakeBoard);
         }
 
         [Test]
@@ -62,7 +64,7 @@ namespace MonopolyTests
             
             for (var i = 0; i < 50; i++)
             {
-                var game = new Game();
+                var game = new Game(fakeBoard);
                 game.SetPlayers(players);
                 games.Add(game);
             }
@@ -77,11 +79,13 @@ namespace MonopolyTests
         public void TestTwentyRoundsPlayedAndEachPlayerPlayedAllTwenty()
         {
             var fakeBoard = new FakeBoard(new FakeDice());
+            var fakeBoardFactory = new FakeBoardFactory(fakeBoard);
             var horse = new Player("Horse", 0);
             var car = new Player("Car", 0);
             var players = new[] { horse, car };
-            var game = new Game();
-            game.ConstructBoard(new FakeBoardBuilder(fakeBoard));
+            
+            fakeBoardFactory.Create();
+            var game = new Game(fakeBoardFactory.Board);
             game.SetPlayers(players);
 
             game.Play();
@@ -99,9 +103,8 @@ namespace MonopolyTests
             var dog = new Player("Dog", 0);
             
             var players = new [] { horse, car, dog };
-            var game = new Game();
+            var game = new Game(fakeBoard);
             game.SetPlayers(players);
-            game.ConstructBoard(new FakeBoardBuilder(fakeBoard));
 
             var playersOrder = String.Format("{0}{1}{2}", game.Players.First().Name, game.Players.ElementAt(1).Name, game.Players.ElementAt(2).Name);
             var turns = String.Empty;

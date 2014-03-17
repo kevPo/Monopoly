@@ -18,8 +18,8 @@ namespace MonopolyTests.TraditionalMonopolyTests
         public void SetUp()
         {
             dice = new FakeDice();
-            var boardBuilder = new TraditionalBoardBuilder(dice);
-            boardBuilder.Build();
+            var boardBuilder = new TraditionalBoardFactory(dice);
+            boardBuilder.Create();
             board = boardBuilder.Board;
             player = new Player("horse", 2000);
             player.LandedOn(board.GetStartingLocation());
@@ -174,8 +174,8 @@ namespace MonopolyTests.TraditionalMonopolyTests
         public void TestDouble6AndNonDouble4LandsPlayerOn10InOneTurn()
         {
             var doubleDice = new FakeDiceDoublesRoller(new Int32[] {6}, 4);
-            var boardBuilder = new TraditionalBoardBuilder(doubleDice);
-            boardBuilder.Build();
+            var boardBuilder = new TraditionalBoardFactory(doubleDice);
+            boardBuilder.Create();
             board = boardBuilder.Board;
             var horse = new Player("horse", 2000);
             horse.LandedOn(board.GetStartingLocation());
@@ -190,8 +190,8 @@ namespace MonopolyTests.TraditionalMonopolyTests
         public void TestDoublesThrownTwiceAndPlayerLandsOnThreeLocations()
         {
             var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6, 10 }, 4);
-            var boardBuilder = new TraditionalBoardBuilder(doubleDice);
-            boardBuilder.Build();
+            var boardBuilder = new TraditionalBoardFactory(doubleDice);
+            boardBuilder.Create();
             board = boardBuilder.Board;
             var horse = new Player("horse", 2000);
             horse.LandedOn(board.GetStartingLocation());
@@ -207,8 +207,8 @@ namespace MonopolyTests.TraditionalMonopolyTests
         public void TestDoublesThrownThreeTimesAndPlayerLandsOnJustVisiting()
         {
             var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6, 10, 12 }, 4);
-            var boardBuilder = new TraditionalBoardBuilder(doubleDice);
-            boardBuilder.Build();
+            var boardBuilder = new TraditionalBoardFactory(doubleDice);
+            boardBuilder.Create();
             board = boardBuilder.Board;
             var horse = new Player("horse", 2000);
             horse.LandedOn(board.GetStartingLocation());
