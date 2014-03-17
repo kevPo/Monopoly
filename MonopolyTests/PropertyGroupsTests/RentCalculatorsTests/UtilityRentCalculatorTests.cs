@@ -35,7 +35,7 @@ namespace MonopolyTests.PropertyGroupsTests.RentCalculatorsTests
         {
             electric.LandedOnBy(car);
             var rent = rentCalculator.CalculateRentFor(electric, properties);
-            Assert.That(rent, Is.EqualTo(dice.GetCurrentDiceRoll() * 4));
+            Assert.That(rent, Is.EqualTo(dice.GetCurrentRoll() * 4));
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace MonopolyTests.PropertyGroupsTests.RentCalculatorsTests
             waterWorks.LandedOnBy(car);
             electric.LandedOnBy(car);
             var rent = rentCalculator.CalculateRentFor(electric, properties);
-            Assert.That(rent, Is.EqualTo(dice.GetCurrentDiceRoll() * 10));
+            Assert.That(rent, Is.EqualTo(dice.GetCurrentRoll() * 10));
         }
     }
 }

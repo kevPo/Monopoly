@@ -9,10 +9,10 @@ namespace Monopoly.TraditionalMonopoly
 {
     public class TraditionalBoardBuilder : BoardBuilder
     {
-        private Int32 incomeTaxBalanceSeperator = 2000;
-        private Int32 baseIncomeTax = 200;
-        private Double incomeTaxPercentage = .1;
-        private Int32 luxuryTax = 75;
+        private const Int32 incomeTaxBalanceSeperator = 2000;
+        private const Int32 baseIncomeTax = 200;
+        private const Double incomeTaxPercentage = .1;
+        private const Int32 luxuryTax = 75;
         private IBanker banker;
 
         public TraditionalBoardBuilder(IDice dice)

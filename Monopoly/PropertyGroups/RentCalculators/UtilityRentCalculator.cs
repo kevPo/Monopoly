@@ -19,9 +19,9 @@ namespace Monopoly.PropertyGroups.RentCalculators
             var propertiesOwned = properties.Count(p => p.Owner != null);
 
             if (propertiesOwned == 1)
-                return 4 * dice.GetCurrentDiceRoll();
+                return 4 * dice.GetCurrentRoll();
 
-            return 10 * dice.GetCurrentDiceRoll();
+            return 10 * dice.GetCurrentRoll();
         }
     }
 }

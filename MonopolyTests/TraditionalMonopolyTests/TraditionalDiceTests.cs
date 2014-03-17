@@ -11,7 +11,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         {
             var dice = new TraditionalDice();
             dice.Roll();
-            var roll = dice.GetCurrentDiceRoll();
+            var roll = dice.GetCurrentRoll();
             Assert.That(roll > 1 && roll < 13, Is.True);
         }
     }

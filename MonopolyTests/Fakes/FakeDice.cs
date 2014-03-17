@@ -10,9 +10,14 @@ namespace MonopolyTests.Fakes
         public void Roll()
         {}
 
-        public Int32 GetCurrentDiceRoll()
+        public Int32 GetCurrentRoll()
         {
             return NextRoll;
+        }
+
+        public Boolean RollWasDouble()
+        {
+            return false;
         }
     }
 }

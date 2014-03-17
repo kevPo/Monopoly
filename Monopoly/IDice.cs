@@ -5,6 +5,7 @@ namespace Monopoly
     public interface IDice
     {
         void Roll();
-        Int32 GetCurrentDiceRoll();
+        Int32 GetCurrentRoll();
+        Boolean RollWasDouble();
     }
 }

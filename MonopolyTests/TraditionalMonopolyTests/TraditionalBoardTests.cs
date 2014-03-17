@@ -169,5 +169,55 @@ namespace MonopolyTests.TraditionalMonopolyTests
             board.TakeTurnFor(player);
             Assert.That(player.Balance, Is.EqualTo(25));
         }
+
+        [Test]
+        public void TestDouble6AndNonDouble4LandsPlayerOn10InOneTurn()
+        {
+            var doubleDice = new FakeDiceDoublesRoller(new Int32[] {6}, 4);
+            var boardBuilder = new TraditionalBoardBuilder(doubleDice);
+            boardBuilder.Build();
+            board = boardBuilder.Board;
+            var horse = new Player("horse", 2000);
+            horse.LandedOn(board.GetStartingLocation());
+
+            board.TakeTurnFor(horse);
+            // Player lands on Oriental Ave and buys it for $100 on first roll
+            Assert.That(horse.Balance, Is.EqualTo(1900));  
+            Assert.That(horse.Location.Index, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void TestDoublesThrownTwiceAndPlayerLandsOnThreeLocations()
+        {
+            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6, 10 }, 4);
+            var boardBuilder = new TraditionalBoardBuilder(doubleDice);
+            boardBuilder.Build();
+            board = boardBuilder.Board;
+            var horse = new Player("horse", 2000);
+            horse.LandedOn(board.GetStartingLocation());
+
+            board.TakeTurnFor(horse);
+            // Player should land on and buy Oriental (6) for $100
+            // and St. James (16) for $180.
+            Assert.That(horse.Balance, Is.EqualTo(1720));
+            Assert.That(horse.Location.Index, Is.EqualTo(20));
+        }
+
+        [Test]
+        public void TestDoublesThrownThreeTimesAndPlayerLandsOnJustVisiting()
+        {
+            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6, 10, 12 }, 4);
+            var boardBuilder = new TraditionalBoardBuilder(doubleDice);
+            boardBuilder.Build();
+            board = boardBuilder.Board;
+            var horse = new Player("horse", 2000);
+            horse.LandedOn(board.GetStartingLocation());
+
+            board.TakeTurnFor(horse);
+            // Player should land on and buy Oriental (6) for $100
+            // and St. James (16) for $180.
+            Assert.That(horse.Balance, Is.EqualTo(1720));
+            Assert.That(horse.Location.Index, Is.EqualTo(10));
+        }
     }
 }

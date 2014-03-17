@@ -73,6 +73,7 @@
     <Compile Include="Fakes\FakeBoard.cs" />
     <Compile Include="Fakes\FakeBoardBuilder.cs" />
     <Compile Include="Fakes\FakeDice.cs" />
+    <Compile Include="Fakes\FakeDiceDoublesRoller.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="LocationTests\GoToJailTests.cs" />
     <Compile Include="LocationTests\GoTests.cs" />

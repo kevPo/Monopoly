@@ -8,9 +8,9 @@ namespace Monopoly.Board
 {
     public class GameBoard : IBoard
     {
+        public IDice Dice { get; private set; }
         private List<Location> locations;
         private List<PropertyGroup> propertyGroups;
-        public IDice Dice { get; private set; }
         private IBanker banker;
         
         public GameBoard(IDice dice)
@@ -46,18 +46,32 @@ namespace Monopoly.Board
 
         public virtual void TakeTurnFor(IPlayer player)
         {
-            Dice.Roll();
-            var diceRoll = Dice.GetCurrentDiceRoll();
+            var jail = locations.First(l => l.Index == 10);
+            var rollCount = 0;
 
-            if (Dice.GetCurrentDiceRoll() == 0) return;
+            do
+            {
+                Dice.Roll();
+                rollCount++;
+
+                if (rollCount == 3 && Dice.RollWasDouble())
+                    player.LandedOn(jail);
+                else
+                    MovePlayer(player, Dice.GetCurrentRoll());
+
+            } while (Dice.RollWasDouble() && rollCount < 3);
+        }
+
+        private void MovePlayer(IPlayer player, Int32 roll)
+        {
             var index = player.Location.Index;
 
-            for (var moved = 1; moved <= diceRoll; moved++)
+            for (var moved = 1; moved <= roll; moved++)
             {
                 index = (index + 1) % locations.Count();
                 var location = locations.First(l => l.Index == index);
-                
-                if (moved == diceRoll)
+
+                if (moved == roll)
                 {
                     player.LandedOn(location);
                     location.LandedOnBy(player);
