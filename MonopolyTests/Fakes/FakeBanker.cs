@@ -1,19 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Monopoly;
-using Monopoly.Locations;
-using Monopoly.PropertyGroups;
+using Monopoly.Locations.Propertys;
 
 namespace MonopolyTests.Fakes
 {
     public class FakeBanker : IBanker
     {
-        public void InitializePropertyGroups(IEnumerable<PropertyGroup> propertyGroups)
-        {}
 
         public void PropertyPurchasedBy(IPlayer player, Property property)
         {}
 
-        public void PayRentToPropertyOwner(IPlayer player, Property property)
+        public void TransferMoney(IPlayer payingPlayer, IPlayer receivingPlayer, Int32 money)
         {}
+
+        public Int32 GetRentFor(Property property)
+        {
+            return 0;
+        }
+
+        public Boolean PlayerCanAffordProperty(IPlayer player, Property property)
+        {
+            return false;
+        }
+
+        public Int32 NumberOfPropertiesInGroupFor(Property property)
+        {
+            return 0;
+        }
     }
 }

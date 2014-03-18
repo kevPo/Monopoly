@@ -1,42 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Monopoly.Locations;
-using Monopoly.PropertyGroups;
+using Monopoly.Locations.Propertys;
 
 namespace Monopoly.TraditionalMonopoly
 {
     public class TraditionalBanker : IBanker
     {
-        private IEnumerable<PropertyGroup> propertyGroups;
+        private IEnumerable<TitleDeed> titleDeeds;
+        private IPropertyManager propertyManager;
 
-        public void InitializePropertyGroups(IEnumerable<PropertyGroup> propertyGroups)
+        public TraditionalBanker(IEnumerable<TitleDeed> titleDeeds, IPropertyManager propertyManager)
         {
-            this.propertyGroups = propertyGroups;
+            this.titleDeeds = titleDeeds;
+            this.propertyManager = propertyManager;
         }
 
         public void PropertyPurchasedBy(IPlayer player, Property property)
         {
-            player.RemoveMoney(property.Cost);
+            var propertyDeed = titleDeeds.FirstOrDefault(d => d.Property.Equals(property));
+            player.RemoveMoney(propertyDeed.Cost);
+            propertyManager.PropertyPurchasedBy(player, propertyDeed);
         }
 
-        public void PayRentToPropertyOwner(IPlayer player, Property property)
+        public void TransferMoney(IPlayer payingPlayer, IPlayer receivingPlayer, Int32 money)
         {
-            Int32 rent;
+            payingPlayer.RemoveMoney(money);
+            receivingPlayer.ReceiveMoney(money);
+        }
 
-            if (propertyGroups == null)
-            {
-                rent = property.Rent;
-            }
-            else
-            {
-                var propertyGroup = propertyGroups.FirstOrDefault(p => p.Indexes.Contains(property.Index));
-                rent = propertyGroup == null ? rent = property.Rent : 
-                    propertyGroup.RentCalculator.CalculateRentFor(property, propertyGroup.Properties);
-            }
-            
-            player.RemoveMoney(rent);
-            property.Owner.ReceiveMoney(rent);
+        public Int32 GetRentFor(Property property)
+        {
+            return titleDeeds.First(d => d.Property.Equals(property)).Rent;
+        }
+
+        public Boolean PlayerCanAffordProperty(IPlayer player, Property property)
+        {
+            var propertyDeed = titleDeeds.FirstOrDefault(d => d.Property.Equals(property));
+
+            return propertyDeed.Cost < player.Balance;
+        }
+
+        public Int32 NumberOfPropertiesInGroupFor(Property property)
+        {
+            var titleDeed = titleDeeds.FirstOrDefault(d => d.Property.Equals(property));
+
+            return titleDeeds.Count(d => d.PropertyGroup == titleDeed.PropertyGroup);
         }
     }
 }

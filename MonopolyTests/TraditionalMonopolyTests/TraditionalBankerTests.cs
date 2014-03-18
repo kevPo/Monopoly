@@ -1,7 +1,6 @@
-﻿using Monopoly;
-using Monopoly.Locations;
-using Monopoly.PropertyGroups;
-using Monopoly.PropertyGroups.RentCalculators;
+﻿using System.Collections.Generic;
+using Monopoly;
+using Monopoly.Locations.Propertys;
 using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
@@ -13,50 +12,69 @@ namespace MonopolyTests.TraditionalMonopolyTests
         private IBanker banker;
         private IPlayer car;
         private IPlayer horse;
-        private Property railroad;
+        private Property readingRailroad;
+        private IPropertyManager propertyManager;
 
         [SetUp]
         public void SetUp()
         {
-            banker = new TraditionalBanker();
+            propertyManager = new PropertyManager();
+            var titleDeeds = new List<TitleDeed>();
+            banker = new TraditionalBanker(titleDeeds, propertyManager);
             car = new Player("car", 2000);
             horse = new Player("horse", 2000);
-            railroad = new Property(5, "Reading Railroad", 200, 25, banker);
+
+            readingRailroad = new Railroad(5, "Reading Railroad", banker, propertyManager);
+            var pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", banker, propertyManager);
+            var boRailroad = new Railroad(25, "B. & O. Railroad", banker, propertyManager);
+            var shortLineRailroad = new Railroad(35, "Short Line Railroad", banker, propertyManager);
+
+            titleDeeds.Add(new TitleDeed(readingRailroad, 250, 25, PropertyGroup.Railroad));
+            titleDeeds.Add(new TitleDeed(pennsylvaniaRailroad, 250, 25, PropertyGroup.Railroad));
+            titleDeeds.Add(new TitleDeed(boRailroad, 250, 25, PropertyGroup.Railroad));
+            titleDeeds.Add(new TitleDeed(shortLineRailroad, 250, 25, PropertyGroup.Railroad));
         }
 
         [Test]
         public void TestPropertyPurchasedByPlayerRemovesMoneyFromPlayer()
         {
-            banker.PropertyPurchasedBy(car, railroad);
-            Assert.That(car.Balance, Is.EqualTo(1800));
+            banker.PropertyPurchasedBy(car, readingRailroad);
+            Assert.That(car.Balance, Is.EqualTo(1750));
         }
 
         [Test]
-        public void TestPayRentToPropertyOwnerPaysRentOfPropertyWhenNoGroupIsFound()
+        public void TestTransferMoney()
         {
-            railroad.LandedOnBy(car);
+            banker.TransferMoney(car, horse, 50);
 
-            banker.PayRentToPropertyOwner(horse, railroad);
-            Assert.That(car.Balance, Is.EqualTo(1825));
-            Assert.That(horse.Balance, Is.EqualTo(1975));
+            Assert.That(car.Balance, Is.EqualTo(1950));
+            Assert.That(horse.Balance, Is.EqualTo(2050));
         }
 
         [Test]
-        public void TestPayRentToPropertyOwnerInActualGroupChargesCorrectRent()
+        public void TestGetRentForReadingRailroadReturns25()
         {
-            var medAve = new Property(1, "Mediterranean Avenue", 60, 2, banker);
-            var balticAve = new Property(3, "Baltic Avenue", 60, 4, banker);
-            var purpleStreets = new Property[] { medAve, balticAve };
-            
-            var propertyGroup = new PropertyGroup("Purple Streets", purpleStreets, new StreetRentCalculator());
-            banker.InitializePropertyGroups(new PropertyGroup[] { propertyGroup });
+            var rent = banker.GetRentFor(readingRailroad);
+            Assert.That(rent, Is.EqualTo(25));
+        }
 
-            medAve.LandedOnBy(car);
-            balticAve.LandedOnBy(car);
-            banker.PayRentToPropertyOwner(horse, balticAve);
+        [Test]
+        public void TestPlayerCanAffordPropertyReturnsTrue()
+        {
+            Assert.That(banker.PlayerCanAffordProperty(car, readingRailroad), Is.True);
+        }
 
-            Assert.That(horse.Balance, Is.EqualTo(1992));
-            Assert.That(car.Balance, Is.EqualTo(1888));
+        [Test]
+        public void TestPlayerCanAffordPropertyReturnsFalse()
+        {
+            var dog = new Player("dog", 0);
+            Assert.That(banker.PlayerCanAffordProperty(dog, readingRailroad), Is.False);
+        }
+
+        [Test]
+        public void TestNumberOfPropertiesInGroupForReturns4ForRailroads()
+        {
+            Assert.That(banker.NumberOfPropertiesInGroupFor(readingRailroad), Is.EqualTo(4));
         }
     }
 }

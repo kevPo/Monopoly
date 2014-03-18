@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Monopoly.Locations;
-using Monopoly.PropertyGroups;
 
 namespace Monopoly.Board
 {
@@ -10,14 +9,14 @@ namespace Monopoly.Board
     {
         public IDice Dice { get; private set; }
         private List<Location> locations;
-        private List<PropertyGroup> propertyGroups;
+        private List<TitleDeed> titleDeeds;
         private IBanker banker;
         
         public GameBoard(IDice dice)
         {
             Dice = dice;
             locations = new List<Location>();
-            propertyGroups = new List<PropertyGroup>();
+            titleDeeds = new List<TitleDeed>();
         }
 
         public Location GetStartingLocation()
@@ -28,7 +27,6 @@ namespace Monopoly.Board
         public void InitializeBanker(IBanker banker)
         {
             this.banker = banker;
-            banker.InitializePropertyGroups(propertyGroups);
         }
 
         public void AddLocation(Location location)
@@ -37,11 +35,6 @@ namespace Monopoly.Board
                 throw new InvalidOperationException("Location can not be added.  Board is full.");
 
             locations.Add(location);
-        }
-
-        public void AddPropertyGroup(PropertyGroup propertyGroup)
-        {
-            propertyGroups.Add(propertyGroup);
         }
 
         public virtual void TakeTurnFor(IPlayer player)

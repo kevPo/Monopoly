@@ -71,19 +71,19 @@
   <ItemGroup>
     <Compile Include="Fakes\FakeBanker.cs" />
     <Compile Include="Fakes\FakeBoard.cs" />
-    <Compile Include="Fakes\FakeBoardBuilder.cs" />
+    <Compile Include="Fakes\FakeBoardFactory.cs" />
     <Compile Include="Fakes\FakeDice.cs" />
     <Compile Include="Fakes\FakeDiceDoublesRoller.cs" />
     <Compile Include="GameTests.cs" />
     <Compile Include="LocationTests\GoToJailTests.cs" />
     <Compile Include="LocationTests\GoTests.cs" />
+    <Compile Include="LocationTests\PropertysTests\RailroadTests.cs" />
+    <Compile Include="LocationTests\PropertysTests\StreetTests.cs" />
+    <Compile Include="LocationTests\PropertysTests\UtilityTests.cs" />
     <Compile Include="LocationTests\TaxableTests.cs" />
     <Compile Include="LocationTests\PropertyTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyGroupsTests\RentCalculatorsTests\RailroadRentCalculatorTests.cs" />
-    <Compile Include="PropertyGroupsTests\RentCalculatorsTests\StreetRentCalculatorTests.cs" />
-    <Compile Include="PropertyGroupsTests\RentCalculatorsTests\UtilityRentCalculatorTests.cs" />
     <Compile Include="TraditionalMonopolyTests\TraditionalBankerTests.cs" />
     <Compile Include="TraditionalMonopolyTests\TraditionalBoardTests.cs" />
     <Compile Include="TraditionalMonopolyTests\TraditionalDiceTests.cs" />
