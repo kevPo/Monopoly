@@ -52,7 +52,7 @@ namespace Monopoly.Board
                 else
                     MovePlayer(player, Dice.GetCurrentRoll());
 
-            } while (Dice.RollWasDouble() && rollCount < 3);
+            } while (Dice.RollWasDouble() && rollCount < 3 && !player.Location.Equals(jail));
         }
 
         private void MovePlayer(IPlayer player, Int32 roll)

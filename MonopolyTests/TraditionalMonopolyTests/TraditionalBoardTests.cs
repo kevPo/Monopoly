@@ -219,5 +219,32 @@ namespace MonopolyTests.TraditionalMonopolyTests
             Assert.That(horse.Balance, Is.EqualTo(1720));
             Assert.That(horse.Location.Index, Is.EqualTo(10));
         }
+
+        [Test]
+        public void TestPlayerThrowsNonDoublesLandsOnGoToJailWithBalanceNotChangingAndTurnIsOver()
+        {
+            var player = new Player("horse", 100);
+            player.LandedOn(board.GetStartingLocation());
+            RollDice(30);
+            board.TakeTurnFor(player);
+
+            Assert.That(player.Balance, Is.EqualTo(100));
+            Assert.That(player.Location.Index, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void TestPlayerRollsDoublesLandsOnGoToJailTurnIsOverAndBalanceNotChanged()
+        {
+            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 30 }, 4);
+            var boardBuilder = new TraditionalBoardFactory(doubleDice);
+            boardBuilder.Create();
+            board = boardBuilder.Board;
+            var horse = new Player("horse", 100);
+            horse.LandedOn(board.GetStartingLocation());
+
+            board.TakeTurnFor(horse);
+            Assert.That(horse.Balance, Is.EqualTo(100));
+            Assert.That(horse.Location.Index, Is.EqualTo(10));
+        }
     }
 }
