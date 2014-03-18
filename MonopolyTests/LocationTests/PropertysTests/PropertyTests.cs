@@ -4,7 +4,7 @@ using Monopoly.Locations.Propertys;
 using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
-namespace MonopolyTests.LocationTests
+namespace MonopolyTests.LocationTests.PropertysTests
 {
     [TestFixture]
     public class PropertyTests

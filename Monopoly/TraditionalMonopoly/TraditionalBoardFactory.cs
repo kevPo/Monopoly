@@ -48,7 +48,7 @@ namespace Monopoly.TraditionalMonopoly
 
         private Int32 IncomeTaxEquation(Int32 balance)
         {
-            return balance > incomeTaxBalanceSeperator ? baseIncomeTax : Convert.ToInt32(balance / incomeTaxPercentage);
+            return Math.Min(balance / incomeTaxPercentage, baseIncomeTax);
         }
 
         private Int32 LuxuryTaxEquation(Int32 balance)
@@ -82,7 +82,6 @@ namespace Monopoly.TraditionalMonopoly
 
         private void BuildRailroads()
         {
-
             var readingRailroad = new Railroad(5, "Reading Railroad", banker, propertyManager);
             var pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", banker, propertyManager);
             var bAndORailroad = new Railroad(25, "B. & O. Railroad", banker, propertyManager);

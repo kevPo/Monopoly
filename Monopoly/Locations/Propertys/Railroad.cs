@@ -13,19 +13,7 @@ namespace Monopoly.Locations.Propertys
             var owner = propertyManager.GetOwnerFor(this);
             var numberOfOwnedRailroads = propertyManager.NumberOfOwnedPropertiesInGroupFor(owner, this);
 
-            switch (numberOfOwnedRailroads)
-            {
-                case 1:
-                    return 25;
-                case 2:
-                    return 50;
-                case 3:
-                    return 100;
-                case 4:
-                    return 200;
-                default:
-                    return 0;
-            }
+            return (Int32) Math.Pow(2, numberOfOwnedRailroads - 1) * banker.GetRentFor(this);
         }
-    }
+     }
 }
