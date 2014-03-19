@@ -39,7 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IJailRoster.cs" />
     <Compile Include="IPropertyManager.cs" />
+    <Compile Include="JailRoster.cs" />
     <Compile Include="Locations\Propertys\PropertyGroup.cs" />
     <Compile Include="Locations\Propertys\Railroad.cs" />
     <Compile Include="Locations\Propertys\Street.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Locations\Propertys\Property.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalBoardFactory.cs" />
+    <Compile Include="Turn.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UserStories\ChanceCards.jpg" />

@@ -10,7 +10,8 @@ namespace MonopolyTests.Fakes
         public String Turns { get; private set; }
         public Dictionary<IPlayer, Int32> PlayerTurns { get; private set; }
 
-        public FakeBoard(IDice dice) : base(dice)
+        public FakeBoard(IDice dice, IJailRoster jailRoster)
+            : base(dice, jailRoster)
         {
             Turns = String.Empty;
             PlayerTurns = new Dictionary<IPlayer, Int32>();

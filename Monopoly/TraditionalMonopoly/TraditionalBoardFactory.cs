@@ -15,13 +15,15 @@ namespace Monopoly.TraditionalMonopoly
         
         private IBanker banker;
         private IPropertyManager propertyManager;
+        private IJailRoster jailRoster;
         private List<TitleDeed> titleDeeds;
 
         public TraditionalBoardFactory(IDice dice)
         {
             titleDeeds = new List<TitleDeed>();
             propertyManager = new PropertyManager();
-            Board = new GameBoard(dice);
+            jailRoster = new JailRoster();
+            Board = new GameBoard(dice, jailRoster);
         }
 
         protected override void CreateBank()
@@ -60,7 +62,7 @@ namespace Monopoly.TraditionalMonopoly
         {
             var jail = new Jail(10, "Jail/ Just Visiting");
             Board.AddLocation(jail);
-            Board.AddLocation(new GoToJail(30, "Go To Jail", jail));
+            Board.AddLocation(new GoToJail(30, "Go To Jail", jail, jailRoster));
         }
 
         protected override void CreateGo()

@@ -8,13 +8,15 @@ namespace Monopoly.Board
     public class GameBoard : IBoard
     {
         public IDice Dice { get; private set; }
+        private IJailRoster jailRoster;
         private List<Location> locations;
         private List<TitleDeed> titleDeeds;
         private IBanker banker;
         
-        public GameBoard(IDice dice)
+        public GameBoard(IDice dice, IJailRoster jailRoster)
         {
             Dice = dice;
+            this.jailRoster = jailRoster;
             locations = new List<Location>();
             titleDeeds = new List<TitleDeed>();
         }
@@ -39,41 +41,8 @@ namespace Monopoly.Board
 
         public virtual void TakeTurnFor(IPlayer player)
         {
-            var jail = locations.First(l => l.Index == 10);
-            var rollCount = 0;
-
-            do
-            {
-                Dice.Roll();
-                rollCount++;
-
-                if (rollCount == 3 && Dice.RollWasDouble())
-                    player.LandedOn(jail);
-                else
-                    MovePlayer(player, Dice.GetCurrentRoll());
-
-            } while (Dice.RollWasDouble() && rollCount < 3 && !player.Location.Equals(jail));
-        }
-
-        private void MovePlayer(IPlayer player, Int32 roll)
-        {
-            var index = player.Location.Index;
-
-            for (var moved = 1; moved <= roll; moved++)
-            {
-                index = (index + 1) % locations.Count();
-                var location = locations.First(l => l.Index == index);
-
-                if (moved == roll)
-                {
-                    player.LandedOn(location);
-                    location.LandedOnBy(player);
-                }
-                else
-                {
-                    location.PassedOverBy(player);
-                }
-            }
+            var turn = new Turn(locations, jailRoster, player, Dice);
+            turn.Take();
         }
     }
 }

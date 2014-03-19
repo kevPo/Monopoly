@@ -45,7 +45,7 @@ namespace Monopoly
 
         public override Int32 GetHashCode()
         {
-            return (Name.GetHashCode() ^ 2 + Balance ^ 2) * 17;
+            return (Name.GetHashCode() ^ 2) * 17;
         }
     }
 }

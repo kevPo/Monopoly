@@ -12,12 +12,14 @@ namespace MonopolyTests
     public class GameTests
     {
         private FakeBoard fakeBoard;
+        private IJailRoster jailRoster;
         private Game game;
 
         [SetUp]
         public void SetUp()
         {
-            fakeBoard = new FakeBoard(new FakeDice());
+            jailRoster = new JailRoster();
+            fakeBoard = new FakeBoard(new FakeDice(), jailRoster);
             game = new Game(fakeBoard);
         }
 
@@ -78,7 +80,7 @@ namespace MonopolyTests
         [Test]
         public void TestTwentyRoundsPlayedAndEachPlayerPlayedAllTwenty()
         {
-            var fakeBoard = new FakeBoard(new FakeDice());
+            var fakeBoard = new FakeBoard(new FakeDice(), jailRoster);
             var fakeBoardFactory = new FakeBoardFactory(fakeBoard);
             var horse = new Player("Horse", 0);
             var car = new Player("Car", 0);
@@ -97,7 +99,7 @@ namespace MonopolyTests
         [Test]
         public void TestThatOrderOfPlayersStayedTheSameDuringGame()
         {
-            var fakeBoard = new FakeBoard(new FakeDice());
+            var fakeBoard = new FakeBoard(new FakeDice(), jailRoster);
             var horse = new Player("Horse", 0);
             var car = new Player("Car", 0);
             var dog = new Player("Dog", 0);

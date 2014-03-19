@@ -173,7 +173,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestDouble6AndNonDouble4LandsPlayerOn10InOneTurn()
         {
-            var doubleDice = new FakeDiceDoublesRoller(new Int32[] {6}, 4);
+            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6 }, 4);
             var boardBuilder = new TraditionalBoardFactory(doubleDice);
             boardBuilder.Create();
             board = boardBuilder.Board;
@@ -275,6 +275,34 @@ namespace MonopolyTests.TraditionalMonopolyTests
             board.TakeTurnFor(horse);
             Assert.That(horse.Balance, Is.EqualTo(225));
             Assert.That(horse.Location.Index, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void TestPlayerInJailPays50RollsDoublesAndRollsAgainGetsPlayerOutOfJail()
+        {
+            var doubleDice = new FakeDiceDoublesRoller(30, new Int32[] { 10 }, 5);
+            var boardBuilder = new TraditionalBoardFactory(doubleDice);
+            boardBuilder.Create();
+            board = boardBuilder.Board;
+            var horse = new Player("horse", 2000);
+            horse.LandedOn(board.GetStartingLocation());
+            board.TakeTurnFor(horse);
+            board.TakeTurnFor(horse);
+
+            Assert.That(horse.Balance, Is.EqualTo(1750));
+            Assert.That(horse.Location.Index, Is.EqualTo(25));
+        }
+
+        [Test]
+        public void TestPlayerInJailPays50RollsNonDoublesGetsOutOfJail()
+        {
+            RollDice(30);
+            board.TakeTurnFor(player);
+            RollDice(10);
+            board.TakeTurnFor(player);
+
+            Assert.That(player.Balance, Is.EqualTo(1950));
+            Assert.That(player.Location.Index, Is.EqualTo(20));
         }
     }
 }
