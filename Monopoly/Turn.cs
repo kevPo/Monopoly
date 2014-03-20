@@ -104,10 +104,7 @@ namespace Monopoly
             var roll = dice.GetCurrentRoll();
 
             for (var locationsPassed = 1; locationsPassed <= roll; locationsPassed++)
-            {
-                var location = GetCurrentLocationIndex();
-                SetPlayerOnNextLocation(roll, locationsPassed, location);
-            }
+                SetPlayerOnNextLocation(roll, locationsPassed, GetCurrentLocationIndex());
         }
 
         private Location GetCurrentLocationIndex()

@@ -8,7 +8,7 @@ namespace Monopoly
         IPlayer GetOwnerFor(Property property);
         Boolean IsPropertyOwned(Property property);
         void PropertyPurchasedBy(IPlayer player, TitleDeed titleDeed);
-        Int32 NumberOfOwnedPropertiesInGroupFor(Property property);
-        Int32 NumberOfOwnedPropertiesInGroupFor(IPlayer owner, Property property);
+        Int32 GetNumberOfOwnedPropertiesInGroupFor(Property property);
+        Int32 GetNumberOfOwnedPropertiesInGroupFor(IPlayer owner, Property property);
     }
 }

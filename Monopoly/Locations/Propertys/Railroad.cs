@@ -11,7 +11,7 @@ namespace Monopoly.Locations.Propertys
         protected override Int32 CalculateRent()
         {
             var owner = propertyManager.GetOwnerFor(this);
-            var numberOfOwnedRailroads = propertyManager.NumberOfOwnedPropertiesInGroupFor(owner, this);
+            var numberOfOwnedRailroads = propertyManager.GetNumberOfOwnedPropertiesInGroupFor(owner, this);
 
             return (Int32) Math.Pow(2, numberOfOwnedRailroads - 1) * banker.GetRentFor(this);
         }

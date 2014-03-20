@@ -35,14 +35,14 @@ namespace Monopoly
             propertyOwners.Add(titleDeed, player);
         }
 
-        public Int32 NumberOfOwnedPropertiesInGroupFor(IPlayer owner, Property property)
+        public Int32 GetNumberOfOwnedPropertiesInGroupFor(IPlayer owner, Property property)
         {
             var titleDeed = GetTitleDeedFor(property);
 
             return propertyOwners.Count(p => p.Key.PropertyGroup == titleDeed.PropertyGroup && p.Value.Equals(owner));
         }
 
-        public Int32 NumberOfOwnedPropertiesInGroupFor(Property property)
+        public Int32 GetNumberOfOwnedPropertiesInGroupFor(Property property)
         {
             var titleDeed = GetTitleDeedFor(property);
 

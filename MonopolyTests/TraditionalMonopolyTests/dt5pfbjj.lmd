@@ -91,6 +91,15 @@ namespace MonopolyTests.TraditionalMonopolyTests
         }
 
         [Test]
+        public void TestPlayerPassesOverLuxuryTaxAndBalanceStaysTheSame()
+        {
+            RollDice(39);
+            board.TakeTurnFor(player);
+            //buys boardwalk so balance decreases 400
+            Assert.That(player.Balance, Is.EqualTo(1600));
+        }
+
+        [Test]
         public void TestPlayerLandsOnOwnedUtilityAndPlayerPaysOwner4TimesDice()
         {
             var player2 = new Player("car", 2000);

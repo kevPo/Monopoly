@@ -12,7 +12,7 @@ namespace Monopoly.Locations.Propertys
         {
             var owner = propertyManager.GetOwnerFor(this);
             var numberOfPropertiesInGroup = banker.NumberOfPropertiesInGroupFor(this);
-            var numberOfOwnedGroupProperties = propertyManager.NumberOfOwnedPropertiesInGroupFor(owner, this);
+            var numberOfOwnedGroupProperties = propertyManager.GetNumberOfOwnedPropertiesInGroupFor(owner, this);
             var oneOwnerOwnsEntireGroup = numberOfPropertiesInGroup == numberOfOwnedGroupProperties;
             var rent = banker.GetRentFor(this);
 
