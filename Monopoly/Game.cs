@@ -36,9 +36,13 @@ namespace Monopoly
                 throw new InvalidOperationException(String.Format("Game can only be played with {0} - {1} players.", minimumPlayers, maximumPlayers));
 
             PlaceAllPlayersOnStartingLocation();
-            
+            PlayGame();
+        }
+
+        private void PlayGame()
+        {
             for (var i = 0; i < 20; i++)
-                PlayRound();
+                PlayRoundForEachPlayer();
         }
 
         private void PlaceAllPlayersOnStartingLocation()
@@ -49,7 +53,7 @@ namespace Monopoly
                 player.LandedOn(startingLocation);
         }
 
-        private void PlayRound()
+        private void PlayRoundForEachPlayer()
         {
             foreach (var player in Players)
                 board.TakeTurnFor(player);

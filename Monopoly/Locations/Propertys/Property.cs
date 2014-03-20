@@ -17,20 +17,31 @@ namespace Monopoly.Locations.Propertys
         public override void LandedOnBy(IPlayer player)
         {
             if (propertyManager.IsPropertyOwned(this))
-            {
-                var owner = propertyManager.GetOwnerFor(this);
-                
-                if (!owner.Equals(player))
-                {
-                    var rent = CalculateRent();
-                    banker.TransferMoney(player, owner, rent);
-                }
-            }
+                HandleLandingWhenOwned(player);
             else
+                SellPropertyToPlayerIfAffordable(player);
+        }
+
+        private void SellPropertyToPlayerIfAffordable(IPlayer player)
+        {
+            if (banker.PlayerCanAffordProperty(player, this))
+                banker.PropertyPurchasedBy(player, this);
+        }
+
+        private void HandleLandingWhenOwned(IPlayer player)
+        {
+            var owner = propertyManager.GetOwnerFor(this);
+
+            if (!owner.Equals(player))
             {
-                if (banker.PlayerCanAffordProperty(player, this))
-                    banker.PropertyPurchasedBy(player, this);
+                ChargeRent(player, owner);
             }
+        }
+
+        private void ChargeRent(IPlayer player, IPlayer owner)
+        {
+            var rent = CalculateRent();
+            banker.TransferMoney(player, owner, rent);
         }
 
         protected abstract Int32 CalculateRent();
