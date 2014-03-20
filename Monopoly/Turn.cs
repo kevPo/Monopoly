@@ -8,6 +8,9 @@ namespace Monopoly
     public class Turn
     {
         private const Int32 maximumRolls = 3;
+        private const Int32 maxTurnsInJail = 3;
+        private const Int32 jailFine = 50;
+
         private IEnumerable<Location> locations;
         private IJailRoster jailRoster;
         private IPlayer player;
@@ -35,13 +38,39 @@ namespace Monopoly
 
         private void TakeTurnForInmate()
         {
+            dice.Roll();
+            
+            if (dice.RollWasDouble())
+                SetJailedPlayerFreeAndMoveToDestination();
+            else
+                HandleNonDoubleRollForJailedPlayer();
+        }
+
+        private void SetJailedPlayerFreeAndMoveToDestination()
+        {
+            jailRoster.Remove(player);
+            SendPlayerToDestination();
+        }
+
+        private void HandleNonDoubleRollForJailedPlayer()
+        {
+            var playerHasReachedMaxTurnsInJail = jailRoster.GetTurnsFor(player) + 1 == maxTurnsInJail;
+            
+            if (playerHasReachedMaxTurnsInJail)
+                ChargePlayerFineAndMoveToDestination();
+            else
+                jailRoster.AddTurnFor(player);
+        }
+
+        private void ChargePlayerFineAndMoveToDestination()
+        {
             CollectFineAndRemovePlayerFromJail();
-            TakeTurnForNormalPlayer();                        
+            SendPlayerToDestination();
         }
 
         private void CollectFineAndRemovePlayerFromJail()
         {
-            player.RemoveMoney(50);
+            player.RemoveMoney(jailFine);
             jailRoster.Remove(player);
         }
 

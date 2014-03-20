@@ -173,30 +173,43 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestDouble6AndNonDouble4LandsPlayerOn10InOneTurn()
         {
-            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6 }, 4);
-            var boardBuilder = new TraditionalBoardFactory(doubleDice);
-            boardBuilder.Create();
-            board = boardBuilder.Board;
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(6, "D"),
+                Tuple.Create<Int32, String>(4, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(board.GetStartingLocation());
+            horse.LandedOn(jailBoard.GetStartingLocation());
 
-            board.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
             // Player lands on Oriental Ave and buys it for $100 on first roll
             Assert.That(horse.Balance, Is.EqualTo(1900));  
             Assert.That(horse.Location.Index, Is.EqualTo(10));
         }
 
+        private GameBoard BuildBoardAndSetDiceRolls(Tuple<Int32, String>[] rolls)
+        {
+            var doubleDice = new FakeDiceDoublesRoller(rolls);
+            var boardBuilder = new TraditionalBoardFactory(doubleDice);
+            boardBuilder.Create();
+            return boardBuilder.Board;
+        }
+
         [Test]
         public void TestDoublesThrownTwiceAndPlayerLandsOnThreeLocations()
         {
-            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6, 10 }, 4);
-            var boardBuilder = new TraditionalBoardFactory(doubleDice);
-            boardBuilder.Create();
-            board = boardBuilder.Board;
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(6, "D"),
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(4, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(board.GetStartingLocation());
+            horse.LandedOn(jailBoard.GetStartingLocation());
 
-            board.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
             // Player should land on and buy Oriental (6) for $100
             // and St. James (16) for $180.
             Assert.That(horse.Balance, Is.EqualTo(1720));
@@ -206,14 +219,18 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestDoublesThrownThreeTimesAndPlayerLandsOnJustVisiting()
         {
-            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 6, 10, 12 }, 4);
-            var boardBuilder = new TraditionalBoardFactory(doubleDice);
-            boardBuilder.Create();
-            board = boardBuilder.Board;
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(6, "D"),
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(12, "D"),
+                Tuple.Create<Int32, String>(4, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(board.GetStartingLocation());
+            horse.LandedOn(jailBoard.GetStartingLocation());
 
-            board.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
             // Player should land on and buy Oriental (6) for $100
             // and St. James (16) for $180.
             Assert.That(horse.Balance, Is.EqualTo(1720));
@@ -235,14 +252,16 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestPlayerRollsDoublesLandsOnGoToJailTurnIsOverAndBalanceNotChanged()
         {
-            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 30 }, 4);
-            var boardBuilder = new TraditionalBoardFactory(doubleDice);
-            boardBuilder.Create();
-            board = boardBuilder.Board;
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(30, "D"),
+                Tuple.Create<Int32, String>(4, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 100);
-            horse.LandedOn(board.GetStartingLocation());
+            horse.LandedOn(jailBoard.GetStartingLocation());
 
-            board.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
             Assert.That(horse.Balance, Is.EqualTo(100));
             Assert.That(horse.Location.Index, Is.EqualTo(10));
         }
@@ -250,14 +269,18 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void RollDoubles3TimesWithoutPassingGoPutsPlayerInJailWithoutCollectingSalary()
         {
-            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 10, 10, 6 }, 4);
-            var boardBuilder = new TraditionalBoardFactory(doubleDice);
-            boardBuilder.Create();
-            board = boardBuilder.Board;
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(6, "D"),
+                Tuple.Create<Int32, String>(4, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 100);
-            horse.LandedOn(board.GetStartingLocation());
+            horse.LandedOn(jailBoard.GetStartingLocation());
 
-            board.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
             Assert.That(horse.Balance, Is.EqualTo(100));
             Assert.That(horse.Location.Index, Is.EqualTo(10));
         }
@@ -265,44 +288,159 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void RollDoubles3TimesPassingGoAndCollectingSalaryPutsPlayerInJailWithSalary()
         {
-            var doubleDice = new FakeDiceDoublesRoller(new Int32[] { 38, 12, 10 }, 4);
-            var boardBuilder = new TraditionalBoardFactory(doubleDice);
-            boardBuilder.Create();
-            board = boardBuilder.Board;
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(38, "D"),
+                Tuple.Create<Int32, String>(12, "D"),
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(4, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 100);
-            horse.LandedOn(board.GetStartingLocation());
+            horse.LandedOn(jailBoard.GetStartingLocation());
 
-            board.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
             Assert.That(horse.Balance, Is.EqualTo(225));
             Assert.That(horse.Location.Index, Is.EqualTo(10));
         }
 
-        [Test]
-        public void TestPlayerInJailPays50RollsDoublesAndRollsAgainGetsPlayerOutOfJail()
-        {
-            var doubleDice = new FakeDiceDoublesRoller(30, new Int32[] { 10 }, 5);
-            var boardBuilder = new TraditionalBoardFactory(doubleDice);
-            boardBuilder.Create();
-            board = boardBuilder.Board;
-            var horse = new Player("horse", 2000);
-            horse.LandedOn(board.GetStartingLocation());
-            board.TakeTurnFor(horse);
-            board.TakeTurnFor(horse);
+        //[Test]
+        //public void TestPlayerInJailPays50RollsDoublesAndRollsAgainGetsPlayerOutOfJail()
+        //{
+        //    var rolls = new Tuple<Int32, String>[]
+        //    {
+        //        Tuple.Create<Int32, String>(30, ""),
+        //        Tuple.Create<Int32, String>(10, "D"),
+        //        Tuple.Create<Int32, String>(4, "")
+        //    };
+        //    var doubleDice = new FakeDiceDoublesRoller(rolls);
+        //    var boardBuilder = new TraditionalBoardFactory(doubleDice);
+        //    boardBuilder.Create();
+        //    board = boardBuilder.Board;
+        //    var horse = new Player("horse", 2000);
+        //    horse.LandedOn(board.GetStartingLocation());
+        //    board.TakeTurnFor(horse);
+        //    board.TakeTurnFor(horse);
 
-            Assert.That(horse.Balance, Is.EqualTo(1750));
-            Assert.That(horse.Location.Index, Is.EqualTo(25));
+        //    Assert.That(horse.Balance, Is.EqualTo(1750));
+        //    Assert.That(horse.Location.Index, Is.EqualTo(25));
+        //}
+
+        //[Test]
+        //public void TestPlayerInJailPays50RollsNonDoublesGetsOutOfJail()
+        //{
+        //    RollDice(30);
+        //    board.TakeTurnFor(player);
+        //    RollDice(10);
+        //    board.TakeTurnFor(player);
+
+        //    Assert.That(player.Balance, Is.EqualTo(1950));
+        //    Assert.That(player.Location.Index, Is.EqualTo(20));
+        //}
+
+        [Test]
+        public void TestPlayerInJailRollsDoublesAndGetsOutOfJailButDoesNotMoveAgain()
+        {
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(30, ""),
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(5, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
+            var horse = new Player("horse", 2000);
+            horse.LandedOn(jailBoard.GetStartingLocation());
+
+            jailBoard.TakeTurnFor(horse);
+            Assert.That(horse.Location.Index, Is.EqualTo(10));
+
+            jailBoard.TakeTurnFor(horse);
+            Assert.That(horse.Location.Index, Is.EqualTo(20));
+            Assert.That(horse.Balance, Is.EqualTo(2000));
         }
 
         [Test]
-        public void TestPlayerInJailPays50RollsNonDoublesGetsOutOfJail()
+        public void TestPlayer2ndTurnInJailRollsDoublesAndGetsOutOfJail()
+        {
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(30, ""),
+                Tuple.Create<Int32, String>(5, ""),
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(5, "")
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
+            var horse = new Player("horse", 2000);
+            horse.LandedOn(jailBoard.GetStartingLocation());
+
+            jailBoard.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
+            Assert.That(horse.Location.Index, Is.EqualTo(20));
+            Assert.That(horse.Balance, Is.EqualTo(2000));
+        }
+
+        [Test]
+        public void TestPlayer3rdTurnInJailRollsDoubleAndGetsOutOfJail()
+        {
+            var rolls = new Tuple<Int32, String>[]
+            {
+                Tuple.Create<Int32, String>(30, ""),
+                Tuple.Create<Int32, String>(5, ""),
+                Tuple.Create<Int32, String>(10, ""),
+                Tuple.Create<Int32, String>(10, "D"),
+                Tuple.Create<Int32, String>(10, ""),
+            };
+            var jailBoard = BuildBoardAndSetDiceRolls(rolls);
+            var horse = new Player("horse", 2000);
+            horse.LandedOn(jailBoard.GetStartingLocation());
+
+            jailBoard.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
+            jailBoard.TakeTurnFor(horse);
+            Assert.That(horse.Location.Index, Is.EqualTo(20));
+            Assert.That(horse.Balance, Is.EqualTo(2000));
+        }
+
+        [Test]
+        public void TestPlayerDoesNotRollDoublesOnFirstTurnInJailAndStaysInJail()
         {
             RollDice(30);
             board.TakeTurnFor(player);
             RollDice(10);
             board.TakeTurnFor(player);
 
-            Assert.That(player.Balance, Is.EqualTo(1950));
+            Assert.That(player.Location.Index, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void TestPlayerDoesNotRollDoublesOnFirstOrSecondTurnInJailAndStaysInJail()
+        {
+            RollDice(30);
+            board.TakeTurnFor(player);
+            RollDice(10);
+            board.TakeTurnFor(player);
+            RollDice(10);
+            board.TakeTurnFor(player);
+
+            Assert.That(player.Location.Index, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void TestPlayerTakesThreeTurnsWithoutDoublesAndPays50ToGetOutOfJail()
+        {
+            RollDice(30);
+            board.TakeTurnFor(player);
+            RollDice(10);
+            board.TakeTurnFor(player);
+            RollDice(10);
+            board.TakeTurnFor(player);
+            RollDice(10);
+            board.TakeTurnFor(player);
+
             Assert.That(player.Location.Index, Is.EqualTo(20));
+            Assert.That(player.Balance, Is.EqualTo(1950));
         }
     }
 }

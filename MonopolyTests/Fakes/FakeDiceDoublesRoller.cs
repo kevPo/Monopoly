@@ -7,44 +7,13 @@ namespace MonopolyTests.Fakes
 {
     public class FakeDiceDoublesRoller : IDice
     {
-        private Int32 rollBeforeDoubles;
-        private Int32[] doubleRolls;
-        private Int32 nextRollAfterDouble;
         private Int32 diceRolledCount;
-        private List<Int32> rolls;
-        private Int32 doubleRollStartingIndex;
+        private List<Tuple<Int32, String>> rolls;
 
-        public FakeDiceDoublesRoller(Int32[] doubleRolls, Int32 nextRollAfterDouble)
-            : this(0, doubleRolls, nextRollAfterDouble)
-        { }
-
-        public FakeDiceDoublesRoller(Int32 rollBeforeDoubles, Int32[] doubleRolls, Int32 nextRollAfterDouble)
+        public FakeDiceDoublesRoller(IEnumerable<Tuple<Int32, String>> rolls)
         {
-            this.rollBeforeDoubles = rollBeforeDoubles;
-            this.doubleRolls = doubleRolls;
-            this.nextRollAfterDouble = nextRollAfterDouble;
+            this.rolls = rolls.ToList();
             diceRolledCount = 0;
-            InitializeRolls();
-        }
-
-        private void InitializeRolls()
-        {
-            rolls = new List<Int32>();
-
-            if (rollBeforeDoubles != 0)
-            {
-                rolls.Add(rollBeforeDoubles);
-                doubleRollStartingIndex = 1;
-            }
-            else
-            {
-                doubleRollStartingIndex = 0;
-            }
-
-            foreach (var roll in doubleRolls)
-                rolls.Add(roll);
-
-            rolls.Add(nextRollAfterDouble);
         }
 
         public void Roll()
@@ -54,13 +23,12 @@ namespace MonopolyTests.Fakes
 
         public Int32 GetCurrentRoll()
         {
-            return rolls[diceRolledCount - 1];
+            return rolls[diceRolledCount - 1].Item1;
         }
 
         public Boolean RollWasDouble()
         {
-            return diceRolledCount <= doubleRolls.Count() + doubleRollStartingIndex && 
-                diceRolledCount >= doubleRollStartingIndex ;
+            return rolls[diceRolledCount - 1].Item2 == "D";
         }
     }
 }
