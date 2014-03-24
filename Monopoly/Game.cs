@@ -47,10 +47,8 @@ namespace Monopoly
 
         private void PlaceAllPlayersOnStartingLocation()
         {
-            var startingLocation = board.GetStartingLocation();
-
             foreach (var player in Players)
-                player.LandedOn(startingLocation);
+                player.LandedOn(0);
         }
 
         private void PlayRoundForEachPlayer()

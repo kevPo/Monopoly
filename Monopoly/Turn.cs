@@ -25,7 +25,7 @@ namespace Monopoly
             this.player = player;
             this.dice = dice;
             rollCount = 0;
-            currentLocationIndex = player.Location.Index;
+            currentLocationIndex = player.LocationIndex;
         }
 
         public void Take()
@@ -94,8 +94,7 @@ namespace Monopoly
 
         private void SendPlayerToJail()
         {
-            var jail = locations.First(l => l.Index == 10);
-            player.LandedOn(jail);
+            player.LandedOn(10);
             jailRoster.Add(player);
         }
 
@@ -125,7 +124,7 @@ namespace Monopoly
 
         private void SetPlayerOnDestination(Location location)
         {
-            player.LandedOn(location);
+            player.LandedOn(location.Index);
             location.LandedOnBy(player);
         }
     }

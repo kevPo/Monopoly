@@ -22,15 +22,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
             boardBuilder.Create();
             board = boardBuilder.Board;
             player = new Player("horse", 2000);
-            player.LandedOn(board.GetStartingLocation());
-        }
-
-        [Test]
-        public void TestGetStartingPositionReturnsGo()
-        {
-            var go = board.GetStartingLocation();
-            Assert.That(go.Name, Is.EqualTo("Go"));
-            Assert.That(go.Index, Is.EqualTo(0));
+            player.LandedOn(0);
         }
 
         private void RollDice(Int32 roll)
@@ -43,7 +35,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         {
             RollDice(7);
             board.TakeTurnFor(player);
-            Assert.That(player.Location.Index, Is.EqualTo(7));
+            Assert.That(player.LocationIndex, Is.EqualTo(7));
         }
 
         [Test]
@@ -53,7 +45,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
             board.TakeTurnFor(player);
             RollDice(6);
             board.TakeTurnFor(player);
-            Assert.That(player.Location.Index, Is.EqualTo(5));
+            Assert.That(player.LocationIndex, Is.EqualTo(5));
         }
 
         [Test]
@@ -86,7 +78,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         {
             RollDice(33);
             board.TakeTurnFor(player);
-            Assert.That(player.Location.Index, Is.EqualTo(33));
+            Assert.That(player.LocationIndex, Is.EqualTo(33));
             Assert.That(player.Balance, Is.EqualTo(2000));
         }
 
@@ -94,7 +86,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         public void TestPlayerLandsOnOwnedUtilityAndPlayerPaysOwner4TimesDice()
         {
             var player2 = new Player("car", 2000);
-            player2.LandedOn(board.GetStartingLocation());
+            player2.LandedOn(0);
             RollDice(12);
             board.TakeTurnFor(player);
             RollDice(12);
@@ -138,7 +130,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
 
         private void InitializeAndMovePlayerToIncomeTax(Player player)
         {
-            player.LandedOn(board.GetStartingLocation());
+            player.LandedOn(0);
             RollDice(4);
             board.TakeTurnFor(player);
         }
@@ -147,7 +139,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         public void TestLuxuryTaxCharges75Dollars()
         {
             var player = new Player("horse", 100);
-            player.LandedOn(board.GetStartingLocation());
+            player.LandedOn(0);
             RollDice(38);
             board.TakeTurnFor(player);
             Assert.That(player.Balance, Is.EqualTo(25));
@@ -163,12 +155,12 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             // Player lands on Oriental Ave and buys it for $100 on first roll
             Assert.That(horse.Balance, Is.EqualTo(1900));  
-            Assert.That(horse.Location.Index, Is.EqualTo(10));
+            Assert.That(horse.LocationIndex, Is.EqualTo(10));
         }
 
         private GameBoard BuildBoardAndSetDiceRolls(Tuple<Int32, String>[] rolls)
@@ -190,13 +182,13 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             // Player should land on and buy Oriental (6) for $100
             // and St. James (16) for $180.
             Assert.That(horse.Balance, Is.EqualTo(1720));
-            Assert.That(horse.Location.Index, Is.EqualTo(20));
+            Assert.That(horse.LocationIndex, Is.EqualTo(20));
         }
 
         [Test]
@@ -211,25 +203,25 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             // Player should land on and buy Oriental (6) for $100
             // and St. James (16) for $180.
             Assert.That(horse.Balance, Is.EqualTo(1720));
-            Assert.That(horse.Location.Index, Is.EqualTo(10));
+            Assert.That(horse.LocationIndex, Is.EqualTo(10));
         }
 
         [Test]
         public void TestPlayerThrowsNonDoublesLandsOnGoToJailWithBalanceNotChangingAndTurnIsOver()
         {
             var player = new Player("horse", 100);
-            player.LandedOn(board.GetStartingLocation());
+            player.LandedOn(0);
             RollDice(30);
             board.TakeTurnFor(player);
 
             Assert.That(player.Balance, Is.EqualTo(100));
-            Assert.That(player.Location.Index, Is.EqualTo(10));
+            Assert.That(player.LocationIndex, Is.EqualTo(10));
         }
 
         [Test]
@@ -242,11 +234,11 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 100);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             Assert.That(horse.Balance, Is.EqualTo(100));
-            Assert.That(horse.Location.Index, Is.EqualTo(10));
+            Assert.That(horse.LocationIndex, Is.EqualTo(10));
         }
 
         [Test]
@@ -261,11 +253,11 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 100);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             Assert.That(horse.Balance, Is.EqualTo(100));
-            Assert.That(horse.Location.Index, Is.EqualTo(10));
+            Assert.That(horse.LocationIndex, Is.EqualTo(10));
         }
 
         [Test]
@@ -280,11 +272,11 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 100);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             Assert.That(horse.Balance, Is.EqualTo(225));
-            Assert.That(horse.Location.Index, Is.EqualTo(10));
+            Assert.That(horse.LocationIndex, Is.EqualTo(10));
         }
 
         //[Test]
@@ -301,7 +293,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         //    boardBuilder.Create();
         //    board = boardBuilder.Board;
         //    var horse = new Player("horse", 2000);
-        //    horse.LandedOn(board.GetStartingLocation());
+        //    horse.LandedOn(0);
         //    board.TakeTurnFor(horse);
         //    board.TakeTurnFor(horse);
 
@@ -332,13 +324,13 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
-            Assert.That(horse.Location.Index, Is.EqualTo(10));
+            Assert.That(horse.LocationIndex, Is.EqualTo(10));
 
             jailBoard.TakeTurnFor(horse);
-            Assert.That(horse.Location.Index, Is.EqualTo(20));
+            Assert.That(horse.LocationIndex, Is.EqualTo(20));
             Assert.That(horse.Balance, Is.EqualTo(2000));
         }
 
@@ -354,12 +346,12 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             jailBoard.TakeTurnFor(horse);
             jailBoard.TakeTurnFor(horse);
-            Assert.That(horse.Location.Index, Is.EqualTo(20));
+            Assert.That(horse.LocationIndex, Is.EqualTo(20));
             Assert.That(horse.Balance, Is.EqualTo(2000));
         }
 
@@ -376,13 +368,13 @@ namespace MonopolyTests.TraditionalMonopolyTests
             };
             var jailBoard = BuildBoardAndSetDiceRolls(rolls);
             var horse = new Player("horse", 2000);
-            horse.LandedOn(jailBoard.GetStartingLocation());
+            horse.LandedOn(0);
 
             jailBoard.TakeTurnFor(horse);
             jailBoard.TakeTurnFor(horse);
             jailBoard.TakeTurnFor(horse);
             jailBoard.TakeTurnFor(horse);
-            Assert.That(horse.Location.Index, Is.EqualTo(20));
+            Assert.That(horse.LocationIndex, Is.EqualTo(20));
             Assert.That(horse.Balance, Is.EqualTo(2000));
         }
 
@@ -394,7 +386,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
             RollDice(10);
             board.TakeTurnFor(player);
 
-            Assert.That(player.Location.Index, Is.EqualTo(10));
+            Assert.That(player.LocationIndex, Is.EqualTo(10));
         }
 
         [Test]
@@ -407,7 +399,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
             RollDice(10);
             board.TakeTurnFor(player);
 
-            Assert.That(player.Location.Index, Is.EqualTo(10));
+            Assert.That(player.LocationIndex, Is.EqualTo(10));
         }
 
         [Test]
@@ -422,7 +414,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
             RollDice(10);
             board.TakeTurnFor(player);
 
-            Assert.That(player.Location.Index, Is.EqualTo(20));
+            Assert.That(player.LocationIndex, Is.EqualTo(20));
             Assert.That(player.Balance, Is.EqualTo(1950));
         }
     }

@@ -5,7 +5,7 @@ namespace Monopoly
 {
     public class Player : IPlayer
     {
-        public Location Location { get; private set; }
+        public Int32 LocationIndex { get; private set; }
         public String Name { get; private set; }
         public Int32 Balance { get; private set; }
 
@@ -25,9 +25,9 @@ namespace Monopoly
             Balance += dollars;
         }
 
-        public void LandedOn(Location location)
+        public void LandedOn(Int32 location)
         {
-            Location = location;
+            LocationIndex = location;
         }
 
         public override Boolean Equals(object other)

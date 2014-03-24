@@ -62,7 +62,7 @@ namespace Monopoly.TraditionalMonopoly
         {
             var jail = new Jail(10, "Jail/ Just Visiting");
             Board.AddLocation(jail);
-            Board.AddLocation(new GoToJail(30, "Go To Jail", jail, jailRoster));
+            Board.AddLocation(new GoToJail(30, "Go To Jail", 10, jailRoster));
         }
 
         protected override void CreateGo()

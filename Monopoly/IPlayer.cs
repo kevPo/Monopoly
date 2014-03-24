@@ -4,11 +4,11 @@ namespace Monopoly
 {
     public interface IPlayer
     {
-        Location Location { get; }
+        Int32 LocationIndex { get; }
         String Name { get; }
         Int32 Balance { get; }
         void RemoveMoney(Int32 money);
         void ReceiveMoney(Int32 dollars);
-        void LandedOn(Location location);
+        void LandedOn(Int32 location);
     }
 }

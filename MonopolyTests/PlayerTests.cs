@@ -1,6 +1,4 @@
 ﻿using Monopoly;
-using Monopoly.Locations;
-using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
 namespace MonopolyTests
@@ -34,8 +32,8 @@ namespace MonopolyTests
         [Test]
         public void TestLandedOnSetsLocation()
         {
-            player.LandedOn(new Go(0, "Go"));
-            Assert.That(player.Location.Name, Is.EqualTo("Go"));
+            player.LandedOn(0);
+            Assert.That(player.LocationIndex, Is.EqualTo(0));
         }
 
         [Test]
