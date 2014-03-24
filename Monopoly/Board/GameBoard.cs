@@ -10,25 +10,17 @@ namespace Monopoly.Board
         public IDice Dice { get; private set; }
         private IJailRoster jailRoster;
         private List<Location> locations;
-        private List<TitleDeed> titleDeeds;
-        private IBanker banker;
         
         public GameBoard(IDice dice, IJailRoster jailRoster)
         {
             Dice = dice;
             this.jailRoster = jailRoster;
             locations = new List<Location>();
-            titleDeeds = new List<TitleDeed>();
         }
 
         public Location GetStartingLocation()
         {
             return locations.FirstOrDefault(l => l.Index == 0);
-        }
-
-        public void InitializeBanker(IBanker banker)
-        {
-            this.banker = banker;
         }
 
         public void AddLocation(Location location)

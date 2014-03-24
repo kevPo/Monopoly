@@ -13,23 +13,12 @@ namespace Monopoly.TraditionalMonopoly
         private const Int32 incomeTaxPercentage = 10;
         private const Int32 luxuryTax = 75;
         
-        private IBanker banker;
-        private IPropertyManager propertyManager;
         private IJailRoster jailRoster;
-        private List<TitleDeed> titleDeeds;
 
         public TraditionalBoardFactory(IDice dice)
         {
-            titleDeeds = new List<TitleDeed>();
-            propertyManager = new PropertyManager();
             jailRoster = new JailRoster();
             Board = new GameBoard(dice, jailRoster);
-        }
-
-        protected override void CreateBank()
-        {
-            banker = new TraditionalBanker(titleDeeds, propertyManager);
-            Board.InitializeBanker(banker);
         }
 
         protected override void CreateCardDraws()
@@ -84,37 +73,24 @@ namespace Monopoly.TraditionalMonopoly
 
         private void BuildRailroads()
         {
-            var readingRailroad = new Railroad(5, "Reading Railroad", banker, propertyManager);
-            var pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", banker, propertyManager);
-            var bAndORailroad = new Railroad(25, "B. & O. Railroad", banker, propertyManager);
-            var shortLineRailroad = new Railroad(35, "Short Line Railroad", banker, propertyManager);
+            var railroads = new List<Railroad>();
+            var readingRailroad = new Railroad(5, "Reading Railroad", 200, 25, railroads);
+            var pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 200, 25, railroads);
+            var bAndORailroad = new Railroad(25, "B. & O. Railroad", 200, 25, railroads);
+            var shortLineRailroad = new Railroad(35, "Short Line Railroad", 200, 25, railroads);
 
-            titleDeeds.Add(new TitleDeed(readingRailroad, 200, 25, PropertyGroup.Railroad));
-            titleDeeds.Add(new TitleDeed(pennsylvaniaRailroad, 200, 25, PropertyGroup.Railroad));
-            titleDeeds.Add(new TitleDeed(bAndORailroad, 200, 25, PropertyGroup.Railroad));
-            titleDeeds.Add(new TitleDeed(shortLineRailroad, 200, 25, PropertyGroup.Railroad));
-
-            var railroads = new Property[]
-                {
-                   readingRailroad, pennsylvaniaRailroad, bAndORailroad, shortLineRailroad
-                };
-
+            railroads.AddRange(new Railroad[] { readingRailroad, pennsylvaniaRailroad, bAndORailroad, shortLineRailroad });
             AddLocations(railroads);
         }
 
         private void BuildUtilities()
         {
-            var electric = new Utility(12, "Electric Company", banker, propertyManager, Board.Dice);
-            var waterWorks = new Utility(28, "Water Works", banker, propertyManager, Board.Dice);
+            var utilities = new List<Utility>();
 
-            titleDeeds.Add(new TitleDeed(electric, 150, 0, PropertyGroup.Utility));
-            titleDeeds.Add(new TitleDeed(waterWorks, 150, 0, PropertyGroup.Utility));
+            var electric = new Utility(12, "Electric Company", 150, 0, utilities, Board.Dice);
+            var waterWorks = new Utility(28, "Water Works", 150, 0, utilities, Board.Dice);
 
-            var utilities = new Property[]
-                {
-                    electric, waterWorks
-                };
-
+            utilities.AddRange(new Utility[] { electric, waterWorks });
             AddLocations(utilities);
         }
 
@@ -132,141 +108,87 @@ namespace Monopoly.TraditionalMonopoly
 
         private void BuildPurpleStreets()
         {
-            var mediterraneanAve = new Street(1, "Mediterranean Avenue", banker, propertyManager);
-            var balticAve = new Street(3, "Baltic Avenue", banker, propertyManager);
+            var purpleStreets = new List<Street>();
+            var mediterraneanAve = new Street(1, "Mediterranean Avenue", 60, 2, purpleStreets);
+            var balticAve = new Street(3, "Baltic Avenue", 60, 4, purpleStreets);
 
-            titleDeeds.Add(new TitleDeed(mediterraneanAve, 60, 2, PropertyGroup.Purple));
-            titleDeeds.Add(new TitleDeed(balticAve, 60, 4, PropertyGroup.Purple));
-
-            var purpleStreets = new Property[]
-            {
-                mediterraneanAve, balticAve
-            };
-
+            purpleStreets.AddRange(new Street[] { mediterraneanAve, balticAve });
             AddLocations(purpleStreets);
         }
 
         private void BuildLightBlueStreets()
         {
-            var orientalAve = new Street(6, "Oriental Avenue", banker, propertyManager);
-            var vermontAve = new Street(8, "Vermont Avenue", banker, propertyManager);
-            var connecticutAve = new Street(9, "Connecticut Avenue", banker, propertyManager);
+            var lightBlueStreets = new List<Street>();
+            var orientalAve = new Street(6, "Oriental Avenue", 100, 6, lightBlueStreets);
+            var vermontAve = new Street(8, "Vermont Avenue", 100, 6, lightBlueStreets);
+            var connecticutAve = new Street(9, "Connecticut Avenue", 120, 8, lightBlueStreets);
 
-            titleDeeds.Add(new TitleDeed(orientalAve, 100, 6, PropertyGroup.LightBlue));
-            titleDeeds.Add(new TitleDeed(vermontAve, 100, 6, PropertyGroup.LightBlue));
-            titleDeeds.Add(new TitleDeed(connecticutAve, 120, 8, PropertyGroup.LightBlue));
-
-            var lightBlueStreets = new Property[]
-            {
-                orientalAve, vermontAve, connecticutAve
-            };
-
+            lightBlueStreets.AddRange(new Street[] { orientalAve, vermontAve, connecticutAve });
             AddLocations(lightBlueStreets);
         }
 
         private void BuildPinkStreets()
         {
-            var stCharlesPlace = new Street(11, "St. Charles Place", banker, propertyManager);
-            var statesAve = new Street(13, "States Avenue", banker, propertyManager);
-            var virginiaAve = new Street(14, "Virginia Avenue", banker, propertyManager);
+            var pinkStreets = new List<Street>();
+            var stCharlesPlace = new Street(11, "St. Charles Place", 140, 10, pinkStreets);
+            var statesAve = new Street(13, "States Avenue", 140, 10, pinkStreets);
+            var virginiaAve = new Street(14, "Virginia Avenue", 160, 12, pinkStreets);
 
-            titleDeeds.Add(new TitleDeed(stCharlesPlace, 140, 10, PropertyGroup.Pink));
-            titleDeeds.Add(new TitleDeed(statesAve, 140, 10, PropertyGroup.Pink));
-            titleDeeds.Add(new TitleDeed(virginiaAve, 160, 12, PropertyGroup.Pink));
-
-            var pinkStreets = new Property[]
-            {
-                stCharlesPlace, statesAve, virginiaAve
-            };
-
+            pinkStreets.AddRange(new Street[] { stCharlesPlace, statesAve, virginiaAve });
             AddLocations(pinkStreets);
         }
 
         private void BuildOrangeStreets()
         {
-            var stJamesPlace = new Street(16, "St. James Place", banker, propertyManager);
-            var tennesseeAve = new Street(18, "Tennessee Avenue", banker, propertyManager);
-            var newYorkAve = new Street(19, "New York Avenue", banker, propertyManager);
+            var orangeStreets = new List<Street>();
+            var stJamesPlace = new Street(16, "St. James Place", 180, 14, orangeStreets);
+            var tennesseeAve = new Street(18, "Tennessee Avenue", 180, 14, orangeStreets);
+            var newYorkAve = new Street(19, "New York Avenue", 200, 16, orangeStreets);
 
-            titleDeeds.Add(new TitleDeed(stJamesPlace, 180, 14, PropertyGroup.Orange));
-            titleDeeds.Add(new TitleDeed(tennesseeAve, 180, 14, PropertyGroup.Orange));
-            titleDeeds.Add(new TitleDeed(newYorkAve, 200, 16, PropertyGroup.Orange));
-
-            var orangeStreets = new Property[]
-            {
-                stJamesPlace, tennesseeAve, newYorkAve
-            };
-
+            orangeStreets.AddRange(new Street[] { stJamesPlace, tennesseeAve, newYorkAve });
             AddLocations(orangeStreets);
         }
 
         private void BuildRedStreets()
         {
-            var kentuckyAve = new Street(21, "Kentucky Avenue", banker, propertyManager);
-            var indianaAve = new Street(23, "Indiana Avenue", banker, propertyManager);
-            var illinoisAve = new Street(24, "Illinois Avenue", banker, propertyManager);
+            var redStreets = new List<Street>();
+            var kentuckyAve = new Street(21, "Kentucky Avenue", 220, 18, redStreets);
+            var indianaAve = new Street(23, "Indiana Avenue", 220, 18, redStreets);
+            var illinoisAve = new Street(24, "Illinois Avenue", 240, 20, redStreets);
 
-            titleDeeds.Add(new TitleDeed(kentuckyAve, 220, 18, PropertyGroup.Red));
-            titleDeeds.Add(new TitleDeed(indianaAve, 220, 18, PropertyGroup.Red));
-            titleDeeds.Add(new TitleDeed(illinoisAve, 240, 20, PropertyGroup.Red));
-
-            var redStreets = new Property[]
-            {
-                kentuckyAve, indianaAve, illinoisAve
-            };
-
+            redStreets.AddRange(new Street[] { kentuckyAve, indianaAve, illinoisAve });
             AddLocations(redStreets);
         }
 
         private void BuildYellowStreets()
         {
-            var atlanticAve = new Street(26, "Atlantic Avenue", banker, propertyManager);
-            var ventnorAve = new Street(27, "Ventnor Avenue", banker, propertyManager);
-            var marvinGardens = new Street(29, "Marvin Gardens", banker, propertyManager);
+            var yellowStreets = new List<Street>();
+            var atlanticAve = new Street(26, "Atlantic Avenue", 260, 22, yellowStreets);
+            var ventnorAve = new Street(27, "Ventnor Avenue", 260, 22, yellowStreets);
+            var marvinGardens = new Street(29, "Marvin Gardens", 280, 24, yellowStreets);
 
-            titleDeeds.Add(new TitleDeed(atlanticAve, 260, 22, PropertyGroup.Yellow));
-            titleDeeds.Add(new TitleDeed(ventnorAve, 260, 22, PropertyGroup.Yellow));
-            titleDeeds.Add(new TitleDeed(marvinGardens, 280, 24, PropertyGroup.Yellow));
-
-            var yellowStreets = new Property[]
-            {
-                atlanticAve, ventnorAve, marvinGardens
-            };
-
+            yellowStreets.AddRange(new Street[] { atlanticAve, ventnorAve, marvinGardens });
             AddLocations(yellowStreets);
         }
 
         private void BuildGreenStreets()
         {
-            var pacificAve = new Street(31, "Pacific Avenue", banker, propertyManager);
-            var northCarolinaAve = new Street(32, "North Carolina Avenue", banker, propertyManager);
-            var pennsylvaniaAve = new Street(34, "Pennsylvania Avenue", banker, propertyManager);
+            var greenStreets = new List<Street>();
+            var pacificAve = new Street(31, "Pacific Avenue", 300, 26, greenStreets);
+            var northCarolinaAve = new Street(32, "North Carolina Avenue", 300, 26, greenStreets);
+            var pennsylvaniaAve = new Street(34, "Pennsylvania Avenue", 320, 28, greenStreets);
 
-            titleDeeds.Add(new TitleDeed(pacificAve, 300, 26, PropertyGroup.Green));
-            titleDeeds.Add(new TitleDeed(northCarolinaAve, 300, 26, PropertyGroup.Green));
-            titleDeeds.Add(new TitleDeed(pennsylvaniaAve, 320, 28, PropertyGroup.Green));
-
-            var greenStreets = new Property[]
-            {
-                pacificAve, northCarolinaAve, pennsylvaniaAve
-            };
-
+            greenStreets.AddRange(new Street[]{ pacificAve, northCarolinaAve, pennsylvaniaAve });
             AddLocations(greenStreets);
         }
 
         private void BuildBlueStreets()
         {
-            var parkPlace = new Street(37, "Park Place", banker, propertyManager);
-            var boardwalk = new Street(39, "Boardwalk", banker, propertyManager);
+            var blueStreets = new List<Street>();
+            var parkPlace = new Street(37, "Park Place", 350, 35, blueStreets);
+            var boardwalk = new Street(39, "Boardwalk", 400, 50, blueStreets);
 
-            titleDeeds.Add(new TitleDeed(parkPlace, 350, 35, PropertyGroup.Blue));
-            titleDeeds.Add(new TitleDeed(boardwalk, 400, 50, PropertyGroup.Blue));
-
-            var blueStreets = new Property[]
-            {
-                parkPlace, boardwalk   
-            };
-
+            blueStreets.AddRange(new Street[] { parkPlace, boardwalk });
             AddLocations(blueStreets);
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Monopoly;
 using Monopoly.Locations.Propertys;
-using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests.PropertysTests
@@ -11,29 +10,24 @@ namespace MonopolyTests.LocationTests.PropertysTests
     {
         private IPlayer car;
         private IPlayer horse;
-        private Property readingRailroad;
-        private Property pennsylvaniaRailroad;
-        private Property boRailroad;
-        private Property shortLineRailroad;
+        private Railroad readingRailroad;
+        private Railroad pennsylvaniaRailroad;
+        private Railroad boRailroad;
+        private Railroad shortLineRailroad;
 
         [SetUp]
         public void SetUp()
         {
             car = new Player("car", 2000);
             horse = new Player("horse", 2000);
-            var titleDeeds = new List<TitleDeed>();
-            var propertyManager = new PropertyManager();
-            var banker = new TraditionalBanker(titleDeeds, propertyManager);
 
-            readingRailroad = new Railroad(5, "Reading Railroad", banker, propertyManager);
-            pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", banker, propertyManager);
-            boRailroad = new Railroad(25, "B. & O. Railroad", banker, propertyManager);
-            shortLineRailroad = new Railroad(35, "Short Line Railroad", banker, propertyManager);
+            var railroads = new List<Railroad>();
+            readingRailroad = new Railroad(5, "Reading Railroad", 250, 25, railroads); 
+            pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 250, 25, railroads);
+            boRailroad = new Railroad(25, "B. & O. Railroad", 250, 25, railroads);
+            shortLineRailroad = new Railroad(35, "Short Line Railroad", 250, 25, railroads);
 
-            titleDeeds.Add(new TitleDeed(readingRailroad, 250, 25, PropertyGroup.Railroad));
-            titleDeeds.Add(new TitleDeed(pennsylvaniaRailroad, 250, 25, PropertyGroup.Railroad));
-            titleDeeds.Add(new TitleDeed(boRailroad, 250, 25, PropertyGroup.Railroad));
-            titleDeeds.Add(new TitleDeed(shortLineRailroad, 250, 25, PropertyGroup.Railroad));
+            railroads.AddRange(new Railroad[] { readingRailroad, pennsylvaniaRailroad, boRailroad, shortLineRailroad });
         }
 
         [Test]

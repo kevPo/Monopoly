@@ -1,20 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Monopoly.Locations.Propertys
 {
     public class Street : Property
     {
-        public Street(Int32 index, String name, IBanker banker, IPropertyManager propertyManager)
-            : base(index, name, banker, propertyManager)
-        {}
+        private IEnumerable<Street> sisterStreets;
+
+        public Street(Int32 index, String name, Int32 cost, Int32 rent, IEnumerable<Street> sisterStreets)
+            : base(index, name, cost, rent)
+        {
+            this.sisterStreets = sisterStreets;
+        }
 
         protected override Int32 CalculateRent()
         {
-            var owner = propertyManager.GetOwnerFor(this);
-            var numberOfPropertiesInGroup = banker.NumberOfPropertiesInGroupFor(this);
-            var numberOfOwnedGroupProperties = propertyManager.GetNumberOfOwnedPropertiesInGroupFor(owner, this);
+            var numberOfPropertiesInGroup = sisterStreets.Count();
+            var ownedStreets = sisterStreets.Where(s => s.IsOwned());
+            var numberOfOwnedGroupProperties = ownedStreets.Count(s => s.Owner.Equals(Owner));
             var oneOwnerOwnsEntireGroup = numberOfPropertiesInGroup == numberOfOwnedGroupProperties;
-            var rent = banker.GetRentFor(this);
 
             if (oneOwnerOwnsEntireGroup)
                 return rent * 2;

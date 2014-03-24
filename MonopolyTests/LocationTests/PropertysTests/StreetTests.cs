@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Monopoly;
 using Monopoly.Locations.Propertys;
-using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests.PropertysTests
@@ -11,24 +10,20 @@ namespace MonopolyTests.LocationTests.PropertysTests
     {
         private IPlayer car;
         private IPlayer horse;
-        private Property baltic;
-        private Property mediterranean;
+        private Street baltic;
+        private Street mediterranean;
 
         [SetUp]
         public void SetUp()
         {
             car = new Player("car", 2000);
             horse = new Player("horse", 2000);
-            var titleDeeds = new List<TitleDeed>();
-            var propertyManager = new PropertyManager();
-            var banker = new TraditionalBanker(titleDeeds, propertyManager);
 
+            var purpleStreets = new List<Street>();
+            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, purpleStreets);
+            baltic = new Street(3, "Baltic Avenue", 60, 4, purpleStreets);
 
-            mediterranean = new Street(1, "Mediterranean Avenue", banker, propertyManager);
-            baltic = new Street(3, "Baltic Avenue", banker, propertyManager);
-
-            titleDeeds.Add(new TitleDeed(mediterranean, 60, 2, PropertyGroup.Purple));
-            titleDeeds.Add(new TitleDeed(baltic, 60, 4, PropertyGroup.Purple));
+            purpleStreets.AddRange(new Street[] { mediterranean, baltic });
         }
 
         [Test]

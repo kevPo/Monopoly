@@ -9,9 +9,6 @@ namespace MonopolyTests.Fakes
             Board = board;
         }
 
-        protected override void CreateBank()
-        {}
-
         protected override void CreatePropertyGroups()
         {}
 

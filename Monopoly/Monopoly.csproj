@@ -40,23 +40,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IJailRoster.cs" />
-    <Compile Include="IPropertyManager.cs" />
     <Compile Include="JailRoster.cs" />
-    <Compile Include="Locations\Propertys\PropertyGroup.cs" />
     <Compile Include="Locations\Propertys\Railroad.cs" />
     <Compile Include="Locations\Propertys\Street.cs" />
     <Compile Include="Locations\Propertys\Utility.cs" />
     <Compile Include="Locations\Taxable.cs" />
     <Compile Include="IDice.cs" />
     <Compile Include="IGameDriver.cs" />
-    <Compile Include="PropertyManager.cs" />
-    <Compile Include="TitleDeed.cs" />
-    <Compile Include="TraditionalMonopoly\TraditionalBanker.cs" />
     <Compile Include="Board\BoardFactory.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalDice.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalGameDriver.cs" />
-    <Compile Include="IBanker.cs" />
     <Compile Include="Board\IBoard.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="Board\GameBoard.cs" />

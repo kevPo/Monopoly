@@ -6,7 +6,6 @@
 
         public void Create()
         {
-            CreateBank();
             CreatePropertyGroups();
             CreateCardDraws();
             CreateTaxables();
@@ -15,7 +14,6 @@
             CreateFreeParking();  
         }
 
-        protected abstract void CreateBank();
         protected abstract void CreatePropertyGroups();
         protected abstract void CreateCardDraws();
         protected abstract void CreateTaxables();

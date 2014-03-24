@@ -69,7 +69,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Fakes\FakeBanker.cs" />
     <Compile Include="Fakes\FakeBoard.cs" />
     <Compile Include="Fakes\FakeBoardFactory.cs" />
     <Compile Include="Fakes\FakeDice.cs" />
@@ -85,8 +84,6 @@
     <Compile Include="LocationTests\PropertysTests\PropertyTests.cs" />
     <Compile Include="PlayerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyManagerTests.cs" />
-    <Compile Include="TraditionalMonopolyTests\TraditionalBankerTests.cs" />
     <Compile Include="TraditionalMonopolyTests\TraditionalBoardTests.cs" />
     <Compile Include="TraditionalMonopolyTests\TraditionalDiceTests.cs" />
   </ItemGroup>

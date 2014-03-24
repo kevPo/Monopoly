@@ -4,19 +4,26 @@ namespace Monopoly.Locations.Propertys
 {
     public abstract class Property : Location
     {
-        protected IBanker banker;
-        protected IPropertyManager propertyManager;
+        public IPlayer Owner { get; private set; }
 
-        public Property(Int32 index, String name, IBanker banker, IPropertyManager propertyManager)
+        protected Int32 rent;
+        private Int32 cost;
+
+        public Property(Int32 index, String name, Int32 cost, Int32 rent)
             : base(index, name)
         {
-            this.banker = banker;
-            this.propertyManager = propertyManager;
+            this.rent = rent;
+            this.cost = cost;
+        }
+
+        public Boolean IsOwned()
+        {
+            return Owner != null;
         }
 
         public override void LandedOnBy(IPlayer player)
         {
-            if (propertyManager.IsPropertyOwned(this))
+            if (IsOwned())
                 HandleLandingWhenOwned(player);
             else
                 SellPropertyToPlayerIfAffordable(player);
@@ -24,24 +31,24 @@ namespace Monopoly.Locations.Propertys
 
         private void SellPropertyToPlayerIfAffordable(IPlayer player)
         {
-            if (banker.PlayerCanAffordProperty(player, this))
-                banker.PropertyPurchasedBy(player, this);
+            if (cost < player.Balance)
+            {
+                player.RemoveMoney(cost);
+                Owner = player;
+            }
         }
 
         private void HandleLandingWhenOwned(IPlayer player)
         {
-            var owner = propertyManager.GetOwnerFor(this);
-
-            if (!owner.Equals(player))
-            {
-                ChargeRent(player, owner);
-            }
+            if (!player.Equals(Owner))
+                ChargeRent(player, Owner);
         }
 
         private void ChargeRent(IPlayer player, IPlayer owner)
         {
             var rent = CalculateRent();
-            banker.TransferMoney(player, owner, rent);
+            player.RemoveMoney(rent);
+            owner.ReceiveMoney(rent);
         }
 
         protected abstract Int32 CalculateRent();
