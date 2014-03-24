@@ -4,8 +4,7 @@ namespace Monopoly.Locations.Propertys
 {
     public abstract class Property : Location
     {
-        public IPlayer Owner { get; private set; }
-
+        protected IPlayer Owner { get; private set; }
         protected Int32 rent;
         private Int32 cost;
 
