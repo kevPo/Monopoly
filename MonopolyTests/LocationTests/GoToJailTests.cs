@@ -1,5 +1,6 @@
 ﻿using Monopoly;
 using Monopoly.Locations;
+using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests
@@ -13,7 +14,7 @@ namespace MonopolyTests.LocationTests
         {
             var player = new Player("Horse", 100);
             var jail = new Jail(10, "Jail/ Just Visiting");
-            var jailRoster = new JailRoster();
+            var jailRoster = new TraditionalJailRoster();
             var goToJail = new GoToJail(30, "Go To Jail", 10, jailRoster);
             goToJail.LandedOnBy(player);
             Assert.That(player.LocationIndex, Is.EqualTo(10));

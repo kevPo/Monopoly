@@ -8,30 +8,38 @@ namespace Monopoly.Board
     public class GameBoard : IBoard
     {
         public IDice Dice { get; private set; }
+        protected IEnumerable<IPlayer> players;
         private IJailRoster jailRoster;
-        private List<Location> locations;
+        private IEnumerable<Location> locations;
         
-        public GameBoard(IDice dice, IJailRoster jailRoster)
+        public GameBoard(IDice dice, IJailRoster jailRoster, IEnumerable<IPlayer> players, IEnumerable<Location> locations)
         {
             Dice = dice;
             this.jailRoster = jailRoster;
-            locations = new List<Location>();
+            this.locations = locations;
+            this.players = players;
+            ShufflePlayers();
+            PlaceAllPlayersOnStartingLocation();
         }
 
-        public Location GetStartingLocation()
+        private void ShufflePlayers()
         {
-            return locations.FirstOrDefault(l => l.Index == 0);
+            players = players.OrderBy(a => Guid.NewGuid()).ToList();
         }
 
-        public void AddLocation(Location location)
+        private void PlaceAllPlayersOnStartingLocation()
         {
-            if (locations.Count > 40)
-                throw new InvalidOperationException("Location can not be added.  Board is full.");
-
-            locations.Add(location);
+            foreach (var player in players)
+                player.LandedOn(0);
         }
 
-        public virtual void TakeTurnFor(IPlayer player)
+        public void PlayRound()
+        {
+            foreach (var player in players)
+                TakeTurnFor(player);
+        }
+
+        protected virtual void TakeTurnFor(IPlayer player)
         {
             var turn = new Turn(locations, jailRoster, player, Dice);
             turn.Take();

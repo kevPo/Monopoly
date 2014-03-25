@@ -1,4 +1,5 @@
 ﻿using Monopoly;
+using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
 namespace MonopolyTests
@@ -12,7 +13,7 @@ namespace MonopolyTests
         [SetUp]
         public void SetUp()
         {
-            jailRoster = new JailRoster();
+            jailRoster = new TraditionalJailRoster();
             player = new Player("horse", 200);
         }
 

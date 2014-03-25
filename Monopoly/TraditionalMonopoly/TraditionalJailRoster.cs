@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Monopoly
+namespace Monopoly.TraditionalMonopoly
 {
-    public class JailRoster : IJailRoster
+    public class TraditionalJailRoster : IJailRoster
     {
         private Dictionary<IPlayer, Int32> roster;
 
-        public JailRoster()
+        public TraditionalJailRoster()
         {
             roster = new Dictionary<IPlayer, Int32>();
         }

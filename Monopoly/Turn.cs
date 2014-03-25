@@ -25,11 +25,12 @@ namespace Monopoly
             this.player = player;
             this.dice = dice;
             rollCount = 0;
-            currentLocationIndex = player.LocationIndex;
         }
 
         public void Take()
         {
+            currentLocationIndex = player.LocationIndex;
+
             if (jailRoster.IsInJail(player))
                 TakeTurnForInmate();
             else

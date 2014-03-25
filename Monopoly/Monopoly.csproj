@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IJailRoster.cs" />
-    <Compile Include="JailRoster.cs" />
+    <Compile Include="TraditionalMonopoly\TraditionalJailRoster.cs" />
     <Compile Include="Locations\Propertys\Railroad.cs" />
     <Compile Include="Locations\Propertys\Street.cs" />
     <Compile Include="Locations\Propertys\Utility.cs" />

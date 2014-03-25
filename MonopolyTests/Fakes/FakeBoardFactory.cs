@@ -1,30 +1,33 @@
-﻿using Monopoly.Board;
+﻿using System;
+using System.Collections.Generic;
+using Monopoly;
+using Monopoly.Board;
+using Monopoly.Locations;
 
 namespace MonopolyTests.Fakes
 {
     public class FakeBoardFactory : BoardFactory
     {
-        public FakeBoardFactory(FakeBoard board)
+
+        public FakeBoardFactory(IDice dice, IEnumerable<IPlayer> players, IJailRoster jailRoster) 
+            : base (dice, players, jailRoster)
         {
-            Board = board;
+
         }
 
-        protected override void CreatePropertyGroups()
-        {}
+        protected override IEnumerable<Location> GetLocations()
+        {
+            return new Location[] { };
+        }
 
-        protected override void CreateCardDraws()
-        {}
+        protected override Int32 LuxuryTaxEquation(Int32 balance)
+        {
+            return 0;
+        }
 
-        protected override void CreateTaxables()
-        {}
-
-        protected override void CreateJailRelated()
-        {}
-
-        protected override void CreateGo()
-        {}
-
-        protected override void CreateFreeParking()
-        {}
+        protected override Int32 IncomeTaxEquation(Int32 balance)
+        {
+            return 0;
+        }
     }
 }

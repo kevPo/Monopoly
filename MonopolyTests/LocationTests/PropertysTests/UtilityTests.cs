@@ -30,12 +30,13 @@ namespace MonopolyTests.LocationTests.PropertysTests
         }
 
         [Test]
-        public void TestUtilityRentWhenOneIsOwnedIss4TimesDiceRoll()
+        public void TestUtilityRentWhenOneIsOwnedIs4TimesDiceRoll()
         {
             electric.LandedOnBy(car);
             electric.LandedOnBy(horse);
 
             Assert.That(horse.Balance, Is.EqualTo(1960));
+            Assert.That(car.Balance, Is.EqualTo(1890));
         }
 
         [Test]
@@ -46,6 +47,7 @@ namespace MonopolyTests.LocationTests.PropertysTests
             electric.LandedOnBy(horse);
 
             Assert.That(horse.Balance, Is.EqualTo(1900));
+            Assert.That(car.Balance, Is.EqualTo(1800));
         }
     }
 }

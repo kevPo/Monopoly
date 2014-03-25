@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Monopoly;
 using Monopoly.Board;
+using Monopoly.Locations;
 
 namespace MonopolyTests.Fakes
 {
@@ -10,14 +11,14 @@ namespace MonopolyTests.Fakes
         public String Turns { get; private set; }
         public Dictionary<IPlayer, Int32> PlayerTurns { get; private set; }
 
-        public FakeBoard(IDice dice, IJailRoster jailRoster)
-            : base(dice, jailRoster)
+        public FakeBoard(IDice dice, IEnumerable<IPlayer> players, IJailRoster jailRoster)
+            : base(dice, jailRoster, players, new Location[]{ })
         {
             Turns = String.Empty;
             PlayerTurns = new Dictionary<IPlayer, Int32>();
         }
 
-        public override void TakeTurnFor(IPlayer player)
+        protected override void TakeTurnFor(IPlayer player)
         {
             Turns += player.Name;
 
@@ -29,6 +30,11 @@ namespace MonopolyTests.Fakes
             {
                 PlayerTurns.Add(player, 1);
             }
+        }
+
+        public IEnumerable<IPlayer> GetPlayers()
+        {
+            return players;
         }
     }
 }

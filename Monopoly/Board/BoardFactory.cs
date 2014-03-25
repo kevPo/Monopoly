@@ -1,24 +1,29 @@
-﻿namespace Monopoly.Board
+﻿using System;
+using System.Collections.Generic;
+using Monopoly.Locations;
+namespace Monopoly.Board
 {
     public abstract class BoardFactory
     {
-        public GameBoard Board { get; protected set; }
+        protected IBoard board;
+        protected IDice dice;
+        protected IEnumerable<IPlayer> players;
+        protected IJailRoster jailRoster;
 
-        public void Create()
+        public BoardFactory(IDice dice, IEnumerable<IPlayer> players, IJailRoster jailRoster)
         {
-            CreatePropertyGroups();
-            CreateCardDraws();
-            CreateTaxables();
-            CreateJailRelated();
-            CreateGo();
-            CreateFreeParking();  
+            this.dice = dice;
+            this.players = players;
+            this.jailRoster = jailRoster;
         }
 
-        protected abstract void CreatePropertyGroups();
-        protected abstract void CreateCardDraws();
-        protected abstract void CreateTaxables();
-        protected abstract void CreateJailRelated();
-        protected abstract void CreateGo();
-        protected abstract void CreateFreeParking();
+        public IBoard GetBoard()
+        {
+            return new GameBoard(dice, jailRoster, players, GetLocations());            
+        }
+
+        protected abstract IEnumerable<Location> GetLocations();
+        protected abstract Int32 LuxuryTaxEquation(Int32 balance);
+        protected abstract Int32 IncomeTaxEquation(Int32 balance);
     }
 }
