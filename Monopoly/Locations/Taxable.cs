@@ -1,5 +1,4 @@
 ﻿using System;
-using Monopoly.Locations;
 
 namespace Monopoly.Locations
 {
@@ -7,15 +6,15 @@ namespace Monopoly.Locations
     {
         private Func<Int32, Int32> taxEquation;
 
-        public Taxable(Int32 index, String name, Func<Int32, Int32> taxEquation) : base(index, name)
+        public Taxable(Int32 index, String name, IPlayerRepository playerRepository, Func<Int32, Int32> taxEquation) 
+            : base(index, name, playerRepository)
         {
             this.taxEquation = taxEquation;
         }
 
-        public override void LandedOnBy(IPlayer player)
+        public override void LandedOnBy(Int32 playerId)
         {
-            var taxes = taxEquation(player.Balance);
-            player.RemoveMoney(taxes);
+            playerRepository.ChargeTaxesTo(playerId, taxEquation);
         }
     }
 }

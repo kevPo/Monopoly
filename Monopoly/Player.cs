@@ -5,14 +5,14 @@ namespace Monopoly
 {
     public class Player : IPlayer
     {
-        public Guid Id { get; private set; }
-        public Int32 LocationIndex { get; private set; }
+        public Int32 Id { get; private set; }
+        public Int32 LocationIndex { get; set; }
         public String Name { get; private set; }
         public Int32 Balance { get; private set; }
 
-        public Player(String name, Int32 balance)
+        public Player(Int32 id, String name, Int32 balance)
         {
-            Id = Guid.NewGuid();
+            Id = id;
             Name = name;
             Balance = balance;
         }
@@ -25,11 +25,6 @@ namespace Monopoly
         public void ReceiveMoney(Int32 dollars)
         {
             Balance += dollars;
-        }
-
-        public void LandedOn(Int32 location)
-        {
-            LocationIndex = location;
         }
 
         public override Boolean Equals(object other)

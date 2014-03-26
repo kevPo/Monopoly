@@ -4,50 +4,46 @@ namespace Monopoly.Locations.Propertys
 {
     public abstract class Property : Location
     {
-        protected IPlayer Owner { get; private set; }
+        protected Int32 ownerId { get; private set; }
+        protected Boolean isOwned;
         protected Int32 rent;
         private Int32 cost;
 
-        public Property(Int32 index, String name, Int32 cost, Int32 rent)
-            : base(index, name)
+        public Property(Int32 index, String name, Int32 cost, Int32 rent, IPlayerRepository playerRepository)
+            : base(index, name, playerRepository)
         {
             this.rent = rent;
             this.cost = cost;
+            isOwned = false;
         }
 
-        public Boolean IsOwned()
+        public override void LandedOnBy(Int32 playerId)
         {
-            return Owner != null;
-        }
-
-        public override void LandedOnBy(IPlayer player)
-        {
-            if (IsOwned())
-                HandleLandingWhenOwned(player);
+            if (isOwned)
+                HandleLandingWhenOwned(playerId);
             else
-                SellPropertyToPlayerIfAffordable(player);
+                SellPropertyToPlayerIfAffordable(playerId);
         }
 
-        private void SellPropertyToPlayerIfAffordable(IPlayer player)
+        private void SellPropertyToPlayerIfAffordable(Int32 playerId)
         {
-            if (cost < player.Balance)
+            if (cost < playerRepository.GetBalanceFor(playerId))
             {
-                player.RemoveMoney(cost);
-                Owner = player;
+                playerRepository.RemoveMoneyFrom(playerId, cost);
+                ownerId = playerId;
+                isOwned = true;
             }
         }
 
-        private void HandleLandingWhenOwned(IPlayer player)
+        private void HandleLandingWhenOwned(Int32 playerId)
         {
-            if (!player.Equals(Owner))
-                ChargeRent(player, Owner);
+            if (playerId != ownerId)
+                ChargeRent(playerId, ownerId);
         }
 
-        private void ChargeRent(IPlayer player, IPlayer owner)
+        private void ChargeRent(Int32 playerId, Int32 ownerId)
         {
-            var rent = CalculateRent();
-            player.RemoveMoney(rent);
-            owner.ReceiveMoney(rent);
+            playerRepository.TransferMoney(playerId, ownerId, CalculateRent());
         }
 
         protected abstract Int32 CalculateRent();

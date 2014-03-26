@@ -9,9 +9,9 @@ namespace Monopoly.Locations.Propertys
         private IEnumerable<Utility> utilities;
         private IDice dice;
 
-        public Utility(Int32 index, String name, Int32 cost, Int32 rent,
+        public Utility(Int32 index, String name, Int32 cost, Int32 rent, IPlayerRepository playerRepository,
                        IEnumerable<Utility> utilities, IDice dice)
-            : base(index, name, cost, rent)
+            : base(index, name, cost, rent, playerRepository)
         {
             this.utilities = utilities;
             this.dice = dice;
@@ -19,7 +19,7 @@ namespace Monopoly.Locations.Propertys
 
         protected override Int32 CalculateRent()
         {
-            var utilitiesOwned = utilities.Count(u => u.IsOwned());
+            var utilitiesOwned = utilities.Count(u => u.isOwned);
 
             if (utilitiesOwned == 1)
                 return 4 * dice.GetCurrentRoll();

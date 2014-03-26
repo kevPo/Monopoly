@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Monopoly.Locations;
 
 namespace Monopoly.Board
@@ -8,29 +6,28 @@ namespace Monopoly.Board
     public class GameBoard : IBoard
     {
         public IDice Dice { get; private set; }
+        protected IPlayerRepository playerRepository;
         protected IEnumerable<IPlayer> players;
         private IJailRoster jailRoster;
         private IEnumerable<Location> locations;
+        private Turn turn;
         
-        public GameBoard(IDice dice, IJailRoster jailRoster, IEnumerable<IPlayer> players, IEnumerable<Location> locations)
+        public GameBoard(IDice dice, IJailRoster jailRoster, 
+                         IPlayerRepository playerRepository, IEnumerable<Location> locations)
         {
             Dice = dice;
             this.jailRoster = jailRoster;
             this.locations = locations;
-            this.players = players;
-            ShufflePlayers();
+            this.playerRepository = playerRepository;
+            turn = new Turn(locations, jailRoster, playerRepository, Dice);
+            playerRepository.ShufflePlayers();
             PlaceAllPlayersOnStartingLocation();
-        }
-
-        private void ShufflePlayers()
-        {
-            players = players.OrderBy(a => Guid.NewGuid()).ToList();
+            players = playerRepository.GetPlayers();
         }
 
         private void PlaceAllPlayersOnStartingLocation()
         {
-            foreach (var player in players)
-                player.LandedOn(0);
+            playerRepository.SetAllPlayerLocationsTo(0);
         }
 
         public void PlayRound()
@@ -41,8 +38,7 @@ namespace Monopoly.Board
 
         protected virtual void TakeTurnFor(IPlayer player)
         {
-            var turn = new Turn(locations, jailRoster, player, Dice);
-            turn.Take();
+            turn.TakeFor(player.Id);
         }
     }
 }

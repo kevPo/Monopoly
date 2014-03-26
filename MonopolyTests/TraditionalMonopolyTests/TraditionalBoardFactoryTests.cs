@@ -13,7 +13,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [SetUp]
         public void SetUp()
         {
-            fakeBoardFactory = new FakeTraditionalBoardFactory(new TraditionalDice(), new IPlayer[]{}, new TraditionalJailRoster());
+            fakeBoardFactory = new FakeTraditionalBoardFactory(new TraditionalDice(), new FakePlayerRepository(), new TraditionalJailRoster());
         }
 
         [Test]

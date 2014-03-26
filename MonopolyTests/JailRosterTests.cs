@@ -14,70 +14,70 @@ namespace MonopolyTests
         public void SetUp()
         {
             jailRoster = new TraditionalJailRoster();
-            player = new Player("horse", 200);
+            player = new Player(0, "horse", 200);
         }
 
         [Test]
         public void TestJailRosterReturnsTrueWhenPlayerIsInJail()
         {
-            jailRoster.Add(player);
-            Assert.That(jailRoster.IsInJail(player), Is.True);
+            jailRoster.Add(player.Id);
+            Assert.That(jailRoster.IsInJail(player.Id), Is.True);
         }
 
         [Test]
         public void TestJailRosterReturnsFalseWhenPlayerIsNotInJail()
         {
-            var car = new Player("car", 2000);
-            Assert.That(jailRoster.IsInJail(car), Is.False);
+            var car = new Player(0, "car", 2000);
+            Assert.That(jailRoster.IsInJail(car.Id), Is.False);
         }
 
         [Test]
         public void TestAddTurnForPlayerIncrementsTurnsForPlayer()
         {
-            jailRoster.Add(player);
-            jailRoster.AddTurnFor(player);
+            jailRoster.Add(player.Id);
+            jailRoster.AddTurnFor(player.Id);
 
-            Assert.That(jailRoster.GetTurnsFor(player), Is.EqualTo(1));
+            Assert.That(jailRoster.GetTurnsFor(player.Id), Is.EqualTo(1));
         }
 
         [Test]
         public void TestAdd3TurnsThenGetTurnsForPlayerReturns3()
         {
-            jailRoster.Add(player);
-            jailRoster.AddTurnFor(player);
-            jailRoster.AddTurnFor(player);
-            jailRoster.AddTurnFor(player);
-            Assert.That(jailRoster.GetTurnsFor(player), Is.EqualTo(3));
+            jailRoster.Add(player.Id);
+            jailRoster.AddTurnFor(player.Id);
+            jailRoster.AddTurnFor(player.Id);
+            jailRoster.AddTurnFor(player.Id);
+            Assert.That(jailRoster.GetTurnsFor(player.Id), Is.EqualTo(3));
         }
 
         [Test]
         public void TestTwoPlayersInJailAndGetTurnsReturnsCorrectly()
         {
-            var player2 = new Player("car", 200);
-            jailRoster.Add(player);
-            jailRoster.Add(player2);
-            jailRoster.AddTurnFor(player);
-            jailRoster.AddTurnFor(player);
-            jailRoster.AddTurnFor(player2);
+            var player2 = new Player(1, "car", 200);
+            jailRoster.Add(player.Id);
+            jailRoster.Add(player2.Id);
+            jailRoster.AddTurnFor(player.Id);
+            jailRoster.AddTurnFor(player.Id);
+            jailRoster.AddTurnFor(player2.Id);
 
-            Assert.That(jailRoster.GetTurnsFor(player), Is.EqualTo(2));
-            Assert.That(jailRoster.GetTurnsFor(player2), Is.EqualTo(1));
+            Assert.That(jailRoster.GetTurnsFor(player.Id), Is.EqualTo(2));
+            Assert.That(jailRoster.GetTurnsFor(player2.Id), Is.EqualTo(1));
         }
 
         [Test]
         public void TestRemovingPlayerActuallRemovesPlayer()
         {
-            jailRoster.Add(player);
-            Assert.That(jailRoster.IsInJail(player), Is.True);
+            jailRoster.Add(player.Id);
+            Assert.That(jailRoster.IsInJail(player.Id), Is.True);
 
-            jailRoster.Remove(player);
-            Assert.That(jailRoster.IsInJail(player), Is.False);
+            jailRoster.Remove(player.Id);
+            Assert.That(jailRoster.IsInJail(player.Id), Is.False);
         }
 
         [Test]
         public void TestRemovingPlayerThatIsNotInJailDoesNotThrowException()
         {
-            jailRoster.Remove(player);
+            jailRoster.Remove(player.Id);
         }
     }
 }

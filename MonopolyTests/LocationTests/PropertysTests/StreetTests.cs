@@ -16,12 +16,12 @@ namespace MonopolyTests.LocationTests.PropertysTests
         [SetUp]
         public void SetUp()
         {
-            car = new Player("car", 2000);
-            horse = new Player("horse", 2000);
-
+            car = new Player(0, "car", 2000);
+            horse = new Player(1, "horse", 2000);
+            var playerRepository = new PlayerRepository(new[] { car, horse });
             var purpleStreets = new List<Street>();
-            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, purpleStreets);
-            baltic = new Street(3, "Baltic Avenue", 60, 4, purpleStreets);
+            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, playerRepository, purpleStreets);
+            baltic = new Street(3, "Baltic Avenue", 60, 4, playerRepository, purpleStreets);
 
             purpleStreets.AddRange(new Street[] { mediterranean, baltic });
         }
@@ -29,19 +29,19 @@ namespace MonopolyTests.LocationTests.PropertysTests
         [Test]
         public void TestPlayerPaysRentValueWhenNotAllInGroupAreOwned()
         {
-            baltic.LandedOnBy(car);
+            baltic.LandedOnBy(car.Id);
 
-            baltic.LandedOnBy(horse);
+            baltic.LandedOnBy(horse.Id);
             Assert.That(horse.Balance, Is.EqualTo(1996));
         }
 
         [Test]
         public void TestPlayerPaysTwiceTheRentValueWhenOwnerOwnsGroup()
         {
-            baltic.LandedOnBy(car);
-            mediterranean.LandedOnBy(car);
+            baltic.LandedOnBy(car.Id);
+            mediterranean.LandedOnBy(car.Id);
 
-            baltic.LandedOnBy(horse);
+            baltic.LandedOnBy(horse.Id);
             Assert.That(horse.Balance, Is.EqualTo(1992));
         }
     }

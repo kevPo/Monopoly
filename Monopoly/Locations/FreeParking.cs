@@ -3,10 +3,11 @@ namespace Monopoly.Locations
 {
     public class FreeParking : Location
     {
-        public FreeParking(Int32 index, String name) : base(index, name)
+        public FreeParking(Int32 index, String name, IPlayerRepository playerRepository)
+            : base(index, name, playerRepository)
         { }
 
-        public override void LandedOnBy(IPlayer player)
+        public override void LandedOnBy(Int32 playerId)
         { }
     }
 }

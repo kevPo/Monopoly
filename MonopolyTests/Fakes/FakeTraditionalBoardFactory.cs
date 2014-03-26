@@ -8,8 +8,8 @@ namespace MonopolyTests.Fakes
 {
     public class FakeTraditionalBoardFactory : TraditionalBoardFactory
     {
-        public FakeTraditionalBoardFactory(IDice dice, IEnumerable<IPlayer> players, TraditionalJailRoster jailRoster)
-            : base(dice, players, jailRoster)
+        public FakeTraditionalBoardFactory(IDice dice, IPlayerRepository playerRepository, TraditionalJailRoster jailRoster)
+            : base(dice, playerRepository, jailRoster)
         { }
 
         public Int32 GetIncomeTaxResult(Int32 balance)

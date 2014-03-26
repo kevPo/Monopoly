@@ -11,13 +11,13 @@ namespace MonopolyTests
         [SetUp]
         public void SetUp()
         {
-            player = new Player("Horse", 0);
+            player = new Player(0, "Horse", 0);
         }
 
         [Test]
         public void TestPlayerRemoveMoneyDecrementsBalanceByGivenAmount()
         {
-            var horse = new Player("horse", 200);
+            var horse = new Player(0, "horse", 200);
             horse.RemoveMoney(75);
             Assert.That(horse.Balance, Is.EqualTo(125));
         }
@@ -32,14 +32,14 @@ namespace MonopolyTests
         [Test]
         public void TestLandedOnSetsLocation()
         {
-            player.LandedOn(0);
+            player.LocationIndex = 0;
             Assert.That(player.LocationIndex, Is.EqualTo(0));
         }
 
         [Test]
         public void TestHorsePlayerDoesNotEqualCarPlayer()
         {
-            var car = new Player("Car", 0);
+            var car = new Player(0, "Car", 0);
             Assert.That(player.Equals(car), Is.False);
         }
 

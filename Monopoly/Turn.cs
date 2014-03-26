@@ -13,25 +13,28 @@ namespace Monopoly
 
         private IEnumerable<Location> locations;
         private IJailRoster jailRoster;
-        private IPlayer player;
+        private IPlayerRepository playerRepository;
         private IDice dice;
         private Int32 rollCount;
+        private Int32 playerId;
         private Int32 currentLocationIndex;
 
-        public Turn(IEnumerable<Location> locations, IJailRoster jailRoster, IPlayer player, IDice dice)
+        public Turn(IEnumerable<Location> locations, IJailRoster jailRoster, 
+                    IPlayerRepository playerRepository, IDice dice)
         {
             this.locations = locations;
             this.jailRoster = jailRoster;
-            this.player = player;
+            this.playerRepository = playerRepository;
             this.dice = dice;
-            rollCount = 0;
         }
 
-        public void Take()
+        public void TakeFor(Int32 playerId)
         {
-            currentLocationIndex = player.LocationIndex;
+            rollCount = 0;
+            currentLocationIndex = playerRepository.GetLocationIndexFor(playerId);
+            this.playerId = playerId;
 
-            if (jailRoster.IsInJail(player))
+            if (jailRoster.IsInJail(playerId))
                 TakeTurnForInmate();
             else
                 TakeTurnForNormalPlayer();
@@ -49,18 +52,18 @@ namespace Monopoly
 
         private void SetJailedPlayerFreeAndMoveToDestination()
         {
-            jailRoster.Remove(player);
+            jailRoster.Remove(playerId);
             SendPlayerToDestination();
         }
 
         private void HandleNonDoubleRollForJailedPlayer()
         {
-            var playerHasReachedMaxTurnsInJail = jailRoster.GetTurnsFor(player) + 1 == maxTurnsInJail;
+            var playerHasReachedMaxTurnsInJail = jailRoster.GetTurnsFor(playerId) + 1 == maxTurnsInJail;
             
             if (playerHasReachedMaxTurnsInJail)
                 ChargePlayerFineAndMoveToDestination();
             else
-                jailRoster.AddTurnFor(player);
+                jailRoster.AddTurnFor(playerId);
         }
 
         private void ChargePlayerFineAndMoveToDestination()
@@ -71,8 +74,8 @@ namespace Monopoly
 
         private void CollectFineAndRemovePlayerFromJail()
         {
-            player.RemoveMoney(jailFine);
-            jailRoster.Remove(player);
+            playerRepository.RemoveMoneyFrom(playerId, jailFine);
+            jailRoster.Remove(playerId);
         }
 
         private void TakeTurnForNormalPlayer()
@@ -82,7 +85,7 @@ namespace Monopoly
                 dice.Roll();
                 rollCount++;
                 MovePlayer();
-            } while (dice.RollWasDouble() && rollCount < maximumRolls && !jailRoster.IsInJail(player));
+            } while (dice.RollWasDouble() && rollCount < maximumRolls && !jailRoster.IsInJail(playerId));
         }
 
         private void MovePlayer()
@@ -95,8 +98,8 @@ namespace Monopoly
 
         private void SendPlayerToJail()
         {
-            player.LandedOn(10);
-            jailRoster.Add(player);
+            playerRepository.SetLocationIndexFor(playerId, 10);
+            jailRoster.Add(playerId);
         }
 
         private void SendPlayerToDestination()
@@ -120,13 +123,13 @@ namespace Monopoly
             if (locationsPassed == roll)
                 SetPlayerOnDestination(location);
             else
-                location.PassedOverBy(player);
+                location.PassedOverBy(playerId);
         }
 
         private void SetPlayerOnDestination(Location location)
         {
-            player.LandedOn(location.Index);
-            location.LandedOnBy(player);
+            playerRepository.SetLocationIndexFor(playerId, location.Index);
+            location.LandedOnBy(playerId);
         }
     }
 }

@@ -14,8 +14,8 @@ namespace MonopolyTests
         [SetUp]
         public void SetUp()
         {
-            horse = new Player("Horse", 2000);
-            car = new Player("Car", 2000);
+            horse = new Player(0, "Horse", 2000);
+            car = new Player(1, "Car", 2000);
             playerRepository = new PlayerRepository(new IPlayer[] { horse, car });
         }
 
@@ -42,15 +42,33 @@ namespace MonopolyTests
         [Test]
         public void TestShufflePlayersReordersPlayers()
         {
-            var dog = new Player("Dog", 2000);
-            var thimble = new Player("Thimble", 2000);
-            var shoe = new Player("Shoe", 2000);
+            var dog = new Player(2, "Dog", 2000);
+            var thimble = new Player(3, "Thimble", 2000);
+            var shoe = new Player(4, "Shoe", 2000);
             playerRepository = new PlayerRepository(new IPlayer[] { horse, car, dog, thimble, shoe });
             var orderedPlayers = playerRepository.GetPlayers();
             playerRepository.ShufflePlayers();
             var shuffledPlayers = playerRepository.GetPlayers();
 
             Assert.That(orderedPlayers.Equals(shuffledPlayers), Is.False);
+        }
+
+        [Test]
+        public void TestSetAllPlayerLocationsToZeroSetsAllPlayersLocationsToZero()
+        {
+            playerRepository.SetAllPlayerLocationsTo(0);
+            var players = playerRepository.GetPlayers();
+
+            foreach (var player in players)
+                Assert.That(player.LocationIndex, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void TestGetLocationIndexForPlayerAtThreeReturnsThree()
+        {
+            playerRepository.SetAllPlayerLocationsTo(3);
+
+            Assert.That(playerRepository.GetLocationIndexFor(1), Is.EqualTo(3));
         }
     }
 }

@@ -14,15 +14,17 @@ namespace MonopolyTests
         private TraditionalJailRoster jailRoster;
         private IEnumerable<Location> locations;
         private IPlayer player;
+        private IPlayerRepository playerRepository;
 
         [SetUp]
         public void SetUp()
         {
             jailRoster = new TraditionalJailRoster();
-            var boardFactory = new FakeTraditionalBoardFactory(new TraditionalDice(), new IPlayer[] { }, jailRoster);
+            player = new Player(0, "horse", 2000);
+            playerRepository = new PlayerRepository(new IPlayer[] { player });
+            var boardFactory = new FakeTraditionalBoardFactory(new TraditionalDice(), playerRepository, jailRoster);
             locations = boardFactory.GetTraditionalLocations();
-            player = new Player("horse", 2000);
-            player.LandedOn(0);
+            player.LocationIndex = 0;
         }
 
         [Test]
@@ -85,8 +87,8 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(4, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
 
             // Player lands on Oriental Ave and buys it for $100 on first roll
             Assert.That(player.Balance, Is.EqualTo(1900));
@@ -103,8 +105,8 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(4, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
 
             // Player should land on and buy Oriental (6) for $100
             // and St. James (16) for $180.
@@ -123,8 +125,8 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(4, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
 
             // Player should land on and buy Oriental (6) for $100
             // and St. James (16) for $180.
@@ -143,8 +145,8 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(4, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
 
             Assert.That(player.Balance, Is.EqualTo(2000));
             Assert.That(player.LocationIndex, Is.EqualTo(10));
@@ -161,8 +163,8 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(4, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
 
             Assert.That(player.Balance, Is.EqualTo(2125));
             Assert.That(player.LocationIndex, Is.EqualTo(10));
@@ -172,10 +174,9 @@ namespace MonopolyTests
         public void TestPlayerThrowsNonDoublesLandsOnGoToJailWithBalanceNotChangingAndTurnIsOver()
         {
             var dice = new FakeDice();
-            var turn = new Turn(locations, jailRoster, player, dice);
-            player.LandedOn(0);
+            var turn = new Turn(locations, jailRoster, playerRepository, dice);
             dice.NextRoll = 30;
-            turn.Take();
+            turn.TakeFor(player.Id);
 
             Assert.That(player.Balance, Is.EqualTo(2000));
             Assert.That(player.LocationIndex, Is.EqualTo(10));
@@ -190,8 +191,8 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(4, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
 
             Assert.That(player.Balance, Is.EqualTo(2000));
             Assert.That(player.LocationIndex, Is.EqualTo(10));
@@ -207,11 +208,11 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(5, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
             Assert.That(player.LocationIndex, Is.EqualTo(10));
 
-            turn.Take();
+            turn.TakeFor(player.Id);
             Assert.That(player.LocationIndex, Is.EqualTo(20));
             Assert.That(player.Balance, Is.EqualTo(2000));
         }
@@ -227,10 +228,10 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(5, "")
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
-            turn.Take();
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
+            turn.TakeFor(player.Id);
+            turn.TakeFor(player.Id);
 
             Assert.That(player.LocationIndex, Is.EqualTo(20));
             Assert.That(player.Balance, Is.EqualTo(2000));
@@ -248,11 +249,11 @@ namespace MonopolyTests
                 Tuple.Create<Int32, String>(10, ""),
             };
             var doubleDice = new FakeDiceDoublesRoller(rolls);
-            var turn = new Turn(locations, jailRoster, player, doubleDice);
-            turn.Take();
-            turn.Take();
-            turn.Take();
-            turn.Take();
+            var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+            turn.TakeFor(player.Id);
+            turn.TakeFor(player.Id);
+            turn.TakeFor(player.Id);
+            turn.TakeFor(player.Id);
             
             Assert.That(player.LocationIndex, Is.EqualTo(20));
             Assert.That(player.Balance, Is.EqualTo(2000));
@@ -270,9 +271,9 @@ namespace MonopolyTests
         private void PlayerTakesTurnRollingA(Int32 roll)
         {
             var dice = new FakeDice();
-            var turn = new Turn(locations, jailRoster, player, dice);
+            var turn = new Turn(locations, jailRoster, playerRepository, dice);
             dice.NextRoll = roll;
-            turn.Take();
+            turn.TakeFor(player.Id);
         }
 
         [Test]
@@ -307,9 +308,9 @@ namespace MonopolyTests
         //        Tuple.Create<Int32, String>(4, "")
         //    };
         //    var doubleDice = new FakeDiceDoublesRoller(rolls);
-        //    var turn = new Turn(locations, jailRoster, player, doubleDice);
-        //    turn.Take();
-        //    turn.Take();
+        //    var turn = new Turn(locations, jailRoster, playerRepository, doubleDice);
+        //    turn.TakeFor(player.Id);
+        //    turn.TakeFor(player.Id);
 
         //    Assert.That(player.Balance, Is.EqualTo(1750));
         //    Assert.That(player.Location.Index, Is.EqualTo(25));

@@ -12,14 +12,15 @@ namespace MonopolyTests.LocationTests
         [Test]
         public void TestLandedOnSendsPlayerToJail()
         {
-            var player = new Player("Horse", 100);
-            var jail = new Jail(10, "Jail/ Just Visiting");
+            var player = new Player(0, "Horse", 100);
+            var playerRepository = new PlayerRepository(new[] { player });
+            var jail = new Jail(10, "Jail/ Just Visiting", playerRepository);
             var jailRoster = new TraditionalJailRoster();
-            var goToJail = new GoToJail(30, "Go To Jail", 10, jailRoster);
-            goToJail.LandedOnBy(player);
+            var goToJail = new GoToJail(30, "Go To Jail", 10, playerRepository, jailRoster);
+            goToJail.LandedOnBy(player.Id);
             Assert.That(player.LocationIndex, Is.EqualTo(10));
             Assert.That(player.Balance, Is.EqualTo(100));
-            Assert.That(jailRoster.IsInJail(player), Is.True);
+            Assert.That(jailRoster.IsInJail(player.Id), Is.True);
         }
     }
 }

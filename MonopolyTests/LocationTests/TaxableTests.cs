@@ -14,8 +14,9 @@ namespace MonopolyTests.LocationTests
         [SetUp]
         public void SetUp()
         {
-            player = new Player("Horse", 2000);
-            incomeTax = new Taxable(4, "Income Tax", TestTaxFunction);
+            player = new Player(0, "Horse", 2000);
+            var playerRepository = new PlayerRepository(new IPlayer[] { player });
+            incomeTax = new Taxable(4, "Income Tax", playerRepository, TestTaxFunction);
         }
 
         private Int32 TestTaxFunction(Int32 balance)
@@ -26,14 +27,14 @@ namespace MonopolyTests.LocationTests
         [Test]
         public void TestPlayerPaysTaxBasedOnTaxEquation()
         {
-            incomeTax.LandedOnBy(player);
+            incomeTax.LandedOnBy(player.Id);
             Assert.That(player.Balance, Is.EqualTo(1990));
         }
 
         [Test]
         public void TestPlayerPassesOverIncomeTaxAndNothingHappens()
         {
-            incomeTax.PassedOverBy(player);
+            incomeTax.PassedOverBy(player.Id);
             Assert.That(player.Balance, Is.EqualTo(2000));
         }
     }

@@ -6,38 +6,38 @@ namespace Monopoly.TraditionalMonopoly
 {
     public class TraditionalJailRoster : IJailRoster
     {
-        private Dictionary<IPlayer, Int32> roster;
+        private Dictionary<Int32, Int32> roster;
 
         public TraditionalJailRoster()
         {
-            roster = new Dictionary<IPlayer, Int32>();
+            roster = new Dictionary<Int32, Int32>();
         }
 
-        public Boolean IsInJail(IPlayer player)
+        public Boolean IsInJail(Int32 playerId)
         {
-            return roster.Any(p => p.Key.Equals(player));
+            return roster.Any(p => p.Key.Equals(playerId));
         }
 
-        public void Add(IPlayer player)
+        public void Add(Int32 playerId)
         {
-            roster.Add(player, 0);
+            roster.Add(playerId, 0);
         }
 
-        public void AddTurnFor(IPlayer player)
+        public void AddTurnFor(Int32 playerId)
         {
-            var currentTurns = roster.First(p => p.Key.Equals(player)).Value;
-            roster.Remove(player);
-            roster.Add(player, currentTurns + 1);
+            var currentTurns = roster.First(p => p.Key.Equals(playerId)).Value;
+            roster.Remove(playerId);
+            roster.Add(playerId, currentTurns + 1);
         }
 
-        public Int32 GetTurnsFor(IPlayer player)
+        public Int32 GetTurnsFor(Int32 playerId)
         {
-            return roster.FirstOrDefault(p => p.Key.Equals(player)).Value;
+            return roster.FirstOrDefault(p => p.Key.Equals(playerId)).Value;
         }
 
-        public void Remove(IPlayer player)
+        public void Remove(Int32 playerId)
         {
-            roster.Remove(player);
+            roster.Remove(playerId);
         }
     }
 }

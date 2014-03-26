@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Monopoly;
 using Monopoly.TraditionalMonopoly;
 using NUnit.Framework;
 
@@ -23,7 +18,7 @@ namespace MonopolyTests.TraditionalMonopolyTests
         [Test]
         public void TestCreateGameWithOnePlayerFails()
         {
-            Assert.Throws<InvalidOperationException>(() => gameDriver.PlayGameWith(new[] { new Player("Horse", 0) }));
+            Assert.Throws<InvalidOperationException>(() => gameDriver.PlayGameWith(new[] { "Horse" }));
         }
 
         [Test]
@@ -31,15 +26,15 @@ namespace MonopolyTests.TraditionalMonopolyTests
         {
             var players = new[] 
             { 
-                new Player("Horse", 0),
-                new Player("Cat", 0),
-                new Player("Wheelbarrow", 0),
-                new Player("Battleship", 0),
-                new Player("Thimble", 0),
-                new Player("Top Hat", 0),
-                new Player("Boot", 0),
-                new Player("Scottie dog", 0),
-                new Player("Racecar", 0)
+                "Horse",
+                "Cat",
+                "Wheelbarrow",
+                "Battleship",
+                "Thimble",
+                "Top Hat",
+                "Boot",
+                "Scottie dog",
+                "Racecar"
             };
             Assert.Throws<InvalidOperationException>(() => gameDriver.PlayGameWith(players));
         }

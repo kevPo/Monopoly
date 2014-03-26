@@ -74,6 +74,7 @@
     <Compile Include="Fakes\FakeDice.cs" />
     <Compile Include="Fakes\FakeDiceDoublesRoller.cs" />
     <Compile Include="Fakes\FakeJailRoster.cs" />
+    <Compile Include="Fakes\FakePlayerRepository.cs" />
     <Compile Include="Fakes\FakeProperty.cs" />
     <Compile Include="Fakes\FakeTraditionalBoardFactory.cs" />
     <Compile Include="GameTests.cs" />

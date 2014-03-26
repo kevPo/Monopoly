@@ -15,8 +15,8 @@ namespace Monopoly.TraditionalMonopoly
 
         private List<Location> locations;
 
-        public TraditionalBoardFactory(IDice dice, IEnumerable<IPlayer> players, IJailRoster jailRoster) 
-            : base(dice, players, jailRoster)
+        public TraditionalBoardFactory(IDice dice, IPlayerRepository playerRepository, IJailRoster jailRoster) 
+            : base(dice, playerRepository, jailRoster)
         {
             locations = new List<Location>();                        
         }
@@ -39,12 +39,12 @@ namespace Monopoly.TraditionalMonopoly
         {
             return new Location[]
             {
-                new CardDraw(2, "Community Chest"),
-                new CardDraw(17, "Community Chest"),
-                new CardDraw(33, "Community Chest"),
-                new CardDraw(7, "Chance"),
-                new CardDraw(22, "Chance"),
-                new CardDraw(36, "Chance")
+                new CardDraw(2, "Community Chest", playerRepository),
+                new CardDraw(17, "Community Chest", playerRepository),
+                new CardDraw(33, "Community Chest", playerRepository),
+                new CardDraw(7, "Chance", playerRepository),
+                new CardDraw(22, "Chance", playerRepository),
+                new CardDraw(36, "Chance", playerRepository)
             };
         }
 
@@ -52,8 +52,8 @@ namespace Monopoly.TraditionalMonopoly
         {
             return new Location[]
             {
-                new Taxable(4, "Income Tax", IncomeTaxEquation),
-                new Taxable(38, "Luxury Tax", LuxuryTaxEquation)
+                new Taxable(4, "Income Tax", playerRepository, IncomeTaxEquation),
+                new Taxable(38, "Luxury Tax", playerRepository, LuxuryTaxEquation)
             };
         }
 
@@ -71,8 +71,8 @@ namespace Monopoly.TraditionalMonopoly
         {
             return new Location[]
             {
-                new Jail(10, "Jail/ Just Visiting"),
-                new GoToJail(30, "Go To Jail", 10, jailRoster)
+                new Jail(10, "Jail/ Just Visiting", playerRepository),
+                new GoToJail(30, "Go To Jail", 10, playerRepository, jailRoster)
             };
         }
 
@@ -80,7 +80,7 @@ namespace Monopoly.TraditionalMonopoly
         {
             return new Location[] 
             {
-                  new Go(0, "Go")
+                  new Go(0, "Go", playerRepository)
             };
         }
 
@@ -88,17 +88,17 @@ namespace Monopoly.TraditionalMonopoly
         {
             return new Location[]
             {
-                new FreeParking(20, "Free Parking")
+                new FreeParking(20, "Free Parking", playerRepository)
             };
         }
 
         private IEnumerable<Railroad> GetRailroads()
         {
             var railroads = new List<Railroad>();
-            var readingRailroad = new Railroad(5, "Reading Railroad", 200, 25, railroads);
-            var pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 200, 25, railroads);
-            var bAndORailroad = new Railroad(25, "B. & O. Railroad", 200, 25, railroads);
-            var shortLineRailroad = new Railroad(35, "Short Line Railroad", 200, 25, railroads);
+            var readingRailroad = new Railroad(5, "Reading Railroad", 200, 25, playerRepository, railroads);
+            var pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 200, 25, playerRepository, railroads);
+            var bAndORailroad = new Railroad(25, "B. & O. Railroad", 200, 25, playerRepository, railroads);
+            var shortLineRailroad = new Railroad(35, "Short Line Railroad", 200, 25, playerRepository, railroads);
 
             railroads.AddRange(new Railroad[] 
             { 
@@ -114,8 +114,8 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Utility> GetUtilities()
         {
             var utilities = new List<Utility>();
-            var electric = new Utility(12, "Electric Company", 150, 0, utilities, dice);
-            var waterWorks = new Utility(28, "Water Works", 150, 0, utilities, dice);
+            var electric = new Utility(12, "Electric Company", 150, 0, playerRepository, utilities, dice);
+            var waterWorks = new Utility(28, "Water Works", 150, 0, playerRepository, utilities, dice);
 
             utilities.AddRange(new Utility[] 
             { 
@@ -144,8 +144,8 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetPurpleStreets()
         {
             var purpleStreets = new List<Street>();
-            var mediterraneanAve = new Street(1, "Mediterranean Avenue", 60, 2, purpleStreets);
-            var balticAve = new Street(3, "Baltic Avenue", 60, 4, purpleStreets);
+            var mediterraneanAve = new Street(1, "Mediterranean Avenue", 60, 2, playerRepository, purpleStreets);
+            var balticAve = new Street(3, "Baltic Avenue", 60, 4, playerRepository, purpleStreets);
 
             purpleStreets.AddRange(new Street[] { mediterraneanAve, balticAve });
 
@@ -155,9 +155,9 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetLightBlueStreets()
         {
             var lightBlueStreets = new List<Street>();
-            var orientalAve = new Street(6, "Oriental Avenue", 100, 6, lightBlueStreets);
-            var vermontAve = new Street(8, "Vermont Avenue", 100, 6, lightBlueStreets);
-            var connecticutAve = new Street(9, "Connecticut Avenue", 120, 8, lightBlueStreets);
+            var orientalAve = new Street(6, "Oriental Avenue", 100, 6, playerRepository, lightBlueStreets);
+            var vermontAve = new Street(8, "Vermont Avenue", 100, 6, playerRepository, lightBlueStreets);
+            var connecticutAve = new Street(9, "Connecticut Avenue", 120, 8, playerRepository, lightBlueStreets);
 
             lightBlueStreets.AddRange(new Street[] { orientalAve, vermontAve, connecticutAve });
 
@@ -167,9 +167,9 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetPinkStreets()
         {
             var pinkStreets = new List<Street>();
-            var stCharlesPlace = new Street(11, "St. Charles Place", 140, 10, pinkStreets);
-            var statesAve = new Street(13, "States Avenue", 140, 10, pinkStreets);
-            var virginiaAve = new Street(14, "Virginia Avenue", 160, 12, pinkStreets);
+            var stCharlesPlace = new Street(11, "St. Charles Place", 140, 10, playerRepository, pinkStreets);
+            var statesAve = new Street(13, "States Avenue", 140, 10, playerRepository, pinkStreets);
+            var virginiaAve = new Street(14, "Virginia Avenue", 160, 12, playerRepository, pinkStreets);
 
             pinkStreets.AddRange(new Street[] { stCharlesPlace, statesAve, virginiaAve });
 
@@ -179,9 +179,9 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetOrangeStreets()
         {
             var orangeStreets = new List<Street>();
-            var stJamesPlace = new Street(16, "St. James Place", 180, 14, orangeStreets);
-            var tennesseeAve = new Street(18, "Tennessee Avenue", 180, 14, orangeStreets);
-            var newYorkAve = new Street(19, "New York Avenue", 200, 16, orangeStreets);
+            var stJamesPlace = new Street(16, "St. James Place", 180, 14, playerRepository, orangeStreets);
+            var tennesseeAve = new Street(18, "Tennessee Avenue", 180, 14, playerRepository, orangeStreets);
+            var newYorkAve = new Street(19, "New York Avenue", 200, 16, playerRepository, orangeStreets);
 
             orangeStreets.AddRange(new Street[] { stJamesPlace, tennesseeAve, newYorkAve });
 
@@ -191,9 +191,9 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetRedStreets()
         {
             var redStreets = new List<Street>();
-            var kentuckyAve = new Street(21, "Kentucky Avenue", 220, 18, redStreets);
-            var indianaAve = new Street(23, "Indiana Avenue", 220, 18, redStreets);
-            var illinoisAve = new Street(24, "Illinois Avenue", 240, 20, redStreets);
+            var kentuckyAve = new Street(21, "Kentucky Avenue", 220, 18, playerRepository, redStreets);
+            var indianaAve = new Street(23, "Indiana Avenue", 220, 18, playerRepository, redStreets);
+            var illinoisAve = new Street(24, "Illinois Avenue", 240, 20, playerRepository, redStreets);
 
             redStreets.AddRange(new Street[] { kentuckyAve, indianaAve, illinoisAve });
 
@@ -203,9 +203,9 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetYellowStreets()
         {
             var yellowStreets = new List<Street>();
-            var atlanticAve = new Street(26, "Atlantic Avenue", 260, 22, yellowStreets);
-            var ventnorAve = new Street(27, "Ventnor Avenue", 260, 22, yellowStreets);
-            var marvinGardens = new Street(29, "Marvin Gardens", 280, 24, yellowStreets);
+            var atlanticAve = new Street(26, "Atlantic Avenue", 260, 22, playerRepository, yellowStreets);
+            var ventnorAve = new Street(27, "Ventnor Avenue", 260, 22, playerRepository, yellowStreets);
+            var marvinGardens = new Street(29, "Marvin Gardens", 280, 24, playerRepository, yellowStreets);
 
             yellowStreets.AddRange(new Street[] { atlanticAve, ventnorAve, marvinGardens });
 
@@ -215,11 +215,11 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetGreenStreets()
         {
             var greenStreets = new List<Street>();
-            var pacificAve = new Street(31, "Pacific Avenue", 300, 26, greenStreets);
-            var northCarolinaAve = new Street(32, "North Carolina Avenue", 300, 26, greenStreets);
-            var pennsylvaniaAve = new Street(34, "Pennsylvania Avenue", 320, 28, greenStreets);
+            var pacificAve = new Street(31, "Pacific Avenue", 300, 26, playerRepository, greenStreets);
+            var northCarolinaAve = new Street(32, "North Carolina Avenue", 300, 26, playerRepository, greenStreets);
+            var pennsylvaniaAve = new Street(34, "Pennsylvania Avenue", 320, 28, playerRepository, greenStreets);
 
-            greenStreets.AddRange(new Street[]{ pacificAve, northCarolinaAve, pennsylvaniaAve });
+            greenStreets.AddRange(new Street[]  { pacificAve, northCarolinaAve, pennsylvaniaAve });
 
             return greenStreets;
         }
@@ -227,8 +227,8 @@ namespace Monopoly.TraditionalMonopoly
         private IEnumerable<Street> GetBlueStreets()
         {
             var blueStreets = new List<Street>();
-            var parkPlace = new Street(37, "Park Place", 350, 35, blueStreets);
-            var boardwalk = new Street(39, "Boardwalk", 400, 50, blueStreets);
+            var parkPlace = new Street(37, "Park Place", 350, 35, playerRepository, blueStreets);
+            var boardwalk = new Street(39, "Boardwalk", 400, 50, playerRepository, blueStreets);
 
             blueStreets.AddRange(new Street[] { parkPlace, boardwalk });
 

@@ -17,16 +17,29 @@ namespace Monopoly.TraditionalMonopoly
             jailRoster = new TraditionalJailRoster();
         }
 
-        public void PlayGameWith(IEnumerable<IPlayer> players)
+        public void PlayGameWith(IEnumerable<String> tokens)
         {
-            if (players.Count() < minimumPlayers || players.Count() > maximumPlayers)
+            if (tokens.Count() < minimumPlayers || tokens.Count() > maximumPlayers)
                 throw new InvalidOperationException(String.Format("Game can only be played with {0} - {1} players.", minimumPlayers, maximumPlayers));
 
-            var traditionalBoardFactory = new TraditionalBoardFactory(dice, players, jailRoster);
+            var players = CreatePlayersFor(tokens);
+            var playerRepository = new PlayerRepository(players);
+            var traditionalBoardFactory = new TraditionalBoardFactory(dice, playerRepository, jailRoster);
             var traditionalBoard = traditionalBoardFactory.GetBoard();
             var game = new Game(traditionalBoard);
             
             game.Play();
+        }
+
+        private IEnumerable<IPlayer> CreatePlayersFor(IEnumerable<String> tokens)
+        {
+            var players = new List<IPlayer>();
+            var tokensArray = tokens.ToArray();
+
+            for (var id = 0; id < tokensArray.Count(); id++)
+                players.Add(new Player(id, tokensArray[id], 1500));
+
+            return players;
         }
     }
 }

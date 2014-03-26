@@ -9,8 +9,8 @@ namespace MonopolyTests.Fakes
     public class FakeBoardFactory : BoardFactory
     {
 
-        public FakeBoardFactory(IDice dice, IEnumerable<IPlayer> players, IJailRoster jailRoster) 
-            : base (dice, players, jailRoster)
+        public FakeBoardFactory(IDice dice, IPlayerRepository playerRepository, IJailRoster jailRoster) 
+            : base (dice, playerRepository, jailRoster)
         {
 
         }

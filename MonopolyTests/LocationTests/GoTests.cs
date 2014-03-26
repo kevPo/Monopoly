@@ -13,21 +13,22 @@ namespace MonopolyTests.LocationTests
         [SetUp]
         public void SetUp()
         {
-            starter = new Go(0, "Go");
-            player = new Player("horse", 1800);
+            player = new Player(0, "horse", 1800);
+            var playerRepository = new PlayerRepository(new []{ player });
+            starter = new Go(0, "Go", playerRepository);
         }
 
         [Test]
         public void TestPlayerReceivesSalaryOf200WhenLandingOnStarter()
         {
-            starter.LandedOnBy(player);
+            starter.LandedOnBy(player.Id);
             Assert.That(player.Balance, Is.EqualTo(2000));
         }
 
         [Test]
         public void TestPlayerReceivesSalaryOf200WhenPassedOver()
         {
-            starter.PassedOverBy(player);
+            starter.PassedOverBy(player.Id);
             Assert.That(player.Balance, Is.EqualTo(2000));
         }
     }

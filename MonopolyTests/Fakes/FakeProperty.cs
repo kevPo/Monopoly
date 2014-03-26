@@ -6,7 +6,8 @@ namespace MonopolyTests.Fakes
 {
     public class FakeProperty : Property
     {
-        public FakeProperty(Int32 index, String name, Int32 cost, Int32 rent) : base(index, name, cost, rent)
+        public FakeProperty(Int32 index, String name, Int32 cost, Int32 rent, IPlayerRepository playerRepository) : 
+            base(index, name, cost, rent, playerRepository)
         { }
 
         protected override Int32 CalculateRent()
@@ -14,9 +15,9 @@ namespace MonopolyTests.Fakes
             return 0;
         }
 
-        public IPlayer GetOwner()
+        public Int32 GetOwner()
         {
-            return Owner;
+            return ownerId;
         }
     }
 }

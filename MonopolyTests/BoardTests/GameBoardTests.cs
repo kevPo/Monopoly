@@ -24,10 +24,10 @@ namespace MonopolyTests.BoardTests
         public void TestPlayerOrderIsRandom()
         {
             var boards = new List<FakeBoard>();
-            var players = new[] { new Player("Horse", 0), new Player("Car", 0) };
-
+            var players = new[] { new Player(0, "Horse", 0), new Player(1, "Car", 0) };
+            var playerRepository = new PlayerRepository(players);
             for (var i = 0; i < 50; i++)
-                boards.Add(new FakeBoard(new FakeDice(), players, jailRoster));
+                boards.Add(new FakeBoard(new FakeDice(), playerRepository, jailRoster));
 
             var playersStartWithHorse = boards.Any(g => g.GetPlayers().First().Name == "Horse");
             var playersStartWithCar = boards.Any(g => g.GetPlayers().First().Name == "Car");
@@ -38,10 +38,11 @@ namespace MonopolyTests.BoardTests
         [Test]
         public void TestTwentyRoundsPlayedAndEachPlayerPlayedAllTwenty()
         {
-            var horse = new Player("Horse", 0);
-            var car = new Player("Car", 0);
+            var horse = new Player(0, "Horse", 0);
+            var car = new Player(1, "Car", 0);
             var players = new[] { horse, car };
-            var fakeBoard = new FakeBoard(new FakeDice(), players, jailRoster);
+            var playerRepository = new PlayerRepository(players);
+            var fakeBoard = new FakeBoard(new FakeDice(), playerRepository, jailRoster);
 
             var game = new Game(fakeBoard);
             game.Play();
@@ -54,11 +55,12 @@ namespace MonopolyTests.BoardTests
         [Test]
         public void TestThatOrderOfPlayersStayedTheSameDuringGame()
         {
-            var horse = new Player("Horse", 0);
-            var car = new Player("Car", 0);
-            var dog = new Player("Dog", 0);
+            var horse = new Player(0, "Horse", 0);
+            var car = new Player(1, "Car", 0);
+            var dog = new Player(2, "Dog", 0);
             var players = new[] { horse, car, dog };
-            var fakeBoard = new FakeBoard(new FakeDice(), players, new FakeJailRoster());
+            var playerRepository = new PlayerRepository(players);
+            var fakeBoard = new FakeBoard(new FakeDice(), playerRepository, new FakeJailRoster());
             var game = new Game(fakeBoard);
             var gamePlayers = fakeBoard.GetPlayers();
 

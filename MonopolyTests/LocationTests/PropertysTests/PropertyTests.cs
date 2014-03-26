@@ -15,34 +15,35 @@ namespace MonopolyTests.LocationTests.PropertysTests
         [SetUp]
         public void SetUp()
         {
-            car = new Player("car", 2000);
-            horse = new Player("horse", 2000);
+            car = new Player(0, "car", 2000);
+            horse = new Player(1, "horse", 2000);
+            var playerRepository = new PlayerRepository(new[] { car, horse });
 
-            mediterranean = new FakeProperty(1, "Mediterranean Avenue", 60, 2);
-            baltic = new FakeProperty(3, "Baltic Avenue", 60, 4);
+            mediterranean = new FakeProperty(1, "Mediterranean Avenue", 60, 2, playerRepository);
+            baltic = new FakeProperty(3, "Baltic Avenue", 60, 4, playerRepository);
         }
 
         [Test]
         public void TestPlayerLandsOnUnownedPropertyAndBuysIt()
         {
-            mediterranean.LandedOnBy(car);
+            mediterranean.LandedOnBy(car.Id);
             Assert.That(car.Balance, Is.EqualTo(1940));
-            Assert.That(mediterranean.GetOwner(), Is.EqualTo(car));
+            Assert.That(mediterranean.GetOwner(), Is.EqualTo(car.Id));
         }
 
         [Test]
         public void TestLandOnPlayerLandsOnOwnedPropertyAndNothingHappens()
         {
-            mediterranean.LandedOnBy(car);
-            mediterranean.LandedOnBy(car);
+            mediterranean.LandedOnBy(car.Id);
+            mediterranean.LandedOnBy(car.Id);
             Assert.That(car.Balance, Is.EqualTo(1940));
-            Assert.That(mediterranean.GetOwner(), Is.EqualTo(car));
+            Assert.That(mediterranean.GetOwner(), Is.EqualTo(car.Id));
         }
 
         [Test]
         public void PassingOverUnownedPropertyShouldDoNothing()
         {
-            baltic.PassedOverBy(car);
+            baltic.PassedOverBy(car.Id);
             Assert.That(car.Balance, Is.EqualTo(2000));
         }
     }

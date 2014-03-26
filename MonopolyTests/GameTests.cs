@@ -13,9 +13,10 @@ namespace MonopolyTests
         [Test]
         public void TestCreateGameWithTwoPlayersHorseAndCar()
         {
-            var players = new [] { new Player("Horse", 0), new Player("Car", 0) };
+            var players = new [] { new Player(0, "Horse", 0), new Player(1, "Car", 0) };
+            var playerRepository = new PlayerRepository(players);
             var jailRoster = new TraditionalJailRoster();
-            var fakeBoard = new FakeBoard(new FakeDice(), players, jailRoster);
+            var fakeBoard = new FakeBoard(new FakeDice(), playerRepository, jailRoster);
             var game = new Game(fakeBoard);
             var gamePlayers = fakeBoard.GetPlayers();
 
