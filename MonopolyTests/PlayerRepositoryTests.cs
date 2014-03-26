@@ -68,7 +68,7 @@ namespace MonopolyTests
         {
             playerRepository.SetAllPlayerLocationsTo(3);
 
-            Assert.That(playerRepository.GetLocationIndexFor(1), Is.EqualTo(3));
+            Assert.That(playerRepository.GetPlayer(0).LocationIndex, Is.EqualTo(3));
         }
     }
 }

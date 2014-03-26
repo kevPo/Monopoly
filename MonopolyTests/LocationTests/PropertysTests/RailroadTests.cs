@@ -21,11 +21,12 @@ namespace MonopolyTests.LocationTests.PropertysTests
             car = new Player(0, "car", 2000);
             horse = new Player(1, "horse", 2000);
             var playerRepository = new PlayerRepository(new[] { car, horse });
+            var playerService = new PlayerService(playerRepository);
             var railroads = new List<Railroad>();
-            readingRailroad = new Railroad(5, "Reading Railroad", 250, 25, playerRepository, railroads); 
-            pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 250, 25, playerRepository, railroads);
-            boRailroad = new Railroad(25, "B. & O. Railroad", 250, 25, playerRepository, railroads);
-            shortLineRailroad = new Railroad(35, "Short Line Railroad", 250, 25, playerRepository, railroads);
+            readingRailroad = new Railroad(5, "Reading Railroad", 250, 25, playerService, railroads); 
+            pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 250, 25, playerService, railroads);
+            boRailroad = new Railroad(25, "B. & O. Railroad", 250, 25, playerService, railroads);
+            shortLineRailroad = new Railroad(35, "Short Line Railroad", 250, 25, playerService, railroads);
 
             railroads.AddRange(new Railroad[] { readingRailroad, pennsylvaniaRailroad, boRailroad, shortLineRailroad });
         }

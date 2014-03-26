@@ -9,8 +9,8 @@ namespace Monopoly.Locations.Propertys
         private IEnumerable<Railroad> railroads;
 
         public Railroad(Int32 index, String name, Int32 cost, Int32 rent, 
-                        IPlayerRepository playerRepository, IEnumerable<Railroad> railroads)
-            : base(index, name, cost, rent, playerRepository)
+                        IPlayerService playerService, IEnumerable<Railroad> railroads)
+            : base(index, name, cost, rent, playerService)
         {
             this.railroads = railroads;
         }

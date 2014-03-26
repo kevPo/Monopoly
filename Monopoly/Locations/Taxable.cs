@@ -6,15 +6,15 @@ namespace Monopoly.Locations
     {
         private Func<Int32, Int32> taxEquation;
 
-        public Taxable(Int32 index, String name, IPlayerRepository playerRepository, Func<Int32, Int32> taxEquation) 
-            : base(index, name, playerRepository)
+        public Taxable(Int32 index, String name, IPlayerService playerService, Func<Int32, Int32> taxEquation) 
+            : base(index, name, playerService)
         {
             this.taxEquation = taxEquation;
         }
 
         public override void LandedOnBy(Int32 playerId)
         {
-            playerRepository.ChargeTaxesTo(playerId, taxEquation);
+            playerService.ChargeTaxesTo(playerId, taxEquation);
         }
     }
 }

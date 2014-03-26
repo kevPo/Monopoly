@@ -13,20 +13,19 @@ namespace MonopolyTests.LocationTests.PropertysTests
         private IPlayer horse;
         private Utility electric;
         private Utility waterWorks;
-        private FakeDice dice;
-        private IPlayerRepository playerRepository;
 
         [SetUp]
         public void SetUp()
         {
             car = new Player(0, "Car", 2000);
             horse = new Player(1, "Horse", 2000);
-            dice = new FakeDice();
+            var dice = new FakeDice();
             dice.NextRoll = 10;
             var playerRepository = new PlayerRepository(new IPlayer[] { car, horse });
+            var playerService = new PlayerService(playerRepository);
             var utilities = new List<Utility>();
-            electric = new Utility(12, "Electric Company", 150, 0, playerRepository, utilities, dice);
-            waterWorks = new Utility(28, "Water Works", 150, 0, playerRepository, utilities, dice);
+            electric = new Utility(12, "Electric Company", 150, 0, playerService, utilities, dice);
+            waterWorks = new Utility(28, "Water Works", 150, 0, playerService, utilities, dice);
             utilities.AddRange(new Utility[] { electric, waterWorks });
         }
 

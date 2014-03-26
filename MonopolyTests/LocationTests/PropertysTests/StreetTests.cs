@@ -19,9 +19,10 @@ namespace MonopolyTests.LocationTests.PropertysTests
             car = new Player(0, "car", 2000);
             horse = new Player(1, "horse", 2000);
             var playerRepository = new PlayerRepository(new[] { car, horse });
+            var playerService = new PlayerService(playerRepository);
             var purpleStreets = new List<Street>();
-            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, playerRepository, purpleStreets);
-            baltic = new Street(3, "Baltic Avenue", 60, 4, playerRepository, purpleStreets);
+            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, playerService, purpleStreets);
+            baltic = new Street(3, "Baltic Avenue", 60, 4, playerService, purpleStreets);
 
             purpleStreets.AddRange(new Street[] { mediterranean, baltic });
         }

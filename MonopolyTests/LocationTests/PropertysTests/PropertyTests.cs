@@ -18,9 +18,9 @@ namespace MonopolyTests.LocationTests.PropertysTests
             car = new Player(0, "car", 2000);
             horse = new Player(1, "horse", 2000);
             var playerRepository = new PlayerRepository(new[] { car, horse });
-
-            mediterranean = new FakeProperty(1, "Mediterranean Avenue", 60, 2, playerRepository);
-            baltic = new FakeProperty(3, "Baltic Avenue", 60, 4, playerRepository);
+            var playerService = new PlayerService(playerRepository);
+            mediterranean = new FakeProperty(1, "Mediterranean Avenue", 60, 2, playerService);
+            baltic = new FakeProperty(3, "Baltic Avenue", 60, 4, playerService);
         }
 
         [Test]

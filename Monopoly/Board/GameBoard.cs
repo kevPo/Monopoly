@@ -19,7 +19,7 @@ namespace Monopoly.Board
             this.jailRoster = jailRoster;
             this.locations = locations;
             this.playerRepository = playerRepository;
-            turn = new Turn(locations, jailRoster, playerRepository, Dice);
+            turn = new Turn(locations, jailRoster, new PlayerService(playerRepository), Dice);
             playerRepository.ShufflePlayers();
             PlaceAllPlayersOnStartingLocation();
             players = playerRepository.GetPlayers();

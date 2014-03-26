@@ -9,8 +9,8 @@ namespace Monopoly.Locations.Propertys
         protected Int32 rent;
         private Int32 cost;
 
-        public Property(Int32 index, String name, Int32 cost, Int32 rent, IPlayerRepository playerRepository)
-            : base(index, name, playerRepository)
+        public Property(Int32 index, String name, Int32 cost, Int32 rent, IPlayerService playerService)
+            : base(index, name, playerService)
         {
             this.rent = rent;
             this.cost = cost;
@@ -27,9 +27,9 @@ namespace Monopoly.Locations.Propertys
 
         private void SellPropertyToPlayerIfAffordable(Int32 playerId)
         {
-            if (cost < playerRepository.GetBalanceFor(playerId))
+            if (cost < playerService.GetBalanceFor(playerId))
             {
-                playerRepository.RemoveMoneyFrom(playerId, cost);
+                playerService.RemoveMoneyFrom(playerId, cost);
                 ownerId = playerId;
                 isOwned = true;
             }
@@ -43,7 +43,7 @@ namespace Monopoly.Locations.Propertys
 
         private void ChargeRent(Int32 playerId, Int32 ownerId)
         {
-            playerRepository.TransferMoney(playerId, ownerId, CalculateRent());
+            playerService.TransferMoney(playerId, ownerId, CalculateRent());
         }
 
         protected abstract Int32 CalculateRent();

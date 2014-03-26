@@ -16,7 +16,8 @@ namespace MonopolyTests.LocationTests
         {
             player = new Player(0, "Horse", 2000);
             var playerRepository = new PlayerRepository(new IPlayer[] { player });
-            incomeTax = new Taxable(4, "Income Tax", playerRepository, TestTaxFunction);
+            var playerService = new PlayerService(playerRepository);
+            incomeTax = new Taxable(4, "Income Tax", playerService, TestTaxFunction);
         }
 
         private Int32 TestTaxFunction(Int32 balance)

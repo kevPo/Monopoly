@@ -7,8 +7,8 @@ namespace Monopoly.Locations
         private Int32 jailIndex;
         private IJailRoster jailRoster;
 
-        public GoToJail(Int32 index, String name, Int32 jailIndex, IPlayerRepository playerRepository, 
-                        IJailRoster jailRoster) : base(index, name, playerRepository)
+        public GoToJail(Int32 index, String name, Int32 jailIndex, IPlayerService playerService, 
+                        IJailRoster jailRoster) : base(index, name, playerService)
         {
             this.jailIndex = jailIndex;
             this.jailRoster = jailRoster;
@@ -16,7 +16,7 @@ namespace Monopoly.Locations
 
         public override void LandedOnBy(Int32 playerId)
         {
-            playerRepository.SetLocationIndexFor(playerId, jailIndex);
+            playerService.SetLocationIndexFor(playerId, jailIndex);
             jailRoster.Add(playerId);
         }
     }

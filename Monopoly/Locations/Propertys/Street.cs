@@ -8,8 +8,8 @@ namespace Monopoly.Locations.Propertys
     {
         private IEnumerable<Street> sisterStreets;
 
-        public Street(Int32 index, String name, Int32 cost, Int32 rent, IPlayerRepository playerRepository, IEnumerable<Street> sisterStreets)
-            : base(index, name, cost, rent, playerRepository)
+        public Street(Int32 index, String name, Int32 cost, Int32 rent, IPlayerService playerService, IEnumerable<Street> sisterStreets)
+            : base(index, name, cost, rent, playerService)
         {
             this.sisterStreets = sisterStreets;
         }

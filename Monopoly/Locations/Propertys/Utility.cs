@@ -9,9 +9,9 @@ namespace Monopoly.Locations.Propertys
         private IEnumerable<Utility> utilities;
         private IDice dice;
 
-        public Utility(Int32 index, String name, Int32 cost, Int32 rent, IPlayerRepository playerRepository,
+        public Utility(Int32 index, String name, Int32 cost, Int32 rent, IPlayerService playerService,
                        IEnumerable<Utility> utilities, IDice dice)
-            : base(index, name, cost, rent, playerRepository)
+            : base(index, name, cost, rent, playerService)
         {
             this.utilities = utilities;
             this.dice = dice;

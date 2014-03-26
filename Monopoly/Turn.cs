@@ -13,25 +13,24 @@ namespace Monopoly
 
         private IEnumerable<Location> locations;
         private IJailRoster jailRoster;
-        private IPlayerRepository playerRepository;
+        private IPlayerService playerService;
         private IDice dice;
         private Int32 rollCount;
         private Int32 playerId;
         private Int32 currentLocationIndex;
 
-        public Turn(IEnumerable<Location> locations, IJailRoster jailRoster, 
-                    IPlayerRepository playerRepository, IDice dice)
+        public Turn(IEnumerable<Location> locations, IJailRoster jailRoster, IPlayerService playerService, IDice dice)
         {
             this.locations = locations;
             this.jailRoster = jailRoster;
-            this.playerRepository = playerRepository;
+            this.playerService = playerService;
             this.dice = dice;
         }
 
         public void TakeFor(Int32 playerId)
         {
             rollCount = 0;
-            currentLocationIndex = playerRepository.GetLocationIndexFor(playerId);
+            currentLocationIndex = playerService.GetLocationIndexFor(playerId);
             this.playerId = playerId;
 
             if (jailRoster.IsInJail(playerId))
@@ -74,7 +73,7 @@ namespace Monopoly
 
         private void CollectFineAndRemovePlayerFromJail()
         {
-            playerRepository.RemoveMoneyFrom(playerId, jailFine);
+            playerService.RemoveMoneyFrom(playerId, jailFine);
             jailRoster.Remove(playerId);
         }
 
@@ -98,7 +97,7 @@ namespace Monopoly
 
         private void SendPlayerToJail()
         {
-            playerRepository.SetLocationIndexFor(playerId, 10);
+            playerService.SetLocationIndexFor(playerId, 10);
             jailRoster.Add(playerId);
         }
 
@@ -128,7 +127,7 @@ namespace Monopoly
 
         private void SetPlayerOnDestination(Location location)
         {
-            playerRepository.SetLocationIndexFor(playerId, location.Index);
+            playerService.SetLocationIndexFor(playerId, location.Index);
             location.LandedOnBy(playerId);
         }
     }

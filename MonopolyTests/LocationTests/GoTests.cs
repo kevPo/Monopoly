@@ -15,7 +15,8 @@ namespace MonopolyTests.LocationTests
         {
             player = new Player(0, "horse", 1800);
             var playerRepository = new PlayerRepository(new []{ player });
-            starter = new Go(0, "Go", playerRepository);
+            var playerService = new PlayerService(playerRepository);
+            starter = new Go(0, "Go", playerService);
         }
 
         [Test]
