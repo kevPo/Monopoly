@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IJailRoster.cs" />
+    <Compile Include="IPlayerRepository.cs" />
+    <Compile Include="PlayerRepository.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalJailRoster.cs" />
     <Compile Include="Locations\Propertys\Railroad.cs" />
     <Compile Include="Locations\Propertys\Street.cs" />
