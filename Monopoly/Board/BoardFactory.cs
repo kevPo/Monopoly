@@ -19,7 +19,8 @@ namespace Monopoly.Board
 
         public IBoard GetBoard()
         {
-            return new GameBoard(dice, jailRoster, playerRepository, GetLocations());            
+            var turn = new Turn(GetLocations(), jailRoster, new PlayerService(playerRepository), dice);
+            return new GameBoard(playerRepository, turn);            
         }
 
         protected abstract IEnumerable<Location> GetLocations();

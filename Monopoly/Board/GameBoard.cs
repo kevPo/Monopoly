@@ -5,21 +5,14 @@ namespace Monopoly.Board
 {
     public class GameBoard : IBoard
     {
-        public IDice Dice { get; private set; }
         protected IPlayerRepository playerRepository;
         protected IEnumerable<IPlayer> players;
-        private IJailRoster jailRoster;
-        private IEnumerable<Location> locations;
         private Turn turn;
         
-        public GameBoard(IDice dice, IJailRoster jailRoster, 
-                         IPlayerRepository playerRepository, IEnumerable<Location> locations)
+        public GameBoard(IPlayerRepository playerRepository, Turn turn)
         {
-            Dice = dice;
-            this.jailRoster = jailRoster;
-            this.locations = locations;
             this.playerRepository = playerRepository;
-            turn = new Turn(locations, jailRoster, new PlayerService(playerRepository), Dice);
+            this.turn = turn;
             playerRepository.ShufflePlayers();
             PlaceAllPlayersOnStartingLocation();
             players = playerRepository.GetPlayers();
