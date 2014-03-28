@@ -13,14 +13,14 @@ namespace MonopolyTests.LocationTests.PropertysTests
         private IPlayer horse;
         private Utility electric;
         private Utility waterWorks;
+        private IDice dice;
 
         [SetUp]
         public void SetUp()
         {
             car = new Player(0, "Car", 2000);
             horse = new Player(1, "Horse", 2000);
-            var dice = new FakeDice();
-            dice.NextRoll = 10;
+            dice = new FakeDice(new [] { new FakeRoll(7, 3) });
             var playerRepository = new PlayerRepository(new IPlayer[] { car, horse });
             var playerService = new PlayerService(playerRepository);
             var utilities = new List<Utility>();
@@ -33,6 +33,8 @@ namespace MonopolyTests.LocationTests.PropertysTests
         public void TestUtilityRentWhenOneIsOwnedIs4TimesDiceRoll()
         {
             electric.LandedOnBy(car.Id);
+
+            dice.Roll();
             electric.LandedOnBy(horse.Id);
 
             Assert.That(horse.Balance, Is.EqualTo(1960));
@@ -44,6 +46,8 @@ namespace MonopolyTests.LocationTests.PropertysTests
         {
             waterWorks.LandedOnBy(car.Id);
             electric.LandedOnBy(car.Id);
+
+            dice.Roll();
             electric.LandedOnBy(horse.Id);
 
             Assert.That(horse.Balance, Is.EqualTo(1900));

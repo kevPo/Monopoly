@@ -72,10 +72,10 @@
     <Compile Include="Fakes\FakeBoard.cs" />
     <Compile Include="Fakes\FakeBoardFactory.cs" />
     <Compile Include="Fakes\FakeDice.cs" />
-    <Compile Include="Fakes\FakeDiceDoublesRoller.cs" />
     <Compile Include="Fakes\FakeJailRoster.cs" />
     <Compile Include="Fakes\FakePlayerRepository.cs" />
     <Compile Include="Fakes\FakeProperty.cs" />
+    <Compile Include="Fakes\FakeRoll.cs" />
     <Compile Include="Fakes\FakeTraditionalBoardFactory.cs" />
     <Compile Include="Fakes\FakeTurnFactory.cs" />
     <Compile Include="GameTests.cs" />
@@ -97,7 +97,6 @@
     <Compile Include="TraditionalMonopolyTests\TraditionalGameDriverTests.cs" />
     <Compile Include="TurnsTests\InmateTurnTests.cs" />
     <Compile Include="TurnsTests\NormalTurnTests.cs" />
-    <Compile Include="TurnTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

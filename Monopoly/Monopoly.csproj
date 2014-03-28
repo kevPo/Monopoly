@@ -69,7 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Locations\Propertys\Property.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalBoardFactory.cs" />
-    <Compile Include="Turns\PlayerTurn.cs" />
+    <Compile Include="Turns\NormalTurn.cs" />
     <Compile Include="Turns\Turn.cs" />
     <Compile Include="Turns\TurnFactory.cs" />
     <Compile Include="Turns\InmateTurn.cs" />

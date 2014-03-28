@@ -39,9 +39,8 @@ namespace MonopolyTests.TurnsTests
 
         private void PlayerTakesTurnRollingA(Int32 roll)
         {
-            var dice = new FakeDice();
+            var dice = new FakeDice(new [] { new FakeRoll(roll, 0) });
             var turn = new NormalTurn(player.Id, dice, jailRoster, playerService, locations);
-            dice.NextRoll = roll;
             turn.Take();
         }
 
@@ -72,14 +71,6 @@ namespace MonopolyTests.TurnsTests
         }
 
         [Test]
-        public void TestOnGoUpdateLocationWithoutMovingAndBalanceDoesNotChange()
-        {
-            PlayerTakesTurnRollingA(0);
-
-            Assert.That(player.Balance, Is.EqualTo(2000));
-        }
-
-        [Test]
         public void TestPassGoToJailButNotStartDoesNotChangeBalance()
         {
             PlayerTakesTurnRollingA(33);
@@ -91,12 +82,12 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestDouble6AndNonDouble4LandsPlayerOn10InOneTurn()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(6, "D"),
-                        Tuple.Create<Int32, String>(4, "")
+                        new FakeRoll(3, 3),
+                        new FakeRoll(3, 1)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
 
             // Player lands on Oriental Ave and buys it for $100 on first roll
@@ -112,13 +103,13 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestDoublesThrownTwiceAndPlayerLandsOnThreeLocations()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(6, "D"),
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(4, "")
+                        new FakeRoll(3, 3),
+                        new FakeRoll(5, 5),
+                        new FakeRoll(3, 1)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
 
             // Player should land on and buy Oriental (6) for $100
@@ -130,14 +121,14 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestDoublesThrownThreeTimesAndPlayerLandsOnJustVisiting()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(6, "D"),
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(12, "D"),
-                        Tuple.Create<Int32, String>(4, "")
+                        new FakeRoll(3, 3),
+                        new FakeRoll(5, 5),
+                        new FakeRoll(6, 6),
+                        new FakeRoll(3, 1)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
 
             // Player should land on and buy Oriental (6) for $100
@@ -149,14 +140,14 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void RollDoubles3TimesWithoutPassingGoPutsPlayerInJailWithoutCollectingSalary()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(6, "D"),
-                        Tuple.Create<Int32, String>(4, "")
+                        new FakeRoll(5, 5),
+                        new FakeRoll(5, 5),
+                        new FakeRoll(3, 3),
+                        new FakeRoll(3, 1)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
 
             Assert.That(player.Balance, Is.EqualTo(2000));
@@ -166,14 +157,14 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void RollDoubles3TimesPassingGoAndCollectingSalaryPutsPlayerInJailWithSalary()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(38, "D"),
-                        Tuple.Create<Int32, String>(12, "D"),
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(4, "")
+                        new FakeRoll(19, 19),
+                        new FakeRoll(6, 6),
+                        new FakeRoll(5, 5),
+                        new FakeRoll(3, 1)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
 
             Assert.That(player.Balance, Is.EqualTo(2125));
@@ -183,8 +174,7 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestPlayerThrowsNonDoublesLandsOnGoToJailWithBalanceNotChangingAndTurnIsOver()
         {
-            var fakeDice = new FakeDice();
-            fakeDice.NextRoll = 30;
+            var fakeDice = new FakeDice(new [] { new FakeRoll(30, 0) });
             var turn = CreateTurnWith(fakeDice);
             turn.Take();
 
@@ -195,12 +185,12 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestPlayerRollsDoublesLandsOnGoToJailTurnIsOverAndBalanceNotChanged()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(30, "D"),
-                        Tuple.Create<Int32, String>(4, "")
+                        new FakeRoll(15, 15),
+                        new FakeRoll(3, 1)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
 
             Assert.That(player.Balance, Is.EqualTo(2000));

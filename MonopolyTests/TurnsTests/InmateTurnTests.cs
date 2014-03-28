@@ -33,12 +33,12 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestInmateRollsDoublesAndGetsOutOfJailButDoesNotMoveAgain()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(5, "")
+                        new FakeRoll(5, 5),
+                        new FakeRoll(2, 3)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
 
             turn.Take();
             Assert.That(player.LocationIndex, Is.EqualTo(20));
@@ -53,13 +53,13 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestInmateSecondTurnInJailRollsDoublesAndGetsOutOfJail()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(5, ""),
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(5, "")
+                        new FakeRoll(2, 3),
+                        new FakeRoll(5, 5),
+                        new FakeRoll(2, 3)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
             turn.Take();
 
@@ -70,14 +70,14 @@ namespace MonopolyTests.TurnsTests
         [Test]
         public void TestInmateThirdTurnInJailRollsDoubleAndGetsOutOfJail()
         {
-            var rolls = new Tuple<Int32, String>[]
+            var rolls = new []
                     {
-                        Tuple.Create<Int32, String>(5, ""),
-                        Tuple.Create<Int32, String>(10, ""),
-                        Tuple.Create<Int32, String>(10, "D"),
-                        Tuple.Create<Int32, String>(10, ""),
+                        new FakeRoll(2, 3),
+                        new FakeRoll(7, 3),
+                        new FakeRoll(5, 5),
+                        new FakeRoll(8, 2)
                     };
-            var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
+            var turn = CreateTurnWith(new FakeDice(rolls));
             turn.Take();
             turn.Take();
             turn.Take();
@@ -96,8 +96,7 @@ namespace MonopolyTests.TurnsTests
 
         private void PlayerTakesTurnRollingA(Int32 roll)
         {
-            var fakeDice = new FakeDice();
-            fakeDice.NextRoll = roll;
+            var fakeDice = new FakeDice(new [] { new FakeRoll(roll, 0) });
             var turn = CreateTurnWith(fakeDice);
             turn.Take();
         }
@@ -125,10 +124,10 @@ namespace MonopolyTests.TurnsTests
         //[Test]
         //public void TestInmatePays50RollsDoublesAndRollsAgainGetsPlayerOutOfJail()
         //{
-        //    var rolls = new Tuple<Int32, String>[]
+        //    var rolls = new []
         //    {
-        //        Tuple.Create<Int32, String>(10, "D"),
-        //        Tuple.Create<Int32, String>(4, "")
+        //        new FakeRoll(5, 5),
+        //        new FakeRoll(3, 1)
         //    };
         //    var doubleDice = new FakeDiceDoublesRoller(rolls);
         //    var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
