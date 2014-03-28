@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Monopoly.Turns;
 
 namespace Monopoly.Board
 {
@@ -6,12 +7,12 @@ namespace Monopoly.Board
     {
         protected IPlayerRepository playerRepository;
         protected IEnumerable<IPlayer> players;
-        private Turn turn;
+        private ITurnFactory turnFactory;
         
-        public GameBoard(IPlayerRepository playerRepository, Turn turn)
+        public GameBoard(IPlayerRepository playerRepository, ITurnFactory turnFactory)
         {
             this.playerRepository = playerRepository;
-            this.turn = turn;
+            this.turnFactory = turnFactory;
             playerRepository.ShufflePlayers();
             PlaceAllPlayersOnStartingLocation();
             players = playerRepository.GetPlayers();
@@ -30,7 +31,8 @@ namespace Monopoly.Board
 
         protected virtual void TakeTurnFor(IPlayer player)
         {
-            turn.TakeFor(player.Id);
+            var turn = turnFactory.GetTurnFor(player.Id);
+            turn.Take();
         }
     }
 }

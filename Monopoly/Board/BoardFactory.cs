@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Monopoly.Locations;
+using Monopoly.Turns;
 namespace Monopoly.Board
 {
     public abstract class BoardFactory
@@ -19,8 +20,9 @@ namespace Monopoly.Board
 
         public IBoard GetBoard()
         {
-            var turn = new Turn(GetLocations(), jailRoster, new PlayerService(playerRepository), dice);
-            return new GameBoard(playerRepository, turn);            
+            var turnFactory = new TurnFactory(dice, jailRoster, new PlayerService(playerRepository), GetLocations());
+            
+            return new GameBoard(playerRepository, turnFactory);            
         }
 
         protected abstract IEnumerable<Location> GetLocations();

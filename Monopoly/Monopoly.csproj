@@ -42,6 +42,7 @@
     <Compile Include="IJailRoster.cs" />
     <Compile Include="IPlayerRepository.cs" />
     <Compile Include="IPlayerService.cs" />
+    <Compile Include="Turns\ITurnFactory.cs" />
     <Compile Include="PlayerRepository.cs" />
     <Compile Include="PlayerService.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalJailRoster.cs" />
@@ -68,7 +69,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Locations\Propertys\Property.cs" />
     <Compile Include="TraditionalMonopoly\TraditionalBoardFactory.cs" />
-    <Compile Include="Turn.cs" />
+    <Compile Include="Turns\PlayerTurn.cs" />
+    <Compile Include="Turns\Turn.cs" />
+    <Compile Include="Turns\TurnFactory.cs" />
+    <Compile Include="Turns\InmateTurn.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="UserStories\ChanceCards.jpg" />

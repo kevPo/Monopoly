@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Monopoly;
 using Monopoly.Board;
-using Monopoly.Locations;
 
 namespace MonopolyTests.Fakes
 {
@@ -12,7 +11,7 @@ namespace MonopolyTests.Fakes
         public Dictionary<IPlayer, Int32> PlayerTurns { get; private set; }
 
         public FakeBoard(IDice dice, IPlayerRepository playerRepository, IJailRoster jailRoster)
-            : base(playerRepository, new Turn(new Location[]{}, jailRoster, new PlayerService(playerRepository), dice))
+            : base(playerRepository, new FakeTurnFactory())
         {
             Turns = String.Empty;
             PlayerTurns = new Dictionary<IPlayer, Int32>();
