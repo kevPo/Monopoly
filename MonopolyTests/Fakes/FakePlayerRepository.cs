@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Monopoly;
+using Monopoly.Players;
 
 namespace MonopolyTests.Fakes
 {
@@ -19,7 +16,7 @@ namespace MonopolyTests.Fakes
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IPlayer> GetPlayers()
+        public IEnumerable<Int32> GetPlayerIds()
         {
             throw new NotImplementedException();
         }

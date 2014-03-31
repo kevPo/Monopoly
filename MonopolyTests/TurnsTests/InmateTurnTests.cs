@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Monopoly;
-using Monopoly.Locations;
-using Monopoly.TraditionalMonopoly;
+using Monopoly.Banker;
+using Monopoly.JailRoster;
+using Monopoly.Locations.Factories;
+using Monopoly.Locations.Managers;
+using Monopoly.Players;
 using Monopoly.Turns;
 using MonopolyTests.Fakes;
 using NUnit.Framework;
@@ -12,42 +14,51 @@ namespace MonopolyTests.TurnsTests
     [TestFixture]
     public class InmateTurnTests
     {
-        private TraditionalJailRoster jailRoster;
         private IPlayer player;
-        private IEnumerable<Location> locations;
-        private IPlayerService playerService;
+        private TraditionalJailRoster jailRoster;
+        private TraditionalBanker banker;
+        private LocationManager locationManager;
+        private FakeDice dice;
 
         [SetUp]
         public void SetUp()
         {
-            jailRoster = new TraditionalJailRoster();
-            player = new Player(0, "horse", 2000);
-            var playerRepository = new PlayerRepository(new [] { player });
-            var boardFactory = new FakeTraditionalBoardFactory(new TraditionalDice(), playerRepository, jailRoster);
-            locations = boardFactory.GetTraditionalLocations();
-            playerService = new PlayerService(playerRepository);
-            player.LocationIndex = 10;
+            player = new Player(0, "horse");
+            banker = new TraditionalBanker(new[] { player.Id });
+            jailRoster = new TraditionalJailRoster(banker);
+            locationManager = new LocationManager();
+            var locationFactory = new TraditionalLocationFactory(banker, dice, jailRoster, locationManager);
+            locationManager.SetLocations(locationFactory.GetLocations());
+            dice = new FakeDice();
+            PutPlayerInJail();
+        }
+
+        private void PutPlayerInJail()
+        {
             jailRoster.Add(player.Id);
+            locationManager.SetLocationIndexFor(player.Id, 10);
         }
 
         [Test]
         public void TestInmateRollsDoublesAndGetsOutOfJailButDoesNotMoveAgain()
         {
-            var rolls = new []
+            var rolls = new[]
                     {
                         new FakeRoll(5, 5),
                         new FakeRoll(2, 3)
                     };
-            var turn = CreateTurnWith(new FakeDice(rolls));
+            var turn = CreateTurnWith(rolls);
 
             turn.Take();
-            Assert.That(player.LocationIndex, Is.EqualTo(20));
-            Assert.That(player.Balance, Is.EqualTo(2000));
+            Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(20));
+            Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1500));
         }
 
-        private Turn CreateTurnWith(IDice dice)
+        private Turn CreateTurnWith(IEnumerable<FakeRoll> rolls)
         {
-            return new InmateTurn(player.Id, dice, jailRoster, playerService, locations);
+            dice.SetRolls(rolls);
+            
+            return new InmateTurn(player.Id, dice, jailRoster, locationManager);
         }
 
         [Test]
@@ -59,12 +70,12 @@ namespace MonopolyTests.TurnsTests
                         new FakeRoll(5, 5),
                         new FakeRoll(2, 3)
                     };
-            var turn = CreateTurnWith(new FakeDice(rolls));
+            var turn = CreateTurnWith(rolls);
             turn.Take();
             turn.Take();
 
-            Assert.That(player.LocationIndex, Is.EqualTo(20));
-            Assert.That(player.Balance, Is.EqualTo(2000));
+            Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(20));
+            Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1500));
         }
 
         [Test]
@@ -77,13 +88,13 @@ namespace MonopolyTests.TurnsTests
                         new FakeRoll(5, 5),
                         new FakeRoll(8, 2)
                     };
-            var turn = CreateTurnWith(new FakeDice(rolls));
+            var turn = CreateTurnWith(rolls);
             turn.Take();
             turn.Take();
             turn.Take();
 
-            Assert.That(player.LocationIndex, Is.EqualTo(20));
-            Assert.That(player.Balance, Is.EqualTo(2000));
+            Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(20));
+            Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1500));
         }
 
         [Test]
@@ -91,13 +102,12 @@ namespace MonopolyTests.TurnsTests
         {
             PlayerTakesTurnRollingA(10);
 
-            Assert.That(player.LocationIndex, Is.EqualTo(10));
+            Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(10));
         }
 
         private void PlayerTakesTurnRollingA(Int32 roll)
         {
-            var fakeDice = new FakeDice(new [] { new FakeRoll(roll, 0) });
-            var turn = CreateTurnWith(fakeDice);
+            var turn = CreateTurnWith(new[] { new FakeRoll(roll, 0) });
             turn.Take();
         }
 
@@ -107,7 +117,7 @@ namespace MonopolyTests.TurnsTests
             PlayerTakesTurnRollingA(10);
             PlayerTakesTurnRollingA(10);
 
-            Assert.That(player.LocationIndex, Is.EqualTo(10));
+            Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(10));
         }
 
         [Test]
@@ -117,8 +127,8 @@ namespace MonopolyTests.TurnsTests
             PlayerTakesTurnRollingA(10);
             PlayerTakesTurnRollingA(10);
 
-            Assert.That(player.LocationIndex, Is.EqualTo(20));
-            Assert.That(player.Balance, Is.EqualTo(1950));
+            Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(20));
+            Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1450));
         }
 
         //[Test]
@@ -133,8 +143,8 @@ namespace MonopolyTests.TurnsTests
         //    var turn = CreateTurnWith(new FakeDiceDoublesRoller(rolls));
         //    turn.Take();
 
-        //    Assert.That(player.Balance, Is.EqualTo(1750));
-        //    Assert.That(player.Location.Index, Is.EqualTo(25));
+        //    Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1250));
+        //    Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(25));
         //}
 
         //[Test]
@@ -142,8 +152,8 @@ namespace MonopolyTests.TurnsTests
         //{
         //    PlayerTakesTurnRollingA(10);
 
-        //    Assert.That(player.Balance, Is.EqualTo(1950));
-        //    Assert.That(player.Location.Index, Is.EqualTo(20));
+        //    Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1450));
+        //    Assert.That(locationManager.GetLocationIndexFor(player.Id), Is.EqualTo(20));
         //}
 
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using Monopoly;
+using Monopoly.Banker;
 using Monopoly.Locations.Propertys;
+using Monopoly.Players;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests.PropertysTests
@@ -12,17 +13,17 @@ namespace MonopolyTests.LocationTests.PropertysTests
         private IPlayer horse;
         private Street baltic;
         private Street mediterranean;
+        private IBanker banker;
 
         [SetUp]
         public void SetUp()
         {
-            car = new Player(0, "car", 2000);
-            horse = new Player(1, "horse", 2000);
-            var playerRepository = new PlayerRepository(new[] { car, horse });
-            var playerService = new PlayerService(playerRepository);
+            car = new Player(0, "car");
+            horse = new Player(1, "horse");
+            banker = new TraditionalBanker(new [] { car.Id, horse.Id });
             var purpleStreets = new List<Street>();
-            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, playerService, purpleStreets);
-            baltic = new Street(3, "Baltic Avenue", 60, 4, playerService, purpleStreets);
+            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, banker, purpleStreets);
+            baltic = new Street(3, "Baltic Avenue", 60, 4, banker, purpleStreets);
 
             purpleStreets.AddRange(new Street[] { mediterranean, baltic });
         }
@@ -33,7 +34,7 @@ namespace MonopolyTests.LocationTests.PropertysTests
             baltic.LandedOnBy(car.Id);
 
             baltic.LandedOnBy(horse.Id);
-            Assert.That(horse.Balance, Is.EqualTo(1996));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1496));
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace MonopolyTests.LocationTests.PropertysTests
             mediterranean.LandedOnBy(car.Id);
 
             baltic.LandedOnBy(horse.Id);
-            Assert.That(horse.Balance, Is.EqualTo(1992));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1492));
         }
     }
 }

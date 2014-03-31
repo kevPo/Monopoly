@@ -1,5 +1,5 @@
 ﻿using System;
-using Monopoly;
+using Monopoly.JailRoster;
 
 namespace MonopolyTests.Fakes
 {
@@ -26,6 +26,11 @@ namespace MonopolyTests.Fakes
         }
 
         public void Remove(Int32 playerId)
+        {
+            
+        }
+
+        public void RemoveWithFine(int playerId)
         {
             
         }

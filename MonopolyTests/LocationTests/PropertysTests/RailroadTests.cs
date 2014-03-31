@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using Monopoly;
+using Monopoly.Banker;
 using Monopoly.Locations.Propertys;
+using Monopoly.Players;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests.PropertysTests
@@ -14,19 +15,19 @@ namespace MonopolyTests.LocationTests.PropertysTests
         private Railroad pennsylvaniaRailroad;
         private Railroad boRailroad;
         private Railroad shortLineRailroad;
+        private IBanker banker;
 
         [SetUp]
         public void SetUp()
         {
-            car = new Player(0, "car", 2000);
-            horse = new Player(1, "horse", 2000);
-            var playerRepository = new PlayerRepository(new[] { car, horse });
-            var playerService = new PlayerService(playerRepository);
+            car = new Player(0, "car");
+            horse = new Player(1, "horse");
+            banker = new TraditionalBanker(new [] { car.Id, horse.Id });
             var railroads = new List<Railroad>();
-            readingRailroad = new Railroad(5, "Reading Railroad", 250, 25, playerService, railroads); 
-            pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 250, 25, playerService, railroads);
-            boRailroad = new Railroad(25, "B. & O. Railroad", 250, 25, playerService, railroads);
-            shortLineRailroad = new Railroad(35, "Short Line Railroad", 250, 25, playerService, railroads);
+            readingRailroad = new Railroad(5, "Reading Railroad", 250, 25, banker, railroads); 
+            pennsylvaniaRailroad = new Railroad(15, "Pennsylvania Railroad", 250, 25, banker, railroads);
+            boRailroad = new Railroad(25, "B. & O. Railroad", 250, 25, banker, railroads);
+            shortLineRailroad = new Railroad(35, "Short Line Railroad", 250, 25, banker, railroads);
 
             railroads.AddRange(new Railroad[] { readingRailroad, pennsylvaniaRailroad, boRailroad, shortLineRailroad });
         }
@@ -37,7 +38,7 @@ namespace MonopolyTests.LocationTests.PropertysTests
             readingRailroad.LandedOnBy(car.Id);
             readingRailroad.LandedOnBy(horse.Id);
             
-            Assert.That(horse.Balance, Is.EqualTo(1975));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1475));
         }
 
         [Test]
@@ -47,7 +48,7 @@ namespace MonopolyTests.LocationTests.PropertysTests
             pennsylvaniaRailroad.LandedOnBy(car.Id);
 
             pennsylvaniaRailroad.LandedOnBy(horse.Id);
-            Assert.That(horse.Balance, Is.EqualTo(1950));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1450));
         }
 
         [Test]
@@ -58,7 +59,7 @@ namespace MonopolyTests.LocationTests.PropertysTests
             boRailroad.LandedOnBy(car.Id);
 
             readingRailroad.LandedOnBy(horse.Id);
-            Assert.That(horse.Balance, Is.EqualTo(1900));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1400));
         }
 
         [Test]
@@ -70,7 +71,7 @@ namespace MonopolyTests.LocationTests.PropertysTests
             shortLineRailroad.LandedOnBy(car.Id);
 
             readingRailroad.LandedOnBy(horse.Id);
-            Assert.That(horse.Balance, Is.EqualTo(1800));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1300));
         }
     }
 }

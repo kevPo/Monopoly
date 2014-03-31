@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Monopoly;
+using Monopoly.Dice;
 
 namespace MonopolyTests.Fakes
 {
@@ -14,6 +14,12 @@ namespace MonopolyTests.Fakes
         { }
 
         public FakeDice(IEnumerable<FakeRoll> rolls)
+        {
+            this.rolls = rolls.ToList();
+            diceRolledCount = 0;
+        }
+
+        public void SetRolls(IEnumerable<FakeRoll> rolls)
         {
             this.rolls = rolls.ToList();
             diceRolledCount = 0;

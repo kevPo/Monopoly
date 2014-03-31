@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Monopoly.Locations;
+using Monopoly.Dice;
+using Monopoly.JailRoster;
+using Monopoly.Locations.Managers;
 
 namespace Monopoly.Turns
 {
@@ -8,8 +9,8 @@ namespace Monopoly.Turns
     {
         private const Int32 maximumRolls = 3;
 
-        public NormalTurn(Int32 playerId, IDice dice, IJailRoster jailRoster, IPlayerService playerService, IEnumerable<Location> locations)
-            : base (playerId, dice, jailRoster, playerService, locations)
+        public NormalTurn(Int32 playerId, IDice dice, IJailRoster jailRoster, ILocationManager locationManager)
+            : base (playerId, dice, jailRoster, locationManager)
         { }
 
         public override void Take()
@@ -34,7 +35,7 @@ namespace Monopoly.Turns
 
         private void SendPlayerToJail()
         {
-            playerService.SetLocationIndexFor(playerId, 10);
+            locationManager.SetLocationIndexFor(playerId, 10);
             jailRoster.Add(playerId);
         }
     }

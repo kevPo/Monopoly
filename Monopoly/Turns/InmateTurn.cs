@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using Monopoly.Locations;
+using Monopoly.Dice;
+using Monopoly.JailRoster;
+using Monopoly.Locations.Managers;
 
 namespace Monopoly.Turns
 {
     public class InmateTurn : Turn
     {
-        private const Int32 jailFine = 50;
         private const Int32 maxTurnsInJail = 3;
 
-		public InmateTurn(Int32 playerId, IDice dice, IJailRoster jailRoster,
-						  IPlayerService playerService, IEnumerable<Location> locations)
-			: base (playerId, dice, jailRoster, playerService, locations)
+		public InmateTurn(Int32 playerId, IDice dice, IJailRoster jailRoster, ILocationManager locationManager)
+			: base (playerId, dice, jailRoster, locationManager)
         { }
 
         public override void Take()
@@ -42,14 +41,8 @@ namespace Monopoly.Turns
 
         private void ChargePlayerFineAndMoveToDestination()
         {
-            CollectFineAndRemovePlayerFromJail();
+            jailRoster.RemoveWithFine(playerId);
             SendPlayerToDestination();
-        }
-
-        private void CollectFineAndRemovePlayerFromJail()
-        {
-            playerService.RemoveMoneyFrom(playerId, jailFine);
-            jailRoster.Remove(playerId);
         }
     }
 }

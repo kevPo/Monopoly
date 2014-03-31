@@ -1,4 +1,6 @@
 ﻿using System;
+using Monopoly.Banker;
+using Monopoly.Locations.Defaults;
 
 namespace Monopoly.Locations.Propertys
 {
@@ -9,8 +11,8 @@ namespace Monopoly.Locations.Propertys
         protected Int32 rent;
         private Int32 cost;
 
-        public Property(Int32 index, String name, Int32 cost, Int32 rent, IPlayerService playerService)
-            : base(index, name, playerService)
+        public Property(Int32 index, String name, Int32 cost, Int32 rent, IBanker banker)
+            : base(index, name, banker)
         {
             this.rent = rent;
             this.cost = cost;
@@ -27,9 +29,9 @@ namespace Monopoly.Locations.Propertys
 
         private void SellPropertyToPlayerIfAffordable(Int32 playerId)
         {
-            if (cost < playerService.GetBalanceFor(playerId))
+            if (cost < banker.GetBalanceFor(playerId))
             {
-                playerService.RemoveMoneyFrom(playerId, cost);
+                banker.TakeMoneyFrom(playerId, cost);
                 ownerId = playerId;
                 isOwned = true;
             }
@@ -43,7 +45,7 @@ namespace Monopoly.Locations.Propertys
 
         private void ChargeRent(Int32 playerId, Int32 ownerId)
         {
-            playerService.TransferMoney(playerId, ownerId, CalculateRent());
+            banker.TransferMoney(playerId, ownerId, CalculateRent());
         }
 
         protected abstract Int32 CalculateRent();

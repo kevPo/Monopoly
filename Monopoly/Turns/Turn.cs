@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Monopoly.Locations;
+using Monopoly.Dice;
+using Monopoly.JailRoster;
+using Monopoly.Locations.Defaults;
+using Monopoly.Locations.Managers;
 
 namespace Monopoly.Turns
 {
@@ -10,19 +13,18 @@ namespace Monopoly.Turns
         protected Int32 playerId;
         protected IDice dice;
         protected IJailRoster jailRoster;
-        protected IPlayerService playerService;
-        protected IEnumerable<Location> locations;
+        protected ILocationManager locationManager;
         protected Int32 currentLocationIndex;
+        protected IEnumerable<Location> locations;
 
-        public Turn(Int32 playerId, IDice dice, IJailRoster jailRoster, 
-                    IPlayerService playerService, IEnumerable<Location> locations)
+        public Turn(Int32 playerId, IDice dice, IJailRoster jailRoster, ILocationManager locationManager)
         {
             this.playerId = playerId;
             this.dice = dice;
             this.jailRoster = jailRoster;
-            this.playerService = playerService;
-            this.locations = locations;
-            this.currentLocationIndex = playerService.GetLocationIndexFor(playerId);
+            this.locationManager = locationManager;
+            this.currentLocationIndex = locationManager.GetLocationIndexFor(playerId);
+            this.locations = locationManager.GetLocations();
         }
 
         public abstract void Take();
@@ -53,7 +55,7 @@ namespace Monopoly.Turns
 
         private void SetPlayerOnDestination(Location location)
         {
-            playerService.SetLocationIndexFor(playerId, location.Index);
+            locationManager.SetLocationIndexFor(playerId, location.Index);
             location.LandedOnBy(playerId);
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
-using Monopoly;
+using Monopoly.Banker;
+using Monopoly.Dice;
 using Monopoly.Locations.Propertys;
+using Monopoly.Players;
 using MonopolyTests.Fakes;
 using NUnit.Framework;
 
@@ -14,18 +16,18 @@ namespace MonopolyTests.LocationTests.PropertysTests
         private Utility electric;
         private Utility waterWorks;
         private IDice dice;
+        private IBanker banker;
 
         [SetUp]
         public void SetUp()
         {
-            car = new Player(0, "Car", 2000);
-            horse = new Player(1, "Horse", 2000);
+            car = new Player(0, "Car");
+            horse = new Player(1, "Horse");
             dice = new FakeDice(new [] { new FakeRoll(7, 3) });
-            var playerRepository = new PlayerRepository(new IPlayer[] { car, horse });
-            var playerService = new PlayerService(playerRepository);
+            banker = new TraditionalBanker(new [] { car.Id, horse.Id });
             var utilities = new List<Utility>();
-            electric = new Utility(12, "Electric Company", 150, 0, playerService, utilities, dice);
-            waterWorks = new Utility(28, "Water Works", 150, 0, playerService, utilities, dice);
+            electric = new Utility(12, "Electric Company", 150, 0, banker, utilities, dice);
+            waterWorks = new Utility(28, "Water Works", 150, 0, banker, utilities, dice);
             utilities.AddRange(new Utility[] { electric, waterWorks });
         }
 
@@ -37,8 +39,8 @@ namespace MonopolyTests.LocationTests.PropertysTests
             dice.Roll();
             electric.LandedOnBy(horse.Id);
 
-            Assert.That(horse.Balance, Is.EqualTo(1960));
-            Assert.That(car.Balance, Is.EqualTo(1890));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1460));
+            Assert.That(banker.GetBalanceFor(car.Id), Is.EqualTo(1390));
         }
 
         [Test]
@@ -50,8 +52,8 @@ namespace MonopolyTests.LocationTests.PropertysTests
             dice.Roll();
             electric.LandedOnBy(horse.Id);
 
-            Assert.That(horse.Balance, Is.EqualTo(1900));
-            Assert.That(car.Balance, Is.EqualTo(1800));
+            Assert.That(banker.GetBalanceFor(horse.Id), Is.EqualTo(1400));
+            Assert.That(banker.GetBalanceFor(car.Id), Is.EqualTo(1300));
         }
     }
 }

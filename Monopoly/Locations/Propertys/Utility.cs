@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Monopoly.Banker;
+using Monopoly.Dice;
 
 namespace Monopoly.Locations.Propertys
 {
@@ -9,9 +11,9 @@ namespace Monopoly.Locations.Propertys
         private IEnumerable<Utility> utilities;
         private IDice dice;
 
-        public Utility(Int32 index, String name, Int32 cost, Int32 rent, IPlayerService playerService,
+        public Utility(Int32 index, String name, Int32 cost, Int32 rent, IBanker banker,
                        IEnumerable<Utility> utilities, IDice dice)
-            : base(index, name, cost, rent, playerService)
+            : base(index, name, cost, rent, banker)
         {
             this.utilities = utilities;
             this.dice = dice;
