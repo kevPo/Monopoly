@@ -1,5 +1,5 @@
 ﻿using System;
-using Monopoly.Game;
+using Monopoly.GameDriver;
 using NUnit.Framework;
 
 namespace MonopolyTests.GameTests

@@ -18,8 +18,8 @@ namespace Monopoly.Locations.Propertys
         protected override Int32 CalculateRent()
         {
             var numberOfPropertiesInGroup = sisterStreets.Count();
-            var ownedStreets = sisterStreets.Where(s => s.isOwned);
-            var numberOfOwnedGroupProperties = ownedStreets.Count(s => s.ownerId.Equals(ownerId));
+            var ownedStreets = sisterStreets.Where(s => s.IsOwned);
+            var numberOfOwnedGroupProperties = ownedStreets.Count(s => s.OwnerId.Equals(OwnerId));
             var oneOwnerOwnsEntireGroup = numberOfPropertiesInGroup == numberOfOwnedGroupProperties;
 
             if (oneOwnerOwnsEntireGroup)

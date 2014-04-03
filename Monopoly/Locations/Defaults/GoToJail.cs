@@ -1,7 +1,7 @@
 ﻿using System;
 using Monopoly.Banker;
+using Monopoly.Board;
 using Monopoly.JailRoster;
-using Monopoly.Locations.Managers;
 
 namespace Monopoly.Locations.Defaults
 {
@@ -9,19 +9,19 @@ namespace Monopoly.Locations.Defaults
     {
         private Int32 jailIndex;
         private IJailRoster jailRoster;
-        private ILocationManager locationManager;
+        private GameBoard board;
 
         public GoToJail(Int32 index, String name, Int32 jailIndex, IBanker banker, 
-                        IJailRoster jailRoster, ILocationManager locationManager) : base(index, name, banker)
+                        IJailRoster jailRoster, GameBoard board) : base(index, name, banker)
         {
             this.jailIndex = jailIndex;
             this.jailRoster = jailRoster;
-            this.locationManager = locationManager;
+            this.board = board;
         }
 
         public override void LandedOnBy(Int32 playerId)
         {
-            locationManager.SetLocationIndexFor(playerId, jailIndex);
+            board.SetLocationIndexFor(playerId, jailIndex);
             jailRoster.Add(playerId);
         }
     }

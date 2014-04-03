@@ -1,7 +1,7 @@
 ﻿using System;
+using Monopoly.Board;
 using Monopoly.Dice;
 using Monopoly.JailRoster;
-using Monopoly.Locations.Managers;
 
 namespace Monopoly.Turns
 {
@@ -9,8 +9,8 @@ namespace Monopoly.Turns
     {
         private const Int32 maxTurnsInJail = 3;
 
-		public InmateTurn(Int32 playerId, IDice dice, IJailRoster jailRoster, ILocationManager locationManager)
-			: base (playerId, dice, jailRoster, locationManager)
+		public InmateTurn(Int32 playerId, IDice dice, IJailRoster jailRoster, IBoard board)
+			: base (playerId, dice, jailRoster, board)
         { }
 
         public override void Take()

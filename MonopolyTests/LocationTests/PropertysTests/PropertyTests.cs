@@ -1,6 +1,6 @@
-﻿using Monopoly.Banker;
-using Monopoly.Players;
-using MonopolyTests.Fakes;
+﻿using System;
+using Monopoly.Banker;
+using Monopoly.Locations.Propertys;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests.PropertysTests
@@ -8,39 +8,39 @@ namespace MonopolyTests.LocationTests.PropertysTests
     [TestFixture]
     public class PropertyTests
     {
-        private IPlayer car;
+        private Int32 playerId;
         private IBanker banker;
-        private FakeProperty mediterranean;
+        private Street mediterranean;
 
         [SetUp]
         public void SetUp()
         {
-            car = new Player(0, "car");
-            banker = new TraditionalBanker(new[] { car.Id });
-            mediterranean = new FakeProperty(1, "Mediterranean Avenue", 60, 2, banker);
+            playerId = 0;
+            banker = new TraditionalBanker(new[] { playerId });
+            mediterranean = new Street(1, "Mediterranean Avenue", 60, 2, banker, new Street[]{});
         }
 
         [Test]
         public void TestPlayerLandsOnUnownedPropertyAndBuysIt()
         {
-            mediterranean.LandedOnBy(car.Id);
-            Assert.That(mediterranean.GetOwner(), Is.EqualTo(car.Id));
+            mediterranean.LandedOnBy(playerId);
+            Assert.That(mediterranean.OwnerId, Is.EqualTo(playerId));
         }
 
         [Test]
         public void TestLandOnPlayerLandsOnOwnedPropertyAndNothingHappens()
         {
-            mediterranean.LandedOnBy(car.Id);
-            mediterranean.LandedOnBy(car.Id);
-            Assert.That(banker.GetBalanceFor(car.Id), Is.EqualTo(1440));
-            Assert.That(mediterranean.GetOwner(), Is.EqualTo(car.Id));
+            mediterranean.LandedOnBy(playerId);
+            mediterranean.LandedOnBy(playerId);
+            Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1440));
+            Assert.That(mediterranean.OwnerId, Is.EqualTo(playerId));
         }
 
         [Test]
         public void PassingOverUnownedPropertyShouldDoNothing()
         {
-            mediterranean.PassedOverBy(car.Id);
-            Assert.That(banker.GetBalanceFor(car.Id), Is.EqualTo(1500));
+            mediterranean.PassedOverBy(playerId);
+            Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1500));
         }
     }
 }

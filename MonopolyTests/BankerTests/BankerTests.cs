@@ -25,7 +25,7 @@ namespace MonopolyTests.BankerTests
         [Test]
         public void TestRemove100FromPlayerSetBalanceTo1400()
         {
-            banker.TakeMoneyFrom(0, 100);
+            banker.CollectMoneyFrom(0, 100);
 
             Assert.That(banker.GetBalanceFor(0), Is.EqualTo(1400));
         }
@@ -33,7 +33,7 @@ namespace MonopolyTests.BankerTests
         [Test]
         public void TestAdd100ToPlayerAdds100ToBalance()
         {
-            banker.GiveMoneyTo(0, 100);
+            banker.PayMoneyTo(0, 100);
 
             Assert.That(banker.GetBalanceFor(0), Is.EqualTo(1600));
         }

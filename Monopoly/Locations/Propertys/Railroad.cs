@@ -18,10 +18,15 @@ namespace Monopoly.Locations.Propertys
 
         protected override Int32 CalculateRent()
         {
-            var ownedRailroads = railroads.Where(r => r.isOwned);
-            var numberOfOwnedRailroads = ownedRailroads.Count(r => r.ownerId.Equals(ownerId));
+            var ownedRailroads = railroads.Where(r => r.IsOwned);
+            var numberOfOwnedRailroads = ownedRailroads.Count(r => r.OwnerId.Equals(OwnerId));
 
             return (Int32) Math.Pow(2, numberOfOwnedRailroads - 1) * rent;
+        }
+
+        public Int32 GetRentValue()
+        {
+            return CalculateRent();
         }
      }
 }

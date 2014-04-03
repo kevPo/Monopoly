@@ -4,6 +4,6 @@ namespace Monopoly.Players
     public interface IPlayer
     {
         Int32 Id { get; }
-        String Name { get; }
+        String Token { get; }
     }
 }

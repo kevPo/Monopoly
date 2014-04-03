@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace Monopoly.Game
+namespace Monopoly.GameDriver
 {
     public interface IGameDriver
     {

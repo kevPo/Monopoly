@@ -21,7 +21,7 @@ namespace Monopoly.Locations.Defaults
         public void PassedOverBy(Int32 playerId)
         {
             if (passOverSalary > 0)
-                banker.GiveMoneyTo(playerId, passOverSalary);
+                banker.PayMoneyTo(playerId, passOverSalary);
         }
 
         public abstract void LandedOnBy(Int32 playerId);

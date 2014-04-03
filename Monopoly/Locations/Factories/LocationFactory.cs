@@ -1,18 +1,13 @@
 ﻿using System.Collections.Generic;
 using Monopoly.Locations.Defaults;
+using Monopoly.Locations.Propertys;
 
 namespace Monopoly.Locations.Factories
 {
     public abstract class LocationFactory
     {
-        protected IEnumerable<Location> locations;
-
-        public IEnumerable<Location> GetLocations()
-        {
-            CreateLocations();
-            return locations;
-        }
-
-        protected abstract void CreateLocations();
+        public abstract IEnumerable<Location> GetLocations();
+        public abstract IEnumerable<Railroad> GetRailroads();
+        public abstract IEnumerable<Utility> GetUtilities();
     }
 }

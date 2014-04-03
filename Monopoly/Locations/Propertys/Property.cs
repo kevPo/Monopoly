@@ -6,8 +6,8 @@ namespace Monopoly.Locations.Propertys
 {
     public abstract class Property : Location
     {
-        protected Int32 ownerId { get; private set; }
-        protected Boolean isOwned;
+        public Boolean IsOwned { get; protected set; }
+        public Int32 OwnerId { get; private set; }
         protected Int32 rent;
         private Int32 cost;
 
@@ -16,12 +16,12 @@ namespace Monopoly.Locations.Propertys
         {
             this.rent = rent;
             this.cost = cost;
-            isOwned = false;
+            IsOwned = false;
         }
 
         public override void LandedOnBy(Int32 playerId)
         {
-            if (isOwned)
+            if (IsOwned)
                 HandleLandingWhenOwned(playerId);
             else
                 SellPropertyToPlayerIfAffordable(playerId);
@@ -31,16 +31,16 @@ namespace Monopoly.Locations.Propertys
         {
             if (cost < banker.GetBalanceFor(playerId))
             {
-                banker.TakeMoneyFrom(playerId, cost);
-                ownerId = playerId;
-                isOwned = true;
+                banker.CollectMoneyFrom(playerId, cost);
+                OwnerId = playerId;
+                IsOwned = true;
             }
         }
 
         private void HandleLandingWhenOwned(Int32 playerId)
         {
-            if (playerId != ownerId)
-                ChargeRent(playerId, ownerId);
+            if (playerId != OwnerId)
+                ChargeRent(playerId, OwnerId);
         }
 
         private void ChargeRent(Int32 playerId, Int32 ownerId)

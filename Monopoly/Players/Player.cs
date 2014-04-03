@@ -6,12 +6,12 @@ namespace Monopoly.Players
     public class Player : IPlayer
     {
         public Int32 Id { get; private set; }
-        public String Name { get; private set; }
+        public String Token { get; private set; }
 
         public Player(Int32 id, String name)
         {
             Id = id;
-            Name = name;
+            Token = name;
         }
 
         public override Boolean Equals(object other)
@@ -24,12 +24,12 @@ namespace Monopoly.Players
 
         public Boolean Equals(Player other)
         {
-            return Name == other.Name && Id == other.Id;
+            return Token == other.Token && Id == other.Id;
         }
 
         public override Int32 GetHashCode()
         {
-            return (Name.GetHashCode() ^ 2) + (Id.GetHashCode() ^ 2) * 17;
+            return (Token.GetHashCode() ^ 2) + (Id.GetHashCode() ^ 2) * 17;
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Monopoly.Banker;
+using Monopoly.Board;
+using Monopoly.Cards;
 using Monopoly.Dice;
 using Monopoly.JailRoster;
 using Monopoly.Locations.Defaults;
-using Monopoly.Locations.Managers;
 using Monopoly.Locations.Propertys;
 
 namespace Monopoly.Locations.Factories
@@ -19,90 +20,21 @@ namespace Monopoly.Locations.Factories
         private TraditionalBanker banker;
         private IDice dice;
         private TraditionalJailRoster jailRoster;
-        private LocationManager locationManager;
+        private GameBoard board;
+        private CardDeckFactory cardDeckFactory;
 
         public TraditionalLocationFactory(TraditionalBanker banker, IDice dice, 
-                                          TraditionalJailRoster jailRoster, LocationManager locationManager)
+            TraditionalJailRoster jailRoster, GameBoard board,
+            CardDeckFactory cardDeckFactory)
         {
             this.banker = banker;
             this.dice = dice;
             this.jailRoster = jailRoster;
-            this.locationManager = locationManager;
+            this.board = board;
+            this.cardDeckFactory = cardDeckFactory;
         }
 
-        protected override void CreateLocations()
-        {
-            var locationsInProgress = new List<Location>();
-            locationsInProgress.AddRange(GetCardDraws());
-            locationsInProgress.AddRange(GetTaxables());
-            locationsInProgress.AddRange(GetJailRelated());
-            locationsInProgress.AddRange(GetGo());
-            locationsInProgress.AddRange(GetFreeParking());
-            locationsInProgress.AddRange(GetRailroads());
-            locationsInProgress.AddRange(GetUtilities());
-            locationsInProgress.AddRange(GetStreets());
-
-            locations = locationsInProgress;
-        }
-
-        private IEnumerable<Location> GetCardDraws()
-        {
-            return new Location[]
-            {
-                new CardDraw(2, "Community Chest", banker),
-                new CardDraw(17, "Community Chest", banker),
-                new CardDraw(33, "Community Chest", banker),
-                new CardDraw(7, "Chance", banker),
-                new CardDraw(22, "Chance", banker),
-                new CardDraw(36, "Chance", banker)
-            };
-        }
-
-        private IEnumerable<Location> GetTaxables()
-        {
-            return new Location[]
-            {
-                new Taxable(4, "Income Tax", banker, IncomeTaxEquation),
-                new Taxable(38, "Luxury Tax", banker, LuxuryTaxEquation)
-            };
-        }
-
-        protected Int32 IncomeTaxEquation(Int32 balance)
-        {
-            return Math.Min(balance / incomeTaxPercentage, baseIncomeTax);
-        }
-
-        protected Int32 LuxuryTaxEquation(Int32 balance)
-        {
-            return luxuryTax;
-        }
-
-        private IEnumerable<Location> GetJailRelated()
-        {
-            return new Location[]
-            {
-                new Jail(10, "Jail/ Just Visiting", banker),
-                new GoToJail(30, "Go To Jail", 10, banker, jailRoster, locationManager)
-            };
-        }
-
-        private IEnumerable<Location> GetGo()
-        {
-            return new Location[] 
-            {
-                  new Go(0, "Go", banker)
-            };
-        }
-
-        private IEnumerable<Location> GetFreeParking()
-        {
-            return new Location[]
-            {
-                new FreeParking(20, "Free Parking", banker)
-            };
-        }
-
-        private IEnumerable<Railroad> GetRailroads()
+        public override IEnumerable<Railroad> GetRailroads()
         {
             var railroads = new List<Railroad>();
             var readingRailroad = new Railroad(5, "Reading Railroad", 200, 25, banker, railroads);
@@ -121,7 +53,7 @@ namespace Monopoly.Locations.Factories
             return railroads;
         }
 
-        private IEnumerable<Utility> GetUtilities()
+        public override IEnumerable<Utility> GetUtilities()
         {
             var utilities = new List<Utility>();
             var electric = new Utility(12, "Electric Company", 150, 0, banker, utilities, dice);
@@ -134,6 +66,76 @@ namespace Monopoly.Locations.Factories
             });
 
             return utilities;
+        }
+        
+        public override IEnumerable<Location> GetLocations()
+        {
+            var locationsInProgress = new List<Location>();
+            locationsInProgress.AddRange(GetCardDraws());
+            locationsInProgress.AddRange(GetTaxables());
+            locationsInProgress.AddRange(GetJailRelated());
+            locationsInProgress.AddRange(GetGo());
+            locationsInProgress.AddRange(GetFreeParking());
+            locationsInProgress.AddRange(GetStreets());
+            
+            return locationsInProgress;
+        }
+
+        private IEnumerable<Location> GetCardDraws()
+        {
+            return new Location[]
+            {
+                new CardDraw(2, "Community Chest", banker, cardDeckFactory.GetCommunityChestDeck()),
+                new CardDraw(17, "Community Chest", banker, cardDeckFactory.GetCommunityChestDeck()),
+                new CardDraw(33, "Community Chest", banker, cardDeckFactory.GetCommunityChestDeck()),
+                new CardDraw(7, "Chance", banker, cardDeckFactory.GetChanceDeck()),
+                new CardDraw(22, "Chance", banker, cardDeckFactory.GetChanceDeck()),
+                new CardDraw(36, "Chance", banker, cardDeckFactory.GetChanceDeck())
+            };
+        }
+
+        private IEnumerable<Location> GetTaxables()
+        {
+            return new Location[]
+            {
+                new Taxable(4, "Income Tax", banker, IncomeTaxEquation),
+                new Taxable(38, "Luxury Tax", banker, LuxuryTaxEquation)
+            };
+        }
+
+        private Int32 IncomeTaxEquation(Int32 balance)
+        {
+            return Math.Min(balance / incomeTaxPercentage, baseIncomeTax);
+        }
+
+        private Int32 LuxuryTaxEquation(Int32 balance)
+        {
+            return luxuryTax;
+        }
+
+        private IEnumerable<Location> GetJailRelated()
+        {
+            return new Location[]
+            {
+                new Jail(10, "Jail/ Just Visiting", banker),
+                new GoToJail(30, "Go To Jail", 10, banker, jailRoster, board)
+            };
+        }
+
+        private IEnumerable<Location> GetGo()
+        {
+            return new Location[] 
+            {
+                  new Go(0, "Go", banker)
+            };
+        }
+
+        private IEnumerable<Location> GetFreeParking()
+        {
+            return new Location[]
+            {
+                new FreeParking(20, "Free Parking", banker)
+            };
         }
 
         private IEnumerable<Street> GetStreets()

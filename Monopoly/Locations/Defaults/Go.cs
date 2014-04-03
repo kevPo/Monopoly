@@ -12,7 +12,7 @@ namespace Monopoly.Locations.Defaults
 
         public override void LandedOnBy(Int32 playerId)
         {
-            banker.GiveMoneyTo(playerId, passOverSalary);
+            banker.PayMoneyTo(playerId, passOverSalary);
         }
     }
 }

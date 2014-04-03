@@ -1,7 +1,6 @@
 ﻿using System;
 using Monopoly.Banker;
 using Monopoly.Locations.Defaults;
-using Monopoly.Players;
 using NUnit.Framework;
 
 namespace MonopolyTests.LocationTests.DefaultsTests
@@ -9,16 +8,15 @@ namespace MonopolyTests.LocationTests.DefaultsTests
     [TestFixture]
     public class TaxableTests
     {
-        private IPlayer player;
+        private Int32 playerId;
         private Taxable incomeTax;
         private IBanker banker;
 
         [SetUp]
         public void SetUp()
         {
-            player = new Player(0, "Horse");
-            var playerRepository = new PlayerRepository(new IPlayer[] { player });
-            banker = new TraditionalBanker(playerRepository.GetPlayerIds());
+            playerId = 0;
+            banker = new TraditionalBanker(new[] { playerId });
             incomeTax = new Taxable(4, "Income Tax", banker, TestTaxFunction);
         }
 
@@ -30,15 +28,15 @@ namespace MonopolyTests.LocationTests.DefaultsTests
         [Test]
         public void TestPlayerPaysTaxBasedOnTaxEquation()
         {
-            incomeTax.LandedOnBy(player.Id);
-            Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1490));
+            incomeTax.LandedOnBy(playerId);
+            Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1490));
         }
 
         [Test]
         public void TestPlayerPassesOverIncomeTaxAndNothingHappens()
         {
-            incomeTax.PassedOverBy(player.Id);
-            Assert.That(banker.GetBalanceFor(player.Id), Is.EqualTo(1500));
+            incomeTax.PassedOverBy(playerId);
+            Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1500));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Monopoly.Banker
 {
@@ -19,12 +20,12 @@ namespace Monopoly.Banker
                 vault.Add(playerId, 1500);
         }
 
-        public void GiveMoneyTo(Int32 playerId, Int32 money)
+        public void PayMoneyTo(Int32 playerId, Int32 money)
         {
             vault[playerId] += money;
         }
 
-        public void TakeMoneyFrom(Int32 playerId, Int32 money)
+        public void CollectMoneyFrom(Int32 playerId, Int32 money)
         {
             vault[playerId] -= money;
         }
@@ -36,14 +37,30 @@ namespace Monopoly.Banker
 
         public void TransferMoney(Int32 givingPlayerId, Int32 receivingPlayerId, Int32 money)
         {
-            TakeMoneyFrom(givingPlayerId, money);
-            GiveMoneyTo(receivingPlayerId, money);
+            CollectMoneyFrom(givingPlayerId, money);
+            PayMoneyTo(receivingPlayerId, money);
         }
 
         public void ChargeTaxesTo(Int32 playerId, Func<Int32, Int32> taxEquation)
         {
             var taxes = taxEquation(GetBalanceFor(playerId));
-            TakeMoneyFrom(playerId, taxes);
+            CollectMoneyFrom(playerId, taxes);
+        }
+
+        public void CollectMoneyFromAllPlayers(Int32 receivingPlayerId, Int32 money)
+        {
+            var playerIds = vault.Where(a => a.Key != receivingPlayerId).Select(a => a.Key).ToList();
+
+            foreach (var payingPlayerId in playerIds)
+                TransferMoney(payingPlayerId, receivingPlayerId, money);
+        }
+
+        public void PayMoneyToAllPlayers(Int32 payingPlayerId, Int32 money)
+        {
+            var playerIds = vault.Where(a => a.Key != payingPlayerId).Select(a => a.Key).ToList();
+
+            foreach (var receivingPlayerId in playerIds)
+                TransferMoney(payingPlayerId, receivingPlayerId, money);
         }
     }
 }

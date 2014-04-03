@@ -1,77 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Monopoly.Game;
-using Monopoly.JailRoster;
-using Monopoly.Players;
+using Monopoly.Board;
 using MonopolyTests.Fakes;
 using NUnit.Framework;
 
-namespace MonopolyTests.BoardTests
+namespace MonopolyTests.LocationTests.ManagersTests
 {
     [TestFixture]
     public class GameBoardTests
     {
-        private IJailRoster jailRoster;
+        private GameBoard gameBoard;
 
         [SetUp]
         public void SetUp()
         {
-            jailRoster = new FakeJailRoster();
+            var faker = new MotherFaker();
+            gameBoard = new GameBoard();
+            gameBoard.SetLocations(faker.LocationFactory.GetLocations(), faker.LocationFactory.GetRailroads(),
+                faker.LocationFactory.GetUtilities());
         }
 
         [Test]
-        public void TestPlayerOrderIsRandom()
+        public void TestPlayerInitializesOnZero()
         {
-            var boards = new List<FakeBoard>();
-            var players = new[] { new Player(0, "Horse"), new Player(1, "Car") };
-            var playerRepository = new PlayerRepository(players);
-            for (var i = 0; i < 50; i++)
-                boards.Add(new FakeBoard(new FakeDice(), playerRepository, jailRoster));
-
-            var playersStartWithHorse = boards.Any(g => g.GetPlayers().First() == 0);
-            var playersStartWithCar = boards.Any(g => g.GetPlayers().First() == 1);
-
-            Assert.That(playersStartWithHorse && playersStartWithCar, Is.True);
+            Assert.That(gameBoard.GetLocationIndexFor(0), Is.EqualTo(0));
         }
 
         [Test]
-        public void TestTwentyRoundsPlayedAndEachPlayerPlayedAllTwenty()
+        public void TestLocationIndexSetsPlayersLocationProperly()
         {
-            var horse = new Player(0, "Horse");
-            var car = new Player(1, "Car");
-            var players = new[] { horse, car };
-            var playerRepository = new PlayerRepository(players);
-            var fakeBoard = new FakeBoard(new FakeDice(), playerRepository, jailRoster);
+            gameBoard.SetLocationIndexFor(0, 10);
 
-            var game = new Game(fakeBoard);
-            game.Play();
-
-            Assert.That(game.Rounds, Is.EqualTo(20));
-            Assert.That(fakeBoard.PlayerTurns[horse.Id], Is.EqualTo(20));
-            Assert.That(fakeBoard.PlayerTurns[car.Id], Is.EqualTo(20));
+            Assert.That(gameBoard.GetLocationIndexFor(0), Is.EqualTo(10));
         }
 
         [Test]
-        public void TestThatOrderOfPlayersStayedTheSameDuringGame()
+        public void TestGetNumberOfLocationsReturns40ForTraditionalLocations()
         {
-            var horse = new Player(0, "Horse");
-            var car = new Player(1, "Car");
-            var dog = new Player(2, "Dog");
-            var players = new[] { horse, car, dog };
-            var playerRepository = new PlayerRepository(players);
-            var fakeBoard = new FakeBoard(new FakeDice(), playerRepository, new FakeJailRoster());
-            var game = new Game(fakeBoard);
-            var gamePlayers = fakeBoard.GetPlayers();
+            Assert.That(gameBoard.GetNumberOfLocations(), Is.EqualTo(40));
+        }
 
-            var playersOrder = String.Format("{0}{1}{2}",
-                gamePlayers.First(), gamePlayers.ElementAt(1), gamePlayers.ElementAt(2));
-            var turns = String.Empty;
-            game.Play();
-            var rounds = Regex.Matches(fakeBoard.Turns, playersOrder);
+        [TestCase(0, 5)]
+        [TestCase(10, 15)]
+        [TestCase(20, 25)]
+        [TestCase(25, 35)]
+        [TestCase(35, 5)]
+        public void TestGetNearestRailRoadForPlayerOn(Int32 startingLocation, Int32 railroadLocation)
+        {
+            gameBoard.SetLocationIndexFor(0, startingLocation);
+            var railroad = gameBoard.GetNearestRailroadFor(0);
 
-            Assert.That(rounds.Count, Is.EqualTo(20));
+            Assert.That(railroad.Index, Is.EqualTo(railroadLocation));
+        }
+
+        [TestCase(0, 12)]
+        [TestCase(15, 28)]
+        [TestCase(28, 12)]
+        [TestCase(39, 12)]
+        public void TestGetNearestUtilityForPlayerOn(Int32 startingLocation, Int32 utilityLocation)
+        {
+            gameBoard.SetLocationIndexFor(0, startingLocation);
+            var utility = gameBoard.GetNearestUtilityFor(0);
+
+            Assert.That(utility.Index, Is.EqualTo(utilityLocation));
         }
     }
 }

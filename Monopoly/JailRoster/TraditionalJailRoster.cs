@@ -8,6 +8,7 @@ namespace Monopoly.JailRoster
     public class TraditionalJailRoster : IJailRoster
     {
         private const Int32 jailFine = 50;
+
         private Dictionary<Int32, Int32> roster;
         private IBanker banker;
 
@@ -46,8 +47,13 @@ namespace Monopoly.JailRoster
 
         public void RemoveWithFine(Int32 playerId)
         {
-            banker.TakeMoneyFrom(playerId, jailFine);
+            banker.CollectMoneyFrom(playerId, jailFine);
             Remove(playerId);
+        }
+
+        public Int32 GetJailFine()
+        {
+            return jailFine;
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Monopoly.Locations.Propertys
 
         protected override Int32 CalculateRent()
         {
-            var utilitiesOwned = utilities.Count(u => u.isOwned);
+            var utilitiesOwned = utilities.Count(u => u.IsOwned);
 
             if (utilitiesOwned == 1)
                 return 4 * dice.GetCurrentRoll();
