@@ -117,7 +117,7 @@ namespace Monopoly.Locations.Factories
         {
             return new Location[]
             {
-                new Jail(10, "Jail/ Just Visiting", banker),
+                new NullLocation(10, "Jail/ Just Visiting", banker),
                 new GoToJail(30, "Go To Jail", 10, banker, jailRoster, board)
             };
         }
@@ -134,7 +134,7 @@ namespace Monopoly.Locations.Factories
         {
             return new Location[]
             {
-                new FreeParking(20, "Free Parking", banker)
+                new NullLocation(20, "Free Parking", banker)
             };
         }
 

@@ -61,6 +61,7 @@
     <Compile Include="Cards\ICard.cs" />
     <Compile Include="Cards\TraditionalCardDeckFactory.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Locations\Defaults\NullLocation.cs" />
     <Compile Include="Locations\Factories\LocationFactory.cs" />
     <Compile Include="Banker\TraditionalBanker.cs" />
     <Compile Include="Banker\IBanker.cs" />
@@ -81,10 +82,8 @@
     <Compile Include="Players\IPlayer.cs" />
     <Compile Include="GameDriver\Game.cs" />
     <Compile Include="Locations\Defaults\CardDraw.cs" />
-    <Compile Include="Locations\Defaults\FreeParking.cs" />
     <Compile Include="Locations\Defaults\GoToJail.cs" />
     <Compile Include="Locations\Defaults\Go.cs" />
-    <Compile Include="Locations\Defaults\Jail.cs" />
     <Compile Include="Locations\Defaults\Location.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

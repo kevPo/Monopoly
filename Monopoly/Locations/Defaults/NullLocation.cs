@@ -1,10 +1,11 @@
 ﻿using System;
 using Monopoly.Banker;
+
 namespace Monopoly.Locations.Defaults
 {
-    public class FreeParking : Location
+    public class NullLocation : Location
     {
-        public FreeParking(Int32 index, String name, IBanker banker)
+        public NullLocation(Int32 index, String name, IBanker banker)
             : base(index, name, banker)
         { }
 
