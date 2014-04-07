@@ -60,6 +60,7 @@
     <Compile Include="Cards\CommunityChestFactory.cs" />
     <Compile Include="Cards\ICard.cs" />
     <Compile Include="Cards\TraditionalCardDeckFactory.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Locations\Factories\LocationFactory.cs" />
     <Compile Include="Banker\TraditionalBanker.cs" />
     <Compile Include="Banker\IBanker.cs" />

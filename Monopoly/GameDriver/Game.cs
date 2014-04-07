@@ -18,14 +18,9 @@ namespace Monopoly.GameDriver
             this.PlayerIds = playerIds.ToList();
             this.turnFactory = turnFactory;
             this.Rounds = 0;
-            
-            ShufflePlayers();
-            SetUpPlayerTurns();
-        }
 
-        public void ShufflePlayers()
-        {
-            PlayerIds = PlayerIds.OrderBy(a => Guid.NewGuid()).ToList();
+            PlayerIds = PlayerIds.Shuffle();
+            SetUpPlayerTurns();
         }
 
         private void SetUpPlayerTurns()
@@ -43,7 +38,7 @@ namespace Monopoly.GameDriver
                 PlayRound();
         }
 
-        public void PlayRound()
+        private void PlayRound()
         {
             Rounds++;
             foreach (var playerId in PlayerIds)

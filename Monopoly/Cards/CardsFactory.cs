@@ -21,23 +21,9 @@ namespace Monopoly.Cards
 
         public IEnumerable<ICard> GetCards()
         {
-            ShuffleCards();
+            cards.Shuffle();
 
             return cards;
-        }
-
-        private void ShuffleCards()
-        {
-            var randomCardGenerator = new Random();
-            var n = cards.Count;
-            while (n > 1)
-            {
-                n--;
-                var k = randomCardGenerator.Next(n + 1);
-                var value = cards[k];
-                cards[k] = cards[n];
-                cards[n] = value;
-            }
         }
     }
 }
