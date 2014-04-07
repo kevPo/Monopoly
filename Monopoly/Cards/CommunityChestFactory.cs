@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Monopoly.Banker;
 using Monopoly.Board;
 using Monopoly.Cards.Commands;
@@ -17,28 +18,33 @@ namespace Monopoly.Cards
             this.banker = banker;
             this.jailRoster = jailRoster;
             this.board = board;
-            CreateDeck();
         }
 
-        private void CreateDeck()
+        protected override List<ICard> CreateCards()
         {
             var locations = board.GetLocations();
-            AddCard(new Card(new CollectMoneyCommand(banker, 100)));
-            AddCard(new Card(new CollectMoneyCommand(banker, 100)));
-            AddCard(new Card(new CollectMoneyCommand(banker, 45)));
-            AddCard(new Card(new CollectMoneyCommand(banker, 200)));
-            AddCard(new Card(new PayMoneyCommand(banker, 100)));
-            AddCard(new Card(new PayMoneyCommand(banker, 50)));
-            AddCard(new Card(new GetOutOfJailFreeCommand(jailRoster)));
-            AddCard(new Card(new CollectMoneyCommand(banker, 25)));
-            AddCard(new Card(new PayMoneyCommand(banker, 150)));
-            AddCard(new Card(new AdvanceTokenCommand(0, board)));
-            AddCard(new Card(new CollectMoneyCommand(banker, 10)));
-            AddCard(new Card(new CollectMoneyFromAllPlayersCommand(banker, 50)));
-            AddCard(new Card(new CollectMoneyCommand(banker, 20)));
-            AddCard(new Card(new PropertyRepairCommand(banker, 40, 115)));
-            AddCard(new Card(new CollectMoneyCommand(banker, 100)));
-            AddCard(new Card(new GoDirectlyToJailCommand(jailRoster, board)));
+
+            var cards = new ICard[]
+            {
+                new Card(new CollectMoneyCommand(banker, 100)),
+                new Card(new CollectMoneyCommand(banker, 100)),
+                new Card(new CollectMoneyCommand(banker, 45)),
+                new Card(new CollectMoneyCommand(banker, 200)),
+                new Card(new PayMoneyCommand(banker, 100)),
+                new Card(new PayMoneyCommand(banker, 50)),
+                new Card(new GetOutOfJailFreeCommand(jailRoster)),
+                new Card(new CollectMoneyCommand(banker, 25)),
+                new Card(new PayMoneyCommand(banker, 150)),
+                new Card(new AdvanceTokenCommand(0, board)),
+                new Card(new CollectMoneyCommand(banker, 10)),
+                new Card(new CollectMoneyFromAllPlayersCommand(banker, 50)),
+                new Card(new CollectMoneyCommand(banker, 20)),
+                new Card(new PropertyRepairCommand(banker, 40, 115)),
+                new Card(new CollectMoneyCommand(banker, 100)),
+                new Card(new GoDirectlyToJailCommand(jailRoster, board))
+            };
+
+            return cards.ToList();
         }
     }
 }

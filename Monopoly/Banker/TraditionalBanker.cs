@@ -6,18 +6,19 @@ namespace Monopoly.Banker
 {
     public class TraditionalBanker : IBanker
     {
+        private const Int32 startingBalance = 1500;
         private IDictionary<Int32, Int32> vault;
 
         public TraditionalBanker(IEnumerable<Int32> playerIds)
         {
             vault = new Dictionary<Int32, Int32>();
-            SetUpInitialAmounts(playerIds);
+            SetUpInitialBalances(playerIds);
         }
 
-        private void SetUpInitialAmounts(IEnumerable<Int32> playerIds)
+        private void SetUpInitialBalances(IEnumerable<Int32> playerIds)
         {
             foreach (var playerId in playerIds)
-                vault.Add(playerId, 1500);
+                vault.Add(playerId, startingBalance);
         }
 
         public void PayMoneyTo(Int32 playerId, Int32 money)
