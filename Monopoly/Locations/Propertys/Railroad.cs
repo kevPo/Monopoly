@@ -24,9 +24,12 @@ namespace Monopoly.Locations.Propertys
             return (Int32) Math.Pow(2, numberOfOwnedRailroads - 1) * rent;
         }
 
-        public Int32 GetRentValue()
+        public void LandedOnFromCardCommand(Int32 playerId)
         {
-            return CalculateRent();
+            if (!IsOwned)
+                LandedOnBy(playerId);
+            else
+                banker.TransferMoney(playerId, OwnerId, CalculateRent() * 2);
         }
      }
 }

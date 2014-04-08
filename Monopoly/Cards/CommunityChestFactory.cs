@@ -22,7 +22,7 @@ namespace Monopoly.Cards
 
         protected override List<ICard> CreateCards()
         {
-            var locations = board.GetLocations();
+            var locations = board.Locations;
 
             var cards = new ICard[]
             {
@@ -39,7 +39,7 @@ namespace Monopoly.Cards
                 new Card(new CollectMoneyCommand(banker, 10)),
                 new Card(new CollectMoneyFromAllPlayersCommand(banker, 50)),
                 new Card(new CollectMoneyCommand(banker, 20)),
-                new Card(new PropertyRepairCommand(banker, 40, 115)),
+                new Card(new NullCommand()),
                 new Card(new CollectMoneyCommand(banker, 100)),
                 new Card(new GoDirectlyToJailCommand(jailRoster, board))
             };

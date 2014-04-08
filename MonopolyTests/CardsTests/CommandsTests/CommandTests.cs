@@ -31,7 +31,7 @@ namespace MonopolyTests.CardsTests.CommandsTests
             playerFiveId = 4;
             banker = new TraditionalBanker(new[] { playerOneId, playerTwoId, playerThreeId, playerFourId, playerFiveId });
             jailRoster = new TraditionalJailRoster(banker);
-            gameBoard = new GameBoard();
+            gameBoard = new GameBoard(banker);
             dice = new FakeDice();
             var cardDeckFactory = new TraditionalCardDeckFactory(banker, jailRoster, gameBoard, dice);
             var locationFactory = new TraditionalLocationFactory(banker, dice, jailRoster, gameBoard, cardDeckFactory);

@@ -7,13 +7,14 @@ namespace Monopoly.Board
 {
     public interface IBoard
     {
-        void SetLocations(IEnumerable<Location> locations, IEnumerable<Railroad> railroads, 
-            IEnumerable<Utility> utilities);
-        void SetLocationIndexFor(Int32 playerId, Int32 locationIndex);
+        void SetLocations(IEnumerable<Location> locations, IEnumerable<Railroad> railroads, IEnumerable<Utility> utilities);
+        IEnumerable<Location> Locations { get; }
         Int32 GetLocationIndexFor(Int32 playerId);
-        IEnumerable<Location> GetLocations();
-        Int32 GetNumberOfLocations();
-        Railroad GetNearestRailroadFor(Int32 playerId);
-        Utility GetNearestUtilityFor(Int32 playerId);
+        void MovePlayer(Int32 playerId, Int32 locationsToMove);
+        void MovePlayerTo(Int32 playerId, Int32 locationIndex);
+        void SendPlayerDirectlyTo(Int32 playerId, Int32 locationIndex);
+        void SendPlayerDirectlyToJail(Int32 playerId);
+        void SendPlayerToNearestUtility(Int32 playerId);
+        void SendPlayerToNearestRailroad(Int32 playerId);
     }
 }

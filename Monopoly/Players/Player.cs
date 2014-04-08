@@ -22,7 +22,7 @@ namespace Monopoly.Players
                 return Equals((Player)other);
         }
 
-        public Boolean Equals(Player other)
+        private Boolean Equals(Player other)
         {
             return Token == other.Token && Id == other.Id;
         }

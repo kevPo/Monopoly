@@ -7,9 +7,9 @@ namespace Monopoly.Cards.Commands
     public class GoDirectlyToJailCommand : ICommand
     {
         private IJailRoster jailRoster;
-        private GameBoard board;
+        private IBoard board;
 
-        public GoDirectlyToJailCommand(IJailRoster jailRoster, GameBoard board)
+        public GoDirectlyToJailCommand(IJailRoster jailRoster, IBoard board)
         {
             this.jailRoster = jailRoster;
             this.board = board;
@@ -17,7 +17,7 @@ namespace Monopoly.Cards.Commands
 
         public void PerformOn(Int32 playerId)
         {
-            board.SetLocationIndexFor(playerId, 10);
+            board.SendPlayerDirectlyToJail(playerId);
             jailRoster.Add(playerId);
         }
     }

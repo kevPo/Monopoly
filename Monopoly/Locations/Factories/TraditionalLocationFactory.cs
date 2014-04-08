@@ -20,11 +20,11 @@ namespace Monopoly.Locations.Factories
         private TraditionalBanker banker;
         private IDice dice;
         private TraditionalJailRoster jailRoster;
-        private GameBoard board;
+        private IBoard board;
         private CardDeckFactory cardDeckFactory;
 
         public TraditionalLocationFactory(TraditionalBanker banker, IDice dice, 
-            TraditionalJailRoster jailRoster, GameBoard board,
+            TraditionalJailRoster jailRoster, IBoard board,
             CardDeckFactory cardDeckFactory)
         {
             this.banker = banker;
@@ -117,7 +117,7 @@ namespace Monopoly.Locations.Factories
         {
             return new Location[]
             {
-                new NullLocation(10, "Jail/ Just Visiting", banker),
+                new NullLocation(10, "Jail/ Just Visiting"),
                 new GoToJail(30, "Go To Jail", 10, banker, jailRoster, board)
             };
         }
@@ -126,7 +126,7 @@ namespace Monopoly.Locations.Factories
         {
             return new Location[] 
             {
-                  new Go(0, "Go", banker)
+                  new NullLocation(0, "Go")
             };
         }
 
@@ -134,7 +134,7 @@ namespace Monopoly.Locations.Factories
         {
             return new Location[]
             {
-                new NullLocation(20, "Free Parking", banker)
+                new NullLocation(20, "Free Parking")
             };
         }
 

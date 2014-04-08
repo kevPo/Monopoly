@@ -29,7 +29,7 @@ namespace MonopolyTests.TurnsTests
             playerId = 0;
             banker = new TraditionalBanker(new[] { playerId });
             jailRoster = new TraditionalJailRoster(banker);
-            board = new GameBoard();
+            board = new GameBoard(banker);
             cardDeckFactory = new FakeCardDeckFactory(CreateCards());
             var locationFactory = new TraditionalLocationFactory(banker, dice, jailRoster, board, cardDeckFactory);
             board.SetLocations(locationFactory.GetLocations(), locationFactory.GetRailroads(), locationFactory.GetUtilities());
@@ -66,23 +66,6 @@ namespace MonopolyTests.TurnsTests
             PlayerTakesTurnRollingA(6);
 
             Assert.That(board.GetLocationIndexFor(playerId), Is.EqualTo(5));
-        }
-
-        [Test]
-        public void TestPlayerPassesGoTwiceWithOneTurnAndBalanceIncreases400()
-        {
-            PlayerTakesTurnRollingA(80);
-
-            Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1900));
-        }
-
-        [Test]
-        public void TestBalanceDoesNotIncreaseForNonGoLocations()
-        {
-            var previousBalance = banker.GetBalanceFor(playerId);
-            PlayerTakesTurnRollingA(5);
-
-            Assert.That(banker.GetBalanceFor(playerId) <= previousBalance, Is.True);
         }
 
         [Test]

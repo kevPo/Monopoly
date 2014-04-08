@@ -92,7 +92,6 @@
     <Compile Include="JailRosterTests\TraditionalJailRosterTests.cs" />
     <Compile Include="LocationTests\DefaultsTests\CardDrawTests.cs" />
     <Compile Include="LocationTests\DefaultsTests\GoToJailTests.cs" />
-    <Compile Include="LocationTests\DefaultsTests\GoTests.cs" />
     <Compile Include="LocationTests\PropertysTests\RailroadTests.cs" />
     <Compile Include="LocationTests\PropertysTests\StreetTests.cs" />
     <Compile Include="LocationTests\PropertysTests\UtilityTests.cs" />

@@ -28,5 +28,20 @@ namespace Monopoly.Locations.Propertys
 
             return 10 * dice.GetCurrentRoll();
         }
+
+        public void LandedOnFromCardCommand(Int32 playerId)
+        {
+            if (!IsOwned)
+                LandedOnBy(playerId);
+            else
+                RollDiceAndPayOwnerTenTimesTheRoll(playerId);
+        }
+
+        private void RollDiceAndPayOwnerTenTimesTheRoll(Int32 playerId)
+        {
+            dice.Roll();
+            var rent = dice.GetCurrentRoll() * 10;
+            banker.TransferMoney(playerId, OwnerId, rent);
+        }
     }
 }

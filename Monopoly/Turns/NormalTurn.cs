@@ -35,7 +35,7 @@ namespace Monopoly.Turns
 
         private void SendPlayerToJail()
         {
-            board.SetLocationIndexFor(playerId, 10);
+            board.SendPlayerDirectlyToJail(playerId);
             jailRoster.Add(playerId);
         }
     }

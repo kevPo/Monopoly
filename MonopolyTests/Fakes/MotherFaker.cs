@@ -19,7 +19,7 @@ namespace MonopolyTests.Fakes
             Dice = new FakeDice();
             Banker = new TraditionalBanker(new[] { 0 });
             JailRoster = new TraditionalJailRoster(Banker);
-            GameBoard = new GameBoard();
+            GameBoard = new GameBoard(Banker);
             var cardDeckFactory = new TraditionalCardDeckFactory(Banker, JailRoster, GameBoard, Dice);
             LocationFactory = new TraditionalLocationFactory(Banker, Dice, JailRoster, GameBoard, cardDeckFactory);
             GameBoard.SetLocations(LocationFactory.GetLocations(), LocationFactory.GetRailroads(), LocationFactory.GetUtilities());

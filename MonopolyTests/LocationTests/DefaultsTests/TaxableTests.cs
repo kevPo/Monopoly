@@ -31,12 +31,5 @@ namespace MonopolyTests.LocationTests.DefaultsTests
             incomeTax.LandedOnBy(playerId);
             Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1490));
         }
-
-        [Test]
-        public void TestPlayerPassesOverIncomeTaxAndNothingHappens()
-        {
-            incomeTax.PassedOverBy(playerId);
-            Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1500));
-        }
     }
 }

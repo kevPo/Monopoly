@@ -10,20 +10,22 @@ namespace Monopoly.Turns
 {
     public class TraditionalTurnFactory : ITurnFactory
     {
+        private TraditionalBanker banker;
         private TraditionalDice dice;
         private TraditionalJailRoster jailRoster;
         private GameBoard board;
 
         public TraditionalTurnFactory(TraditionalBanker banker)
         {
-            dice = new TraditionalDice();
-            jailRoster = new TraditionalJailRoster(banker);
-            board = CreateBoard(banker);
+            this.banker = banker;
+            board = CreateBoard();
         }
 
-        private GameBoard CreateBoard(TraditionalBanker banker)
+        private GameBoard CreateBoard()
         {
-            var gameBoard = new GameBoard();
+            var gameBoard = new GameBoard(banker);
+            dice = new TraditionalDice();
+            jailRoster = new TraditionalJailRoster(banker);
             var traditionalCardDeckFactory = new TraditionalCardDeckFactory(banker, jailRoster, gameBoard, dice);
             var locationFactory = new TraditionalLocationFactory(banker, dice, jailRoster, gameBoard, traditionalCardDeckFactory);
             

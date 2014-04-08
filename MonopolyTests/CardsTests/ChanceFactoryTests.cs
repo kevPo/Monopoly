@@ -16,7 +16,7 @@ namespace MonopolyTests.CardsTests
         {
             var banker = new TraditionalBanker(new[] { 0, 1 });
             var jailRoster = new TraditionalJailRoster(banker);
-            var locationManager = new GameBoard();
+            var locationManager = new GameBoard(banker);
             var chanceFactory = new ChanceFactory(banker, jailRoster, locationManager, new FakeDice());
 
             var deck = chanceFactory.GetCards();

@@ -1,27 +1,22 @@
 ﻿using System;
-using Monopoly.Banker;
 using Monopoly.Board;
 
 namespace Monopoly.Cards.Commands
 {
-    public class AdvanceAndCollectSalaryIfGoIsPassedCommand : AdvanceTokenCommand
+    public class AdvanceAndCollectSalaryIfGoIsPassedCommand : ICommand
     {
-        private IBanker banker;
+        private Int32 destinationIndex;
+        private IBoard board;
         
-        public AdvanceAndCollectSalaryIfGoIsPassedCommand(Int32 locationIndex, 
-            GameBoard board, IBanker banker) : base (locationIndex, board)
+        public AdvanceAndCollectSalaryIfGoIsPassedCommand(Int32 destinationIndex, IBoard board) 
         {
-            this.banker = banker;
+            this.destinationIndex = destinationIndex;
+            this.board = board;
         }
 
-        public override void PerformOn(Int32 playerId)
+        public void PerformOn(Int32 playerId)
         {
-            var currentLocationOfPlayer = board.GetLocationIndexFor(playerId);
-
-            if (locationIndex < currentLocationOfPlayer)
-                banker.PayMoneyTo(playerId, 200);
-
-            base.PerformOn(playerId);
+            board.MovePlayerTo(playerId, destinationIndex);
         }
     }
 }

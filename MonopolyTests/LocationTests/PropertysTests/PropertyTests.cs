@@ -36,11 +36,5 @@ namespace MonopolyTests.LocationTests.PropertysTests
             Assert.That(mediterranean.OwnerId, Is.EqualTo(playerId));
         }
 
-        [Test]
-        public void PassingOverUnownedPropertyShouldDoNothing()
-        {
-            mediterranean.PassedOverBy(playerId);
-            Assert.That(banker.GetBalanceFor(playerId), Is.EqualTo(1500));
-        }
     }
 }

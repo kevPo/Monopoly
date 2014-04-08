@@ -17,25 +17,25 @@ namespace MonopolyTests.LocationTests.DefaultsTests
         private CardDraw communityChest;
         private TraditionalBanker banker;
         private TraditionalJailRoster jailRoster;
-        private GameBoard locationManager;
+        private IBoard board;
 
         [SetUp]
         public void SetUp()
         {
             banker = new TraditionalBanker(new[] { 0 });
             jailRoster = new TraditionalJailRoster(banker);
-            locationManager = new GameBoard();
+            board = new GameBoard(banker);
             var dice = new FakeDice();
             var cardDeckFactory = new FakeCardDeckFactory(CreateCards());
             communityChest = new CardDraw(0, "Community Chest", banker, cardDeckFactory.GetCommunityChestDeck());
             var traditionalLocationFactory = 
-                new TraditionalLocationFactory(banker, dice, jailRoster, locationManager, cardDeckFactory);
-            locationManager.SetLocations(traditionalLocationFactory.GetLocations(), traditionalLocationFactory.GetRailroads(), traditionalLocationFactory.GetUtilities());
+                new TraditionalLocationFactory(banker, dice, jailRoster, board, cardDeckFactory);
+            board.SetLocations(traditionalLocationFactory.GetLocations(), traditionalLocationFactory.GetRailroads(), traditionalLocationFactory.GetUtilities());
         }
 
         private IEnumerable<ICard> CreateCards()
         {
-            var goToJailCard = new Card(new GoDirectlyToJailCommand(jailRoster, locationManager));
+            var goToJailCard = new Card(new GoDirectlyToJailCommand(jailRoster, board));
             var collectMoneyCard = new Card(new CollectMoneyCommand(banker, 50));
             var cards = new[] { goToJailCard, collectMoneyCard };
             
@@ -45,11 +45,10 @@ namespace MonopolyTests.LocationTests.DefaultsTests
         [Test]
         public void TestPlayerPassesOverCommunityChestAndNothingHappens()
         {
-            locationManager.SetLocationIndexFor(0, 10);
-            communityChest.PassedOverBy(0);
+            board.MovePlayer(0, 10);
 
             Assert.That(banker.GetBalanceFor(0), Is.EqualTo(1500));
-            Assert.That(locationManager.GetLocationIndexFor(0), Is.EqualTo(10));
+            Assert.That(board.GetLocationIndexFor(0), Is.EqualTo(10));
         }
 
         [Test]

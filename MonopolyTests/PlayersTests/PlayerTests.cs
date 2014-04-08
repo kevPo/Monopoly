@@ -26,5 +26,18 @@ namespace MonopolyTests.PlayersTests
         {
             Assert.That(player.Equals(player), Is.True);
         }
+
+        [Test]
+        public void TestHorseDoesNotEqualString()
+        {
+            Assert.That(player.Equals("player"), Is.False);
+        }
+
+        [Test]
+        public void TestGetHashcode()
+        {
+            var code = (player.Token.GetHashCode() ^ 2) + (player.Id.GetHashCode() ^ 2) * 17;
+            Assert.That(player.GetHashCode(), Is.EqualTo(code));
+        }
     }
 }

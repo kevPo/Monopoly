@@ -31,19 +31,19 @@ namespace Monopoly.Cards
                 new Card(new CollectMoneyCommand(banker, 50)),
                 new Card(new GoDirectlyToJailCommand(jailRoster, board)),
                 new Card(new PayEachPlayerCommand(banker, 50)),
-                new Card(new AdvanceToNearestRailroadCommand(banker, board)),
+                new Card(new AdvanceToNearestRailroadCommand(board)),
                 new Card(new AdvanceTokenCommand(24, board)),
                 new Card(new AdvanceTokenCommand(0, board)),
                 new Card(new GoBackwardsCommand(3, board)),
                 new Card(new PayMoneyCommand(banker, 15)),
-                new Card(new AdvanceToNearestRailroadCommand(banker, board)),
+                new Card(new AdvanceToNearestRailroadCommand(board)),
                 new Card(new AdvanceTokenCommand(39, board)),
                 new Card(new GetOutOfJailFreeCommand(jailRoster)),
-                new Card(new AdvanceToNearestUtilityCommand(banker, board, dice)),
-                new Card(new AdvanceAndCollectSalaryIfGoIsPassedCommand(11, board, banker)),
-                new Card(new AdvanceAndCollectSalaryIfGoIsPassedCommand(5, board, banker)),
+                new Card(new AdvanceToNearestUtilityCommand(board)),
+                new Card(new AdvanceAndCollectSalaryIfGoIsPassedCommand(11, board)),
+                new Card(new AdvanceAndCollectSalaryIfGoIsPassedCommand(5, board)),
                 new Card(new CollectMoneyCommand(banker, 150)),
-                new Card(new PropertyRepairCommand(banker, 25, 100))
+                new Card(new NullCommand())
             };
 
             return cards.ToList();

@@ -83,7 +83,6 @@
     <Compile Include="GameDriver\Game.cs" />
     <Compile Include="Locations\Defaults\CardDraw.cs" />
     <Compile Include="Locations\Defaults\GoToJail.cs" />
-    <Compile Include="Locations\Defaults\Go.cs" />
     <Compile Include="Locations\Defaults\Location.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

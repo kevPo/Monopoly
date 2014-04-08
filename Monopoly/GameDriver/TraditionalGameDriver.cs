@@ -14,6 +14,7 @@ namespace Monopoly.GameDriver
         private const Int32 maximumPlayers = 8;
 
         private IEnumerable<IPlayer> players;
+        private Game game;
 
         public void PlayGameWith(IEnumerable<String> tokens)
         {
@@ -46,8 +47,16 @@ namespace Monopoly.GameDriver
         {
             var banker = new TraditionalBanker(playerIds);
             var turnFactory = new TraditionalTurnFactory(banker);
-            var game = new Game(playerIds, turnFactory);
+            game = new Game(playerIds, turnFactory);
             game.Play();
+        }
+
+        public Int32 GetRoundsPlayed()
+        {
+            if (game != null)
+                return game.Rounds;
+
+            return 0;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace MonopolyTests.CardsTests.CommandsTests
         [Test]
         public void TestGoDirectlyToJailCommandSendsPlayerToJail()
         {
-            gameBoard.SetLocationIndexFor(playerOneId, 20);
+            gameBoard.SendPlayerDirectlyTo(playerOneId, 20);
             var command = new GoDirectlyToJailCommand(jailRoster, gameBoard);
             command.PerformOn(playerOneId);
 

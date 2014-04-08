@@ -38,5 +38,18 @@ namespace MonopolyTests.GameTests
             };
             Assert.Throws<InvalidOperationException>(() => gameDriver.PlayGameWith(players));
         }
+
+        [Test]
+        public void TestPlayGame()
+        {
+            gameDriver.PlayGameWith(new[] { "Horse", "Car" });
+            Assert.That(gameDriver.GetRoundsPlayed(), Is.EqualTo(20));
+        }
+
+        [Test]
+        public void TestGetRoundsPlayedWhenGameHasNotBeenCreatedReturnsZero()
+        {
+            Assert.That(gameDriver.GetRoundsPlayed(), Is.EqualTo(0));
+        }
     }
 }

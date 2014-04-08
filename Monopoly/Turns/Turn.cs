@@ -23,40 +23,15 @@ namespace Monopoly.Turns
             this.dice = dice;
             this.jailRoster = jailRoster;
             this.board = board;
-            this.currentLocationIndex = board.GetLocationIndexFor(playerId);
-            this.locations = board.GetLocations();
+            this.locations = board.Locations;
         }
 
         public abstract void Take();
 
         protected void SendPlayerToDestination()
         {
-            var roll = dice.GetCurrentRoll();
-
-            for (var locationsPassed = 1; locationsPassed <= roll; locationsPassed++)
-                SetPlayerOnNextLocation(roll, locationsPassed, GetCurrentLocation());
-        }
-
-        private Location GetCurrentLocation()
-        {
-            currentLocationIndex = (currentLocationIndex + 1) % locations.Count();
-            var location = locations.First(l => l.Index == currentLocationIndex);
-
-            return location;
-        }
-
-        private void SetPlayerOnNextLocation(Int32 roll, Int32 locationsPassed, Location location)
-        {
-            if (locationsPassed == roll)
-                SetPlayerOnDestination(location);
-            else
-                location.PassedOverBy(playerId);
-        }
-
-        private void SetPlayerOnDestination(Location location)
-        {
-            board.SetLocationIndexFor(playerId, location.Index);
-            location.LandedOnBy(playerId);
+            var diceRoll = dice.GetCurrentRoll();
+            board.MovePlayer(playerId, diceRoll);
         }
     }
 }

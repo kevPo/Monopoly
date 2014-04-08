@@ -13,13 +13,13 @@ namespace MonopolyTests.CardsTests.CommandsTests
         public override void SetUp()
         {
             base.SetUp();
-            command = new AdvanceToNearestUtilityCommand(banker, gameBoard, dice);
+            command = new AdvanceToNearestUtilityCommand(gameBoard);
         }
 
         [Test]
         public void TestAdvanceToUnownedUtilityAndPlayerBuysIt()
         {
-            gameBoard.SetLocationIndexFor(playerOneId, 0);
+            gameBoard.SendPlayerDirectlyTo(playerOneId, 0);
             command.PerformOn(playerOneId);
 
             Assert.That(gameBoard.GetLocationIndexFor(0), Is.EqualTo(12));
@@ -30,8 +30,8 @@ namespace MonopolyTests.CardsTests.CommandsTests
         public void TestAdvanceToOwnedUtilityAndPlayerPaysTenTimesDiceRollOf10InRent()
         {
             dice.SetRolls(new[] { new FakeRoll(5, 5) });
-            gameBoard.SetLocationIndexFor(playerOneId, 0);
-            gameBoard.SetLocationIndexFor(playerTwoId, 0);
+            gameBoard.SendPlayerDirectlyTo(playerOneId, 0);
+            gameBoard.SendPlayerDirectlyTo(playerTwoId, 0);
             command.PerformOn(playerOneId);
             command.PerformOn(playerTwoId);
 

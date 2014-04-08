@@ -6,22 +6,17 @@ namespace Monopoly.Cards.Commands
     public class GoBackwardsCommand : ICommand
     {
         private Int32 locationsBackward;
-        private GameBoard board;
+        private IBoard board;
 
-        public GoBackwardsCommand(Int32 locationsBackward, GameBoard board)
+        public GoBackwardsCommand(Int32 locationsBackward, IBoard board)
         {
-            this.locationsBackward = locationsBackward;
+            this.locationsBackward = locationsBackward * -1;
             this.board = board;
         }
 
         public void PerformOn(Int32 playerId)
         {
-            var numberOfLocations = board.GetNumberOfLocations();
-            var currentLocation = board.GetLocationIndexFor(playerId);
-            var nextLocation = (currentLocation + (numberOfLocations - locationsBackward)) % numberOfLocations;
-
-            var advanceTokenCommand = new AdvanceTokenCommand(nextLocation, board);
-            advanceTokenCommand.PerformOn(playerId);
+            board.MovePlayer(playerId, locationsBackward);
         }
     }
 }

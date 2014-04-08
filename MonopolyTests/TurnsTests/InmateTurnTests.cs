@@ -31,7 +31,7 @@ namespace MonopolyTests.TurnsTests
         private void PutPlayerInJail()
         {
             jailRoster.Add(0);
-            gameBoard.SetLocationIndexFor(0, 10);
+            gameBoard.SendPlayerDirectlyTo(0, 10);
         }
 
         [Test]

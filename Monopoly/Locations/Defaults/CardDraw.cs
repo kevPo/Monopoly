@@ -9,7 +9,7 @@ namespace Monopoly.Locations.Defaults
         private CardDeck cardDeck;
 
         public CardDraw(Int32 index, String name, IBanker banker, CardDeck cardDeck)
-            : base(index, name, banker)
+            : base(index, name)
         {
             this.cardDeck = cardDeck;
         }

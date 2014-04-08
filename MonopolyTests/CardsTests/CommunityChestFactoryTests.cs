@@ -15,7 +15,7 @@ namespace MonopolyTests.CardsTests
         {
             var banker = new TraditionalBanker(new[] { 0, 1 });
             var jailRoster = new TraditionalJailRoster(banker);
-            var locationManager = new GameBoard();
+            var locationManager = new GameBoard(banker);
             var communityChestFactory = new CommunityChestFactory(banker, jailRoster, locationManager);
 
             var deck = communityChestFactory.GetCards();

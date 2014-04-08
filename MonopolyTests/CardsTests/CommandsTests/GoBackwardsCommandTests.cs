@@ -18,25 +18,15 @@ namespace MonopolyTests.CardsTests.CommandsTests
         [Test]
         public void TestMoveThreeLocationsBackwardPlacesPlayerThreeLocationsBack()
         {
-            gameBoard.SetLocationIndexFor(playerOneId, 13);
+            gameBoard.SendPlayerDirectlyTo(playerOneId, 13);
             command.PerformOn(playerOneId);
 
             Assert.That(gameBoard.GetLocationIndexFor(playerOneId), Is.EqualTo(10));
         }
 
         [Test]
-        public void TestMoveThreeLocationsBackwardOverGoPlacesPlayerOnProperLocation()
-        {
-            gameBoard.SetLocationIndexFor(playerOneId, 2);
-            command.PerformOn(playerOneId);
-
-            Assert.That(gameBoard.GetLocationIndexFor(playerOneId), Is.EqualTo(39));
-        }
-
-        [Test]
         public void TestMoveThreeLocationsBackwardWhenCurrentlyOnGoSetsPlayerOnThirtySeven()
         {
-            gameBoard.SetLocationIndexFor(playerOneId, 0);
             command.PerformOn(playerOneId);
 
             Assert.That(gameBoard.GetLocationIndexFor(playerOneId), Is.EqualTo(37));

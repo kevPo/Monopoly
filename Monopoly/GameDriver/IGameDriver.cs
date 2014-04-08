@@ -5,5 +5,6 @@ namespace Monopoly.GameDriver
     public interface IGameDriver
     {
         void PlayGameWith(IEnumerable<String> tokens);
+        Int32 GetRoundsPlayed();
     }
 }

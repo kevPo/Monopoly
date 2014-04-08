@@ -4,31 +4,31 @@ namespace Monopoly.Dice
 {
     public class TraditionalDice : IDice
     {
-        private Int32 diceOne;
-        private Int32 diceTwo;
+        public Int32 DiceOne { get; private set; }
+        public Int32 DiceTwo { get; private set; }
         private Random randomDiceGenerator;
 
         public TraditionalDice()
         {
-            diceOne = 0;
-            diceTwo = 0;
+            DiceOne = 0;
+            DiceTwo = 0;
             randomDiceGenerator = new Random();
         }
 
         public void Roll()
         {
-            diceOne = randomDiceGenerator.Next(1, 7);
-            diceTwo = randomDiceGenerator.Next(1, 7);
+            DiceOne = randomDiceGenerator.Next(1, 7);
+            DiceTwo = randomDiceGenerator.Next(1, 7);
         }
 
         public Int32 GetCurrentRoll()
         {
-            return diceOne + diceTwo;
+            return DiceOne + DiceTwo;
         }
 
         public Boolean RollWasDouble()
         {
-            return diceOne == diceTwo;
+            return DiceOne == DiceTwo;
         }
     }
 }

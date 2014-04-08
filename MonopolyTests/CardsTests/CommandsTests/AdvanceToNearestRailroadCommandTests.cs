@@ -12,13 +12,13 @@ namespace MonopolyTests.CardsTests.CommandsTests
         public override void SetUp()
         {
             base.SetUp();
-            advanceToNearestRailroad = new AdvanceToNearestRailroadCommand(banker, gameBoard);
+            advanceToNearestRailroad = new AdvanceToNearestRailroadCommand(gameBoard);
         }
 
         [Test]
         public void TestAdvanceToNearestRailroadFromGoPlacesPlayerOnLocationFive()
         {
-            gameBoard.SetLocationIndexFor(playerOneId, 0);
+            gameBoard.SendPlayerDirectlyTo(playerOneId, 0);
             advanceToNearestRailroad.PerformOn(playerOneId);
 
             Assert.That(gameBoard.GetLocationIndexFor(playerOneId), Is.EqualTo(5));
@@ -28,8 +28,8 @@ namespace MonopolyTests.CardsTests.CommandsTests
         [Test]
         public void TestAdvanceWhenNearestRailroadIsOwnedByAnotherPlayer()
         {
-            gameBoard.SetLocationIndexFor(playerOneId, 0);
-            gameBoard.SetLocationIndexFor(playerTwoId, 0);
+            gameBoard.SendPlayerDirectlyTo(playerOneId, 0);
+            gameBoard.SendPlayerDirectlyTo(playerTwoId, 0);
             advanceToNearestRailroad.PerformOn(playerOneId);
             advanceToNearestRailroad.PerformOn(playerTwoId);
 

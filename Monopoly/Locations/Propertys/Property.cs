@@ -9,13 +9,15 @@ namespace Monopoly.Locations.Propertys
         public Boolean IsOwned { get; protected set; }
         public Int32 OwnerId { get; private set; }
         protected Int32 rent;
+        protected IBanker banker;
         private Int32 cost;
 
         public Property(Int32 index, String name, Int32 cost, Int32 rent, IBanker banker)
-            : base(index, name, banker)
+            : base(index, name)
         {
             this.rent = rent;
             this.cost = cost;
+            this.banker = banker;
             IsOwned = false;
         }
 
